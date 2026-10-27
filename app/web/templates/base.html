@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Imóveis{% endblock %}</title>
+  <link rel="stylesheet" href="/static/pico.min.css">
+  <script src="/static/htmx.min.js" defer></script>
+  <style>
+    .muted { color: var(--pico-muted-color); }
+    .tag { display: inline-block; font-size: .75em; padding: .1em .5em; border-radius: .4em; background: #777; color: #fff; vertical-align: middle; }
+    .tag.ok { background: #2e7d32; } .tag.warn { background: #ef6c00; } .tag.bad { background: #c62828; } .tag.off { background: #777; }
+    table { font-size: .92em; }
+    form.inline { display: inline; margin: 0; }
+    .errors { color: #c62828; }
+    nav form { margin: 0; }
+  </style>
+</head>
+<body>
+<nav class="container">
+  <ul><li><strong><a href="/">Imóveis</a></strong></li></ul>
+  {% if user %}
+  <ul>
+    <li><a href="/buyers">Compradores</a></li>
+    <li><a href="/properties">Imóveis</a></li>
+    <li><a href="/criteria/new">Nova pesquisa</a></li>
+    <li><a href="/sources">Fontes</a></li>
+    <li><form method="post" action="/logout"><button class="secondary outline">Sair</button></form></li>
+  </ul>
+  {% endif %}
+</nav>
+<main class="container">
+  {% if msg %}<article aria-live="polite">{{ msg }}</article>{% endif %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

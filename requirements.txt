@@ -1,0 +1,22 @@
+# Pinned 2026-10-27 (PyPI latest stable). Keep exact pins; regenerate requirements.lock.txt with `pip freeze` after changes.
+fastapi==0.162.0
+uvicorn[standard]==0.54.0
+jinja2==3.1.6
+python-multipart==0.0.32
+itsdangerous==2.2.0
+bcrypt==5.0.0
+sqlalchemy==2.1.6
+alembic==1.20.1
+psycopg[binary]==3.3.6
+pydantic-settings==2.16.1
+httpx==0.28.1
+selectolax==1.0.2
+apscheduler==3.11.3
+python-telegram-bot==22.8
+openai==3.39.0
+anthropic==2.3.0
+imap-tools==1.16.0
+imagehash==4.3.2
+pillow==13.0.0
+openpyxl==3.1.5
+pytest==9.1.1

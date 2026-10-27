@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Painel</h2>
+<div class="grid">
+  <article><h3>{{ counts.buyers_active }}</h3><p class="muted">compradores ativos<br><small>{{ counts.buyers_paused }} em pausa</small></p></article>
+  <article><h3>{{ counts.criteria_active }}</h3><p class="muted">pesquisas ativas</p></article>
+  <article><h3>{{ counts.listings }}</h3><p class="muted">anúncios recolhidos</p></article>
+  <article><h3>{{ counts.matches_new }}</h3><p class="muted">correspondências por analisar</p></article>
+</div>
+<h3>Fontes ativas</h3>
+<table>
+  <thead><tr><th>Fonte</th><th>Estado</th><th>robots.txt</th><th>Último sucesso</th></tr></thead>
+  <tbody>
+  {% for s in sources %}
+    <tr>
+      <td>{{ s.name }}</td>
+      <td><span class="tag {{ 'ok' if s.status == 'ok' else ('warn' if s.status == 'degraded' else 'bad') }}">{{ s.status }}</span></td>
+      <td>{% if s.robots_status is none %}<span class="muted">por verificar</span>{% else %}HTTP {{ s.robots_status }} · {{ 'permite' if s.robots_allowed else 'bloqueia' }}{% if s.content_signal %} · {{ s.content_signal }}{% endif %}{% endif %}</td>
+      <td>{{ s.last_ok_at.strftime('%Y-%m-%d %H:%M') if s.last_ok_at else '—' }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

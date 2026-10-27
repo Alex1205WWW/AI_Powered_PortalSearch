@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Compradores{% endblock %}
+{% block content %}
+<h2>Compradores</h2>
+<form method="post" action="/buyers" class="grid">
+  <input name="label" placeholder="Etiqueta (ex.: Rosa B.)" maxlength="80" required>
+  <button type="submit">Criar comprador</button>
+</form>
+{% if error %}<p class="errors">{{ error }}</p>{% endif %}
+<table>
+  <thead><tr><th>Etiqueta</th><th>Estado</th><th>Pesquisas</th><th>Criado</th></tr></thead>
+  <tbody>
+  {% for b in buyers %}
+    <tr>
+      <td><a href="/buyers/{{ b.id }}">{{ b.label }}</a></td>
+      <td>{% if b.active %}<span class="tag ok">ativo</span>{% else %}<span class="tag off">em pausa</span>{% endif %}</td>
+      <td>{{ b.criteria | selectattr('active') | list | length }} ativas / {{ b.criteria | length }}</td>
+      <td>{{ b.created_at.strftime('%Y-%m-%d') }}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="4" class="muted">Ainda não há compradores.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

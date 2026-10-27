@@ -1,0 +1,54 @@
+code,level,name,parent_code
+lisboa,district,Lisboa,
+setubal,district,Setúbal,
+santarem,district,Santarém,
+lisboa/alenquer,council,Alenquer,lisboa
+lisboa/amadora,council,Amadora,lisboa
+lisboa/arruda-dos-vinhos,council,Arruda dos Vinhos,lisboa
+lisboa/azambuja,council,Azambuja,lisboa
+lisboa/cadaval,council,Cadaval,lisboa
+lisboa/cascais,council,Cascais,lisboa
+lisboa/lisboa,council,Lisboa,lisboa
+lisboa/loures,council,Loures,lisboa
+lisboa/lourinha,council,Lourinhã,lisboa
+lisboa/mafra,council,Mafra,lisboa
+lisboa/odivelas,council,Odivelas,lisboa
+lisboa/oeiras,council,Oeiras,lisboa
+lisboa/sintra,council,Sintra,lisboa
+lisboa/sobral-de-monte-agraco,council,Sobral de Monte Agraço,lisboa
+lisboa/torres-vedras,council,Torres Vedras,lisboa
+lisboa/vila-franca-de-xira,council,Vila Franca de Xira,lisboa
+setubal/alcacer-do-sal,council,Alcácer do Sal,setubal
+setubal/alcochete,council,Alcochete,setubal
+setubal/almada,council,Almada,setubal
+setubal/barreiro,council,Barreiro,setubal
+setubal/grandola,council,Grândola,setubal
+setubal/moita,council,Moita,setubal
+setubal/montijo,council,Montijo,setubal
+setubal/palmela,council,Palmela,setubal
+setubal/santiago-do-cacem,council,Santiago do Cacém,setubal
+setubal/seixal,council,Seixal,setubal
+setubal/sesimbra,council,Sesimbra,setubal
+setubal/setubal,council,Setúbal,setubal
+setubal/sines,council,Sines,setubal
+santarem/abrantes,council,Abrantes,santarem
+santarem/alcanena,council,Alcanena,santarem
+santarem/almeirim,council,Almeirim,santarem
+santarem/alpiarca,council,Alpiarça,santarem
+santarem/benavente,council,Benavente,santarem
+santarem/cartaxo,council,Cartaxo,santarem
+santarem/chamusca,council,Chamusca,santarem
+santarem/constancia,council,Constância,santarem
+santarem/coruche,council,Coruche,santarem
+santarem/entroncamento,council,Entroncamento,santarem
+santarem/ferreira-do-zezere,council,Ferreira do Zêzere,santarem
+santarem/golega,council,Golegã,santarem
+santarem/macao,council,Mação,santarem
+santarem/ourem,council,Ourém,santarem
+santarem/rio-maior,council,Rio Maior,santarem
+santarem/salvaterra-de-magos,council,Salvaterra de Magos,santarem
+santarem/santarem,council,Santarém,santarem
+santarem/sardoal,council,Sardoal,santarem
+santarem/tomar,council,Tomar,santarem
+santarem/torres-novas,council,Torres Novas,santarem
+santarem/vila-nova-da-barquinha,council,Vila Nova da Barquinha,santarem

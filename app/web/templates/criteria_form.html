@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Editar pesquisa' if criteria_id else 'Nova pesquisa' }}{% endblock %}
+{% block content %}
+<h2>{{ 'Editar pesquisa' if criteria_id else 'Nova pesquisa' }}</h2>
+{% if errors %}<ul class="errors">{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+<form method="post" action="{{ '/criteria/' ~ criteria_id ~ '/edit' if criteria_id else '/criteria/new' }}">
+  <div class="grid">
+    <label>Comprador
+      <select name="buyer_id" required>
+        <option value="">—</option>
+        {% for b in buyers %}<option value="{{ b.id }}" {{ 'selected' if b.id == data.buyer_id }}>{{ b.label }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Transação
+      <select name="transaction">{% for k, v in TRANSACTIONS.items() %}<option value="{{ k }}" {{ 'selected' if k == data.transaction }}>{{ v }}</option>{% endfor %}</select>
+    </label>
+  </div>
+  <fieldset><legend>Tipo de imóvel</legend>
+    {% for k, v in ESTATE_TYPES.items() %}<label><input type="checkbox" name="estate_types" value="{{ k }}" {{ 'checked' if k in data.estate_types }}> {{ v }}</label>{% endfor %}
+  </fieldset>
+  <div class="grid">
+    <label>Tipologia mínima (T) <input type="number" name="typology_min" min="0" max="12" value="{{ data.typology_min if data.typology_min is not none }}"></label>
+    <label>Tipologia máxima (vazio = sem limite, "T2 ou mais") <input type="number" name="typology_max" min="0" max="12" value="{{ data.typology_max if data.typology_max is not none }}"></label>
+  </div>
+  <div class="grid">
+    <label>Preço mínimo (€) <input type="text" inputmode="numeric" name="price_min" value="{{ data.price_min if data.price_min is not none }}"></label>
+    <label>Preço máximo (€) <input type="text" inputmode="numeric" name="price_max" value="{{ data.price_max if data.price_max is not none }}"></label>
+    <label>Área mínima (m²) <input type="number" name="area_min" min="0" value="{{ data.area_min if data.area_min is not none }}"></label>
+  </div>
+  <label>Zonas (Ctrl para escolher várias; um distrito inclui todos os seus concelhos)
+    <select name="zones" multiple size="12" required>
+      {% for district, councils in zone_groups %}
+      <optgroup label="{{ district.name }} (distrito)">
+        <option value="{{ district.code }}" {{ 'selected' if district.code in data.zones }}>Todo o distrito de {{ district.name }}</option>
+        {% for c in councils %}<option value="{{ c.code }}" {{ 'selected' if c.code in data.zones }}>{{ c.name }}</option>{% endfor %}
+      </optgroup>
+      {% endfor %}
+    </select>
+  </label>
+  <div class="grid">
+    <fieldset><legend>Obrigatório</legend>
+      {% for k, v in FEATURES.items() %}<label><input type="checkbox" name="must_have" value="{{ k }}" {{ 'checked' if k in data.must_have }}> {{ v }}</label>{% endfor %}
+    </fieldset>
+    <fieldset><legend>Desejável</legend>
+      {% for k, v in FEATURES.items() %}<label><input type="checkbox" name="nice_to_have" value="{{ k }}" {{ 'checked' if k in data.nice_to_have }}> {{ v }}</label>{% endfor %}
+    </fieldset>
+  </div>
+  <label>Excluir (palavras separadas por vírgula, ex.: rés-do-chão, para recuperar)
+    <input name="exclude" value="{{ data.exclude | join(', ') }}">
+  </label>
+  <div class="grid">
+    <label><input type="checkbox" name="include_private_owner" {{ 'checked' if data.include_private_owner }}> Incluir anúncios de particulares</label>
+    <label><input type="checkbox" name="include_new_developments" {{ 'checked' if data.include_new_developments }}> Incluir empreendimentos novos</label>
+  </div>
+  <label>Quando o anúncio não indica um requisito obrigatório
+    <select name="unknown_policy">{% for k, v in UNKNOWN_POLICIES.items() %}<option value="{{ k }}" {{ 'selected' if k == data.unknown_policy }}>{{ v }}</option>{% endfor %}</select>
+  </label>
+  <label>O que a cliente disse (texto original, opcional)
+    <textarea name="source_text" rows="2">{{ data.source_text or '' }}</textarea>
+  </label>
+  <button type="submit">{{ 'Guardar' if criteria_id else 'Criar pesquisa' }}</button>
+</form>
+{% endblock %}

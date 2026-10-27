@@ -1,0 +1,2121 @@
+{
+ "url": "https://www.imovirtual.com/pt/resultados/comprar/moradia/lisboa/oeiras?by=LATEST&direction=DESC&priceMin=400000&priceMax=650000",
+ "fetched_at": "2026-10-27T00:45:13Z",
+ "searchAds": {
+  "__typename": "FoundAds",
+  "items": [
+   {
+    "id": 19301142,
+    "title": "Moradia T2 para venda",
+    "slug": "moradia-t2-para-venda-ID1iZ6K",
+    "estate": "HOUSE",
+    "transaction": "SELL",
+    "images": [
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjFsZHd0cTBkOG5ycjItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.P5GokfemA3JC60NfcynRZqgaMqQ_UfOtm0-TIwNTRvI/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjFsZHd0cTBkOG5ycjItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.P5GokfemA3JC60NfcynRZqgaMqQ_UfOtm0-TIwNTRvI/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjFsZHd0cTBkOG5ycjItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.P5GokfemA3JC60NfcynRZqgaMqQ_UfOtm0-TIwNTRvI/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im9kaTd1bWhjazF0NDEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.PjEvON_Uz7HAYc6qWZ62RKvbub5tzK07ylKELERMI4I/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im9kaTd1bWhjazF0NDEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.PjEvON_Uz7HAYc6qWZ62RKvbub5tzK07ylKELERMI4I/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im9kaTd1bWhjazF0NDEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.PjEvON_Uz7HAYc6qWZ62RKvbub5tzK07ylKELERMI4I/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InhiNG9pcW9ocHUxci1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.NIHwXcM871NN9bNhp20cgbozkSTTDO5fpylAKz-NDEY/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InhiNG9pcW9ocHUxci1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.NIHwXcM871NN9bNhp20cgbozkSTTDO5fpylAKz-NDEY/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InhiNG9pcW9ocHUxci1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.NIHwXcM871NN9bNhp20cgbozkSTTDO5fpylAKz-NDEY/image;s=1280x1024;q=80"
+     }
+    ],
+    "tags": [],
+    "investmentEstimatedDelivery": null,
+    "investmentState": null,
+    "investmentUnitsFloorsRange": null,
+    "investmentUnitsAreaInSquareMeters": null,
+    "investmentUnitsNumber": null,
+    "investmentUnitsRoomsNumber": null,
+    "source": "urn:partner:maxwork",
+    "isCrossListed": false,
+    "agency": {
+     "id": 4009208,
+     "name": "RE/MAX + Grupo Vantagem",
+     "type": "AGENCY",
+     "slug": "re-max-grupo-vantagem-ID4009208",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImY0cHZoeHAxZ2V0dS1BUFQifQ.tpMODcgRJzK3QgR4QswdY4wmE1E9E2OkyzXxyNLkUOE/image",
+     "brandingVisible": true,
+     "highlightedAds": false,
+     "enhancedBrandingFeatures": [
+      "ENHANCED_BRANDING_COMPANY_NAME",
+      "ENHANCED_BRANDING_LOGO_DISPLAY",
+      "ENHANCED_BRANDING_SELLER_TYPE"
+     ]
+    },
+    "areaInSquareMeters": 186.56,
+    "dateCreated": "2026-10-08T03:08:43Z",
+    "createdAtFirst": "2026-10-08T03:08:43+00:00",
+    "development": null,
+    "developmentId": 0,
+    "developmentTitle": "",
+    "developmentUrl": "",
+    "floorNumber": null,
+    "hasRemoteServices": false,
+    "hidePrice": false,
+    "isExclusiveOffer": false,
+    "isPrivateOwner": false,
+    "isPromoted": false,
+    "extendedAdvertiserType": "business",
+    "links": {
+     "localPlanUrl": "",
+     "walkaroundUrl": "",
+     "videoUrl": "",
+     "view3dUrl": ""
+    },
+    "location": {
+     "mapDetails": {
+      "radius": 0
+     },
+     "address": {
+      "street": {
+       "name": "Travessa 31 de Janeiro",
+       "number": null
+      },
+      "city": null,
+      "province": null
+     },
+     "reverseGeocoding": {
+      "locations": [
+       {
+        "id": "lisboa",
+        "locationLevel": "district",
+        "name": "Lisboa",
+        "fullName": "Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras",
+        "locationLevel": "council",
+        "name": "Oeiras",
+        "fullName": "Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/barcarena",
+        "locationLevel": "parish",
+        "name": "Barcarena",
+        "fullName": "Barcarena, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/barcarena/vale-de-barcarena",
+        "locationLevel": "neighborhood",
+        "name": "Vale de Barcarena",
+        "fullName": "Vale de Barcarena, Barcarena, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       }
+      ]
+     }
+    },
+    "openDays": null,
+    "unifiedOpenDays": null,
+    "peoplePerRoom": null,
+    "priceFromPerSquareMeter": null,
+    "pricePerSquareMeter": {
+     "value": 2304.89,
+     "currency": "EUR"
+    },
+    "pushedUpAt": null,
+    "rentPrice": null,
+    "roomsNumber": "THREE",
+    "shortDescription": null,
+    "specialOffer": null,
+    "terrainAreaInSquareMeters": null,
+    "totalPossibleImages": 44,
+    "totalPrice": {
+     "value": 430000,
+     "currency": "EUR"
+    },
+    "showPremiumTile": false,
+    "organisationAssignedMember": null,
+    "advertOwner": {
+     "name": "RE/MAX + Grupo Vantagem",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImY0cHZoeHAxZ2V0dS1BUFQifQ.tpMODcgRJzK3QgR4QswdY4wmE1E9E2OkyzXxyNLkUOE/image",
+     "contacts": [
+      {
+       "name": "Vantagem Planície",
+       "imageURLSmall": "https://ireland.apollo.olxcdn.com/v1/files/eyJmbiI6ImdsMXp6anM4dWFmOC1BUFQifQ.QXVuqbKBouMNtIqwQWgBuTBOjcl4FSTSZVM3qmRdQY4/image"
+      }
+     ]
+    },
+    "href": "[lang]/ad/moradia-t2-para-venda-ID1iZ6K"
+   },
+   {
+    "id": 19297525,
+    "title": "Moradia T3 para venda",
+    "slug": "moradia-t3-para-venda-ID1iYap",
+    "estate": "HOUSE",
+    "transaction": "SELL",
+    "images": [
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImN5MXlsaWY2dWVxbDEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.68femJ5xbkeoOUiro64qyd98bz3jRbLS5HxobP6r2Ho/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImN5MXlsaWY2dWVxbDEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.68femJ5xbkeoOUiro64qyd98bz3jRbLS5HxobP6r2Ho/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImN5MXlsaWY2dWVxbDEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.68femJ5xbkeoOUiro64qyd98bz3jRbLS5HxobP6r2Ho/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InBlZGFwbXZpbzgxYjEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.zTaRZHlcDWusYzzwWBWYsClx_XmAyR7v6y-Nzv2eYHs/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InBlZGFwbXZpbzgxYjEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.zTaRZHlcDWusYzzwWBWYsClx_XmAyR7v6y-Nzv2eYHs/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InBlZGFwbXZpbzgxYjEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.zTaRZHlcDWusYzzwWBWYsClx_XmAyR7v6y-Nzv2eYHs/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ing3NzlkOGljaXd0eC1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.QTQZlna8q4_ue3giwj65L_Sse9M_uyl2FAqpdOvABDY/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ing3NzlkOGljaXd0eC1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.QTQZlna8q4_ue3giwj65L_Sse9M_uyl2FAqpdOvABDY/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ing3NzlkOGljaXd0eC1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.QTQZlna8q4_ue3giwj65L_Sse9M_uyl2FAqpdOvABDY/image;s=1280x1024;q=80"
+     }
+    ],
+    "tags": [],
+    "investmentEstimatedDelivery": null,
+    "investmentState": null,
+    "investmentUnitsFloorsRange": null,
+    "investmentUnitsAreaInSquareMeters": null,
+    "investmentUnitsNumber": null,
+    "investmentUnitsRoomsNumber": null,
+    "source": "urn:partner:maxwork",
+    "isCrossListed": false,
+    "agency": {
+     "id": 4025022,
+     "name": "Maxgroup",
+     "type": "AGENCY",
+     "slug": "maxgroup-ID4025022",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InFrcDVpc28xZG9oMjEtQVBUIn0.qaiodcFgI4CxXNBivMsoo_ks4AyYTI55R3gQGkTyhlw/image",
+     "brandingVisible": true,
+     "highlightedAds": false,
+     "enhancedBrandingFeatures": [
+      "ENHANCED_BRANDING_COMPANY_NAME",
+      "ENHANCED_BRANDING_LOGO_DISPLAY",
+      "ENHANCED_BRANDING_SELLER_TYPE"
+     ]
+    },
+    "areaInSquareMeters": 100,
+    "dateCreated": "2026-10-03T17:08:24Z",
+    "createdAtFirst": "2026-10-03T17:08:24+00:00",
+    "development": null,
+    "developmentId": 0,
+    "developmentTitle": "",
+    "developmentUrl": "",
+    "floorNumber": null,
+    "hasRemoteServices": false,
+    "hidePrice": false,
+    "isExclusiveOffer": false,
+    "isPrivateOwner": false,
+    "isPromoted": false,
+    "extendedAdvertiserType": "business",
+    "links": {
+     "localPlanUrl": "",
+     "walkaroundUrl": "",
+     "videoUrl": "",
+     "view3dUrl": ""
+    },
+    "location": {
+     "mapDetails": {
+      "radius": 100
+     },
+     "address": {
+      "street": {
+       "name": "Rua Bartolomeu Dias",
+       "number": null
+      },
+      "city": null,
+      "province": null
+     },
+     "reverseGeocoding": {
+      "locations": [
+       {
+        "id": "lisboa",
+        "locationLevel": "district",
+        "name": "Lisboa",
+        "fullName": "Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras",
+        "locationLevel": "council",
+        "name": "Oeiras",
+        "fullName": "Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/oeiras-e-s-juliao-da-barra-paco-de-arcos-e-caxias",
+        "locationLevel": "parish",
+        "name": "Oeiras e S. Julião da Barra, Paço de Arcos e Caxias",
+        "fullName": "Oeiras e S. Julião da Barra, Paço de Arcos e Caxias, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/oeiras-e-s-juliao-da-barra-paco-de-arcos-e-caxias/caxias--alto-do-lagoal",
+        "locationLevel": "neighborhood",
+        "name": "Caxias - Alto do Lagoal",
+        "fullName": "Caxias - Alto do Lagoal, Oeiras e S. Julião da Barra, Paço de Arcos e Caxias, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       }
+      ]
+     }
+    },
+    "openDays": null,
+    "unifiedOpenDays": null,
+    "peoplePerRoom": null,
+    "priceFromPerSquareMeter": null,
+    "pricePerSquareMeter": {
+     "value": 5500,
+     "currency": "EUR"
+    },
+    "pushedUpAt": null,
+    "rentPrice": null,
+    "roomsNumber": "FOUR",
+    "shortDescription": null,
+    "specialOffer": null,
+    "terrainAreaInSquareMeters": null,
+    "totalPossibleImages": 36,
+    "totalPrice": {
+     "value": 550000,
+     "currency": "EUR"
+    },
+    "showPremiumTile": false,
+    "organisationAssignedMember": null,
+    "advertOwner": {
+     "name": "Maxgroup",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InFrcDVpc28xZG9oMjEtQVBUIn0.qaiodcFgI4CxXNBivMsoo_ks4AyYTI55R3gQGkTyhlw/image",
+     "contacts": [
+      {
+       "name": "Telheiras",
+       "imageURLSmall": "https://ireland.apollo.olxcdn.com/v1/files/eyJmbiI6InJ3YWlqY2ZvcG1tczEtQVBUIn0.PLcQXgtVb19yPU5cTXhrRr_G8j_cyQ6Nncz0serPcug/image"
+      }
+     ]
+    },
+    "href": "[lang]/ad/moradia-t3-para-venda-ID1iYap"
+   },
+   {
+    "id": 19295041,
+    "title": "Moradia T3 para venda",
+    "slug": "moradia-t3-para-venda-ID1iXvl",
+    "estate": "HOUSE",
+    "transaction": "SELL",
+    "images": [
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im9xb2UxeWFqMjZ2YzItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.hs-hxxhbLtPLayFtXKuPWcjXo5i7FkSgn_PquszDrXI/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im9xb2UxeWFqMjZ2YzItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.hs-hxxhbLtPLayFtXKuPWcjXo5i7FkSgn_PquszDrXI/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im9xb2UxeWFqMjZ2YzItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.hs-hxxhbLtPLayFtXKuPWcjXo5i7FkSgn_PquszDrXI/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im1kZWJ6djdyZm5tbTMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.8BoXA4l_UIkpzJGBkdZ8CnX9udJ32_iOoVvGxB-okPI/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im1kZWJ6djdyZm5tbTMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.8BoXA4l_UIkpzJGBkdZ8CnX9udJ32_iOoVvGxB-okPI/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im1kZWJ6djdyZm5tbTMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.8BoXA4l_UIkpzJGBkdZ8CnX9udJ32_iOoVvGxB-okPI/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ijd3a2kwMDRzYXNwbDEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.wuD7mRYAhs6r6eMGV8kZOP3S5ikPX1VwTMcQ_DdiyMk/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ijd3a2kwMDRzYXNwbDEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.wuD7mRYAhs6r6eMGV8kZOP3S5ikPX1VwTMcQ_DdiyMk/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ijd3a2kwMDRzYXNwbDEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.wuD7mRYAhs6r6eMGV8kZOP3S5ikPX1VwTMcQ_DdiyMk/image;s=1280x1024;q=80"
+     }
+    ],
+    "tags": [
+     {
+      "value": "TERRACE",
+      "weight": 40,
+      "__typename": "AdvertListItemTag"
+     }
+    ],
+    "investmentEstimatedDelivery": null,
+    "investmentState": null,
+    "investmentUnitsFloorsRange": null,
+    "investmentUnitsAreaInSquareMeters": null,
+    "investmentUnitsNumber": null,
+    "investmentUnitsRoomsNumber": null,
+    "source": "urn:partner:maxwork",
+    "isCrossListed": false,
+    "agency": {
+     "id": 4009208,
+     "name": "RE/MAX + Grupo Vantagem",
+     "type": "AGENCY",
+     "slug": "re-max-grupo-vantagem-ID4009208",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImY0cHZoeHAxZ2V0dS1BUFQifQ.tpMODcgRJzK3QgR4QswdY4wmE1E9E2OkyzXxyNLkUOE/image",
+     "brandingVisible": true,
+     "highlightedAds": false,
+     "enhancedBrandingFeatures": [
+      "ENHANCED_BRANDING_COMPANY_NAME",
+      "ENHANCED_BRANDING_LOGO_DISPLAY",
+      "ENHANCED_BRANDING_SELLER_TYPE"
+     ]
+    },
+    "areaInSquareMeters": 100,
+    "dateCreated": "2026-10-01T16:07:25Z",
+    "createdAtFirst": "2026-10-01T16:07:25+00:00",
+    "development": null,
+    "developmentId": 0,
+    "developmentTitle": "",
+    "developmentUrl": "",
+    "floorNumber": null,
+    "hasRemoteServices": false,
+    "hidePrice": false,
+    "isExclusiveOffer": false,
+    "isPrivateOwner": false,
+    "isPromoted": false,
+    "extendedAdvertiserType": "business",
+    "links": {
+     "localPlanUrl": "",
+     "walkaroundUrl": "",
+     "videoUrl": "",
+     "view3dUrl": ""
+    },
+    "location": {
+     "mapDetails": {
+      "radius": 0
+     },
+     "address": {
+      "street": {
+       "name": "Rua do Abrunheiro - Cacilhas",
+       "number": null
+      },
+      "city": null,
+      "province": null
+     },
+     "reverseGeocoding": {
+      "locations": [
+       {
+        "id": "lisboa",
+        "locationLevel": "district",
+        "name": "Lisboa",
+        "fullName": "Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras",
+        "locationLevel": "council",
+        "name": "Oeiras",
+        "fullName": "Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/oeiras-e-s-juliao-da-barra-paco-de-arcos-e-caxias",
+        "locationLevel": "parish",
+        "name": "Oeiras e S. Julião da Barra, Paço de Arcos e Caxias",
+        "fullName": "Oeiras e S. Julião da Barra, Paço de Arcos e Caxias, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/oeiras-e-s-juliao-da-barra-paco-de-arcos-e-caxias/cacilhas",
+        "locationLevel": "neighborhood",
+        "name": "Cacilhas",
+        "fullName": "Cacilhas, Oeiras e S. Julião da Barra, Paço de Arcos e Caxias, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       }
+      ]
+     }
+    },
+    "openDays": null,
+    "unifiedOpenDays": null,
+    "peoplePerRoom": null,
+    "priceFromPerSquareMeter": null,
+    "pricePerSquareMeter": {
+     "value": 5200,
+     "currency": "EUR"
+    },
+    "pushedUpAt": null,
+    "rentPrice": null,
+    "roomsNumber": "FOUR",
+    "shortDescription": null,
+    "specialOffer": null,
+    "terrainAreaInSquareMeters": null,
+    "totalPossibleImages": 9,
+    "totalPrice": {
+     "value": 520000,
+     "currency": "EUR"
+    },
+    "showPremiumTile": false,
+    "organisationAssignedMember": null,
+    "advertOwner": {
+     "name": "RE/MAX + Grupo Vantagem",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImY0cHZoeHAxZ2V0dS1BUFQifQ.tpMODcgRJzK3QgR4QswdY4wmE1E9E2OkyzXxyNLkUOE/image",
+     "contacts": [
+      {
+       "name": "Vantagem Valley",
+       "imageURLSmall": "https://ireland.apollo.olxcdn.com/v1/files/eyJmbiI6InVpZHR6OGI4ZDc5dDMtQVBUIn0.CgROo6tQHMI5_z1lrXvZWfv-I2zKP6vBbQp3lEVSCBc/image"
+      }
+     ]
+    },
+    "href": "[lang]/ad/moradia-t3-para-venda-ID1iXvl"
+   },
+   {
+    "id": 19288053,
+    "title": "Moradia isolada T4 + T3 com garagem - Porto Salvo, Oeiras - 519.000€",
+    "slug": "moradia-isolada-t4-t3-com-garagem-porto-salvo-oeiras-519-000EUR-ID1iWHD",
+    "estate": "HOUSE",
+    "transaction": "SELL",
+    "images": [
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImhlaGdxcTNtaDVxODMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.H6DYm2G7TWkbO8ExTvQHYghf4InRjdFwTn1O1CLAdrs/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImhlaGdxcTNtaDVxODMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.H6DYm2G7TWkbO8ExTvQHYghf4InRjdFwTn1O1CLAdrs/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImhlaGdxcTNtaDVxODMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.H6DYm2G7TWkbO8ExTvQHYghf4InRjdFwTn1O1CLAdrs/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ijg3YWVlODgwNmxwcDItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.wntr6X2x6rjDX4yQmIh7dR76810PGZX2CsgWLsm6-mY/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ijg3YWVlODgwNmxwcDItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.wntr6X2x6rjDX4yQmIh7dR76810PGZX2CsgWLsm6-mY/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ijg3YWVlODgwNmxwcDItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.wntr6X2x6rjDX4yQmIh7dR76810PGZX2CsgWLsm6-mY/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Inp2bW50NnRhcWVqdS1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.oxabP0F1aFK2V9PizI2CjoO0VH_qHf8iWYG2bj5LSRM/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Inp2bW50NnRhcWVqdS1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.oxabP0F1aFK2V9PizI2CjoO0VH_qHf8iWYG2bj5LSRM/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Inp2bW50NnRhcWVqdS1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.oxabP0F1aFK2V9PizI2CjoO0VH_qHf8iWYG2bj5LSRM/image;s=1280x1024;q=80"
+     }
+    ],
+    "tags": [
+     {
+      "value": "AIR_CONDITIONING",
+      "weight": 55,
+      "__typename": "AdvertListItemTag"
+     },
+     {
+      "value": "BALCONY",
+      "weight": 35,
+      "__typename": "AdvertListItemTag"
+     }
+    ],
+    "investmentEstimatedDelivery": null,
+    "investmentState": null,
+    "investmentUnitsFloorsRange": null,
+    "investmentUnitsAreaInSquareMeters": null,
+    "investmentUnitsNumber": null,
+    "investmentUnitsRoomsNumber": null,
+    "source": "urn:partner:ego",
+    "isCrossListed": false,
+    "agency": {
+     "id": 4474072,
+     "name": "SOL DA VILLA",
+     "type": "AGENCY",
+     "slug": "sol-da-villa-ID4474072",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Imc1eWs1NmkwOTVhdC1BUFQifQ.XzgJTRaye_krmU11b1b27kjVZ1gxjdwVvGseWZ3gJ6M/image",
+     "brandingVisible": true,
+     "highlightedAds": false,
+     "enhancedBrandingFeatures": [
+      "ENHANCED_BRANDING_COMPANY_NAME",
+      "ENHANCED_BRANDING_LOGO_DISPLAY",
+      "ENHANCED_BRANDING_SELLER_TYPE"
+     ]
+    },
+    "areaInSquareMeters": 174,
+    "dateCreated": "2026-09-25T12:07:02Z",
+    "createdAtFirst": "2026-09-25T12:07:02+00:00",
+    "development": null,
+    "developmentId": 0,
+    "developmentTitle": "",
+    "developmentUrl": "",
+    "floorNumber": null,
+    "hasRemoteServices": false,
+    "hidePrice": false,
+    "isExclusiveOffer": false,
+    "isPrivateOwner": false,
+    "isPromoted": false,
+    "extendedAdvertiserType": "business",
+    "links": {
+     "localPlanUrl": "",
+     "walkaroundUrl": "",
+     "videoUrl": "",
+     "view3dUrl": ""
+    },
+    "location": {
+     "mapDetails": {
+      "radius": 100
+     },
+     "address": {
+      "street": {
+       "name": "Rua José Relvas",
+       "number": null
+      },
+      "city": null,
+      "province": null
+     },
+     "reverseGeocoding": {
+      "locations": [
+       {
+        "id": "lisboa",
+        "locationLevel": "district",
+        "name": "Lisboa",
+        "fullName": "Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras",
+        "locationLevel": "council",
+        "name": "Oeiras",
+        "fullName": "Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/porto-salvo",
+        "locationLevel": "parish",
+        "name": "Porto Salvo",
+        "fullName": "Porto Salvo, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       }
+      ]
+     }
+    },
+    "openDays": null,
+    "unifiedOpenDays": null,
+    "peoplePerRoom": null,
+    "priceFromPerSquareMeter": null,
+    "pricePerSquareMeter": {
+     "value": 2982.76,
+     "currency": "EUR"
+    },
+    "pushedUpAt": null,
+    "rentPrice": null,
+    "roomsNumber": "FOUR",
+    "shortDescription": null,
+    "specialOffer": null,
+    "terrainAreaInSquareMeters": null,
+    "totalPossibleImages": 47,
+    "totalPrice": {
+     "value": 519000,
+     "currency": "EUR"
+    },
+    "showPremiumTile": false,
+    "organisationAssignedMember": null,
+    "advertOwner": {
+     "name": "SOL DA VILLA",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Imc1eWs1NmkwOTVhdC1BUFQifQ.XzgJTRaye_krmU11b1b27kjVZ1gxjdwVvGseWZ3gJ6M/image",
+     "contacts": [
+      {
+       "name": "SOL DA VILLA",
+       "imageURLSmall": "https://ireland.apollo.olxcdn.com/v1/files/eyJmbiI6Imc1eWs1NmkwOTVhdC1BUFQifQ.YWsuiNp-qU2nRbOaXENzqNfmm_NKqcrW_f3AARztM68/image"
+      }
+     ]
+    },
+    "href": "[lang]/ad/moradia-isolada-t4-t3-com-garagem-porto-salvo-oeiras-519-000EUR-ID1iWHD"
+   },
+   {
+    "id": 19287995,
+    "title": "Moradia T2 totalmente remodelada em Linda-a-Velha | Conforto, qualidad",
+    "slug": "moradia-t2-totalmente-remodelada-em-linda-a-velha-conforto-qualidad-ID1iWGH",
+    "estate": "HOUSE",
+    "transaction": "SELL",
+    "images": [
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImludWx6ajlhZjdkZTEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.IAMxCo__F9Jf7u2aAJVNRFI7hs8tg8gUodzh1bhBhDY/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImludWx6ajlhZjdkZTEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.IAMxCo__F9Jf7u2aAJVNRFI7hs8tg8gUodzh1bhBhDY/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImludWx6ajlhZjdkZTEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.IAMxCo__F9Jf7u2aAJVNRFI7hs8tg8gUodzh1bhBhDY/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImM3eTJkaGk4Z2pyZzItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.EWuFJ3bOf5koLJiEoRXwqkMmK-H_Km87lo4GHBJrQ9s/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImM3eTJkaGk4Z2pyZzItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.EWuFJ3bOf5koLJiEoRXwqkMmK-H_Km87lo4GHBJrQ9s/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImM3eTJkaGk4Z2pyZzItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.EWuFJ3bOf5koLJiEoRXwqkMmK-H_Km87lo4GHBJrQ9s/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjJkYm5qZ3d5OTkxOC1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.vAS4D8uHq1PXivppYIYJRse1TUcj5BQBRJJNcNbFBCg/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjJkYm5qZ3d5OTkxOC1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.vAS4D8uHq1PXivppYIYJRse1TUcj5BQBRJJNcNbFBCg/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjJkYm5qZ3d5OTkxOC1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.vAS4D8uHq1PXivppYIYJRse1TUcj5BQBRJJNcNbFBCg/image;s=1280x1024;q=80"
+     }
+    ],
+    "tags": [],
+    "investmentEstimatedDelivery": null,
+    "investmentState": null,
+    "investmentUnitsFloorsRange": null,
+    "investmentUnitsAreaInSquareMeters": null,
+    "investmentUnitsNumber": null,
+    "investmentUnitsRoomsNumber": null,
+    "source": "urn:partner:century21",
+    "isCrossListed": false,
+    "agency": {
+     "id": 37001,
+     "name": "CENTURY21 Medimaio",
+     "type": "AGENCY",
+     "slug": "century21-medimaio-ID37001",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InEyN3hrcHVsN3ZhYjMtQVBUIn0.JoIHrtBAovLF6ZCfrSPrMg9qEiNiNjHnaXVQ_hUYjGM/image",
+     "brandingVisible": true,
+     "highlightedAds": false,
+     "enhancedBrandingFeatures": [
+      "ENHANCED_BRANDING_COMPANY_NAME",
+      "ENHANCED_BRANDING_LOGO_DISPLAY",
+      "ENHANCED_BRANDING_SELLER_TYPE"
+     ]
+    },
+    "areaInSquareMeters": 84,
+    "dateCreated": "2026-09-25T11:39:04Z",
+    "createdAtFirst": "2026-09-25T11:39:04+00:00",
+    "development": null,
+    "developmentId": 0,
+    "developmentTitle": "",
+    "developmentUrl": "",
+    "floorNumber": null,
+    "hasRemoteServices": false,
+    "hidePrice": false,
+    "isExclusiveOffer": false,
+    "isPrivateOwner": false,
+    "isPromoted": false,
+    "extendedAdvertiserType": "business",
+    "links": {
+     "localPlanUrl": "",
+     "walkaroundUrl": "",
+     "videoUrl": "",
+     "view3dUrl": ""
+    },
+    "location": {
+     "mapDetails": {
+      "radius": 0
+     },
+     "address": {
+      "street": {
+       "name": "Rua General Norton de Matos",
+       "number": null
+      },
+      "city": null,
+      "province": null
+     },
+     "reverseGeocoding": {
+      "locations": [
+       {
+        "id": "lisboa",
+        "locationLevel": "district",
+        "name": "Lisboa",
+        "fullName": "Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras",
+        "locationLevel": "council",
+        "name": "Oeiras",
+        "fullName": "Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/alges-linda-a-velha-e-cruz-quebrada-dafundo",
+        "locationLevel": "parish",
+        "name": "Algés, Linda-a-Velha e Cruz Quebrada-Dafundo",
+        "fullName": "Algés, Linda-a-Velha e Cruz Quebrada-Dafundo, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/alges-linda-a-velha-e-cruz-quebrada-dafundo/linda-a-velha",
+        "locationLevel": "neighborhood",
+        "name": "Linda-a-Velha",
+        "fullName": "Linda-a-Velha, Algés, Linda-a-Velha e Cruz Quebrada-Dafundo, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       }
+      ]
+     }
+    },
+    "openDays": null,
+    "unifiedOpenDays": null,
+    "peoplePerRoom": null,
+    "priceFromPerSquareMeter": null,
+    "pricePerSquareMeter": {
+     "value": 7738.1,
+     "currency": "EUR"
+    },
+    "pushedUpAt": null,
+    "rentPrice": null,
+    "roomsNumber": "THREE",
+    "shortDescription": null,
+    "specialOffer": null,
+    "terrainAreaInSquareMeters": null,
+    "totalPossibleImages": 35,
+    "totalPrice": {
+     "value": 650000,
+     "currency": "EUR"
+    },
+    "showPremiumTile": false,
+    "organisationAssignedMember": null,
+    "advertOwner": {
+     "name": "CENTURY21 Medimaio",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InEyN3hrcHVsN3ZhYjMtQVBUIn0.JoIHrtBAovLF6ZCfrSPrMg9qEiNiNjHnaXVQ_hUYjGM/image",
+     "contacts": [
+      {
+       "name": "Paulo Alexandre Duarte Pereira",
+       "imageURLSmall": "https://ireland.apollo.olxcdn.com/v1/files/eyJmbiI6Ijczb2ZzMndnOHlqbjEtQVBUIn0.kmZ72q1g2vC8eZ2t0UiAW5eP5GoyGA1PHBpQFj6LRic/image"
+      }
+     ]
+    },
+    "href": "[lang]/ad/moradia-t2-totalmente-remodelada-em-linda-a-velha-conforto-qualidad-ID1iWGH"
+   },
+   {
+    "id": 19286100,
+    "title": "Moradia T2 para venda",
+    "slug": "moradia-t2-para-venda-ID1iWc8",
+    "estate": "HOUSE",
+    "transaction": "SELL",
+    "images": [
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImtycTV1NHh5bjRkZTItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.91Za6thcqId4Vh6dRhrKwf8DfJEKemJ5j9EtGSGxMUA/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImtycTV1NHh5bjRkZTItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.91Za6thcqId4Vh6dRhrKwf8DfJEKemJ5j9EtGSGxMUA/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImtycTV1NHh5bjRkZTItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.91Za6thcqId4Vh6dRhrKwf8DfJEKemJ5j9EtGSGxMUA/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ijl6YW5sdnlxNXVuZS1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.7Cg49BtZ_q1VRysFDLgBKSKDD6mZsVcy1E6UL9NcUls/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ijl6YW5sdnlxNXVuZS1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.7Cg49BtZ_q1VRysFDLgBKSKDD6mZsVcy1E6UL9NcUls/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ijl6YW5sdnlxNXVuZS1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.7Cg49BtZ_q1VRysFDLgBKSKDD6mZsVcy1E6UL9NcUls/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjRkbWt3eTNiYnJzYzEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.HfMdGKNnuE4L5_Hv5cb66WR4l-a48XI_mJRfynctAG8/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjRkbWt3eTNiYnJzYzEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.HfMdGKNnuE4L5_Hv5cb66WR4l-a48XI_mJRfynctAG8/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjRkbWt3eTNiYnJzYzEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.HfMdGKNnuE4L5_Hv5cb66WR4l-a48XI_mJRfynctAG8/image;s=1280x1024;q=80"
+     }
+    ],
+    "tags": [
+     {
+      "value": "PARKING_SPOT",
+      "weight": 15,
+      "__typename": "AdvertListItemTag"
+     }
+    ],
+    "investmentEstimatedDelivery": null,
+    "investmentState": null,
+    "investmentUnitsFloorsRange": null,
+    "investmentUnitsAreaInSquareMeters": null,
+    "investmentUnitsNumber": null,
+    "investmentUnitsRoomsNumber": null,
+    "source": "urn:partner:maxwork",
+    "isCrossListed": false,
+    "agency": {
+     "id": 4009208,
+     "name": "RE/MAX + Grupo Vantagem",
+     "type": "AGENCY",
+     "slug": "re-max-grupo-vantagem-ID4009208",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImY0cHZoeHAxZ2V0dS1BUFQifQ.tpMODcgRJzK3QgR4QswdY4wmE1E9E2OkyzXxyNLkUOE/image",
+     "brandingVisible": true,
+     "highlightedAds": false,
+     "enhancedBrandingFeatures": [
+      "ENHANCED_BRANDING_COMPANY_NAME",
+      "ENHANCED_BRANDING_LOGO_DISPLAY",
+      "ENHANCED_BRANDING_SELLER_TYPE"
+     ]
+    },
+    "areaInSquareMeters": 67.3,
+    "dateCreated": "2026-09-23T18:10:37Z",
+    "createdAtFirst": "2026-09-23T18:10:37+00:00",
+    "development": null,
+    "developmentId": 0,
+    "developmentTitle": "",
+    "developmentUrl": "",
+    "floorNumber": null,
+    "hasRemoteServices": false,
+    "hidePrice": false,
+    "isExclusiveOffer": false,
+    "isPrivateOwner": false,
+    "isPromoted": false,
+    "extendedAdvertiserType": "business",
+    "links": {
+     "localPlanUrl": "",
+     "walkaroundUrl": "",
+     "videoUrl": "",
+     "view3dUrl": ""
+    },
+    "location": {
+     "mapDetails": {
+      "radius": 0
+     },
+     "address": {
+      "street": {
+       "name": "Rua José Francisco Manangão",
+       "number": null
+      },
+      "city": null,
+      "province": null
+     },
+     "reverseGeocoding": {
+      "locations": [
+       {
+        "id": "lisboa",
+        "locationLevel": "district",
+        "name": "Lisboa",
+        "fullName": "Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras",
+        "locationLevel": "council",
+        "name": "Oeiras",
+        "fullName": "Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/porto-salvo",
+        "locationLevel": "parish",
+        "name": "Porto Salvo",
+        "fullName": "Porto Salvo, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       }
+      ]
+     }
+    },
+    "openDays": null,
+    "unifiedOpenDays": null,
+    "peoplePerRoom": null,
+    "priceFromPerSquareMeter": null,
+    "pricePerSquareMeter": {
+     "value": 5943.54,
+     "currency": "EUR"
+    },
+    "pushedUpAt": null,
+    "rentPrice": null,
+    "roomsNumber": "THREE",
+    "shortDescription": null,
+    "specialOffer": null,
+    "terrainAreaInSquareMeters": null,
+    "totalPossibleImages": 26,
+    "totalPrice": {
+     "value": 400000,
+     "currency": "EUR"
+    },
+    "showPremiumTile": false,
+    "organisationAssignedMember": null,
+    "advertOwner": {
+     "name": "RE/MAX + Grupo Vantagem",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImY0cHZoeHAxZ2V0dS1BUFQifQ.tpMODcgRJzK3QgR4QswdY4wmE1E9E2OkyzXxyNLkUOE/image",
+     "contacts": [
+      {
+       "name": "Collection Vantagem City",
+       "imageURLSmall": "https://ireland.apollo.olxcdn.com/v1/files/eyJmbiI6ImF4czEzcm5idDBzODItQVBUIn0.tkNmcXHHHtypOODGAaD7fD5iPAm8XDTmXmdkgNnhm3U/image"
+      }
+     ]
+    },
+    "href": "[lang]/ad/moradia-t2-para-venda-ID1iWc8"
+   },
+   {
+    "id": 19285953,
+    "title": "Moradia T1 Renovada em Caxias | Jardim Privado com Vista Mar",
+    "slug": "moradia-t1-renovada-em-caxias-jardim-privado-com-vista-mar-ID1iW9L",
+    "estate": "HOUSE",
+    "transaction": "SELL",
+    "images": [
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InFkY3dmNnhlMGFiYjMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.rQCEf-7GLhl9DJr3tMGq_xVP4sNOG6U0hBc9OpMT0tE/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InFkY3dmNnhlMGFiYjMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.rQCEf-7GLhl9DJr3tMGq_xVP4sNOG6U0hBc9OpMT0tE/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InFkY3dmNnhlMGFiYjMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.rQCEf-7GLhl9DJr3tMGq_xVP4sNOG6U0hBc9OpMT0tE/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImFrenZjc2cwbWE5aDMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.JFYJCYWo5pzQVONTgufKEuvTVGSbojYmECzm_x8kgg4/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImFrenZjc2cwbWE5aDMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.JFYJCYWo5pzQVONTgufKEuvTVGSbojYmECzm_x8kgg4/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImFrenZjc2cwbWE5aDMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.JFYJCYWo5pzQVONTgufKEuvTVGSbojYmECzm_x8kgg4/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjFpcGVxN3c2MGt2eTItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.tNnIlJjRrptPAWd8k83lE5cHFr22PDPgFc8WKtJc5MU/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjFpcGVxN3c2MGt2eTItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.tNnIlJjRrptPAWd8k83lE5cHFr22PDPgFc8WKtJc5MU/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjFpcGVxN3c2MGt2eTItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.tNnIlJjRrptPAWd8k83lE5cHFr22PDPgFc8WKtJc5MU/image;s=1280x1024;q=80"
+     }
+    ],
+    "tags": [],
+    "investmentEstimatedDelivery": null,
+    "investmentState": null,
+    "investmentUnitsFloorsRange": null,
+    "investmentUnitsAreaInSquareMeters": null,
+    "investmentUnitsNumber": null,
+    "investmentUnitsRoomsNumber": null,
+    "source": "urn:partner:soukwportugal",
+    "isCrossListed": false,
+    "agency": {
+     "id": 3337220,
+     "name": "KW Select Cascais",
+     "type": "AGENCY",
+     "slug": "kw-select-cascais-ID3337220",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjFubnhud2Q3b2h2ei1BUFQifQ.vO9G2K54Xck9mDgYgwF8yJ3cfAhy9ofbJme_mqillcA/image",
+     "brandingVisible": true,
+     "highlightedAds": false,
+     "enhancedBrandingFeatures": [
+      "ENHANCED_BRANDING_COMPANY_NAME",
+      "ENHANCED_BRANDING_LOGO_DISPLAY",
+      "ENHANCED_BRANDING_SELLER_TYPE"
+     ]
+    },
+    "areaInSquareMeters": 59,
+    "dateCreated": "2026-09-23T17:00:47Z",
+    "createdAtFirst": "2026-09-23T17:00:47+00:00",
+    "development": null,
+    "developmentId": 0,
+    "developmentTitle": "",
+    "developmentUrl": "",
+    "floorNumber": null,
+    "hasRemoteServices": false,
+    "hidePrice": false,
+    "isExclusiveOffer": false,
+    "isPrivateOwner": false,
+    "isPromoted": false,
+    "extendedAdvertiserType": "business",
+    "links": {
+     "localPlanUrl": "",
+     "walkaroundUrl": "",
+     "videoUrl": "",
+     "view3dUrl": ""
+    },
+    "location": {
+     "mapDetails": {
+      "radius": 0
+     },
+     "address": {
+      "street": {
+       "name": "Avenida das Seleções",
+       "number": null
+      },
+      "city": null,
+      "province": null
+     },
+     "reverseGeocoding": {
+      "locations": [
+       {
+        "id": "lisboa",
+        "locationLevel": "district",
+        "name": "Lisboa",
+        "fullName": "Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras",
+        "locationLevel": "council",
+        "name": "Oeiras",
+        "fullName": "Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/oeiras-e-s-juliao-da-barra-paco-de-arcos-e-caxias",
+        "locationLevel": "parish",
+        "name": "Oeiras e S. Julião da Barra, Paço de Arcos e Caxias",
+        "fullName": "Oeiras e S. Julião da Barra, Paço de Arcos e Caxias, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/oeiras-e-s-juliao-da-barra-paco-de-arcos-e-caxias/murganhal--laveiras",
+        "locationLevel": "neighborhood",
+        "name": "Murganhal - Laveiras",
+        "fullName": "Murganhal - Laveiras, Oeiras e S. Julião da Barra, Paço de Arcos e Caxias, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       }
+      ]
+     }
+    },
+    "openDays": null,
+    "unifiedOpenDays": null,
+    "peoplePerRoom": null,
+    "priceFromPerSquareMeter": null,
+    "pricePerSquareMeter": {
+     "value": 7966.1,
+     "currency": "EUR"
+    },
+    "pushedUpAt": null,
+    "rentPrice": null,
+    "roomsNumber": "TWO",
+    "shortDescription": null,
+    "specialOffer": null,
+    "terrainAreaInSquareMeters": null,
+    "totalPossibleImages": 30,
+    "totalPrice": {
+     "value": 470000,
+     "currency": "EUR"
+    },
+    "showPremiumTile": false,
+    "organisationAssignedMember": null,
+    "advertOwner": {
+     "name": "KW Select Cascais",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjFubnhud2Q3b2h2ei1BUFQifQ.vO9G2K54Xck9mDgYgwF8yJ3cfAhy9ofbJme_mqillcA/image",
+     "contacts": [
+      {
+       "name": "Teresa S. Gonçalves",
+       "imageURLSmall": "https://ireland.apollo.olxcdn.com/v1/files/eyJmbiI6InNweWltb2VwZHN6ajMtQVBUIn0.B3-c39riA25ib7PRhrfhfXEujxEHujZceOYN0yjdD8A/image"
+      }
+     ]
+    },
+    "href": "[lang]/ad/moradia-t1-renovada-em-caxias-jardim-privado-com-vista-mar-ID1iW9L"
+   },
+   {
+    "id": 19280244,
+    "title": "Moradia T5 | Barcarena, Oeiras",
+    "slug": "moradia-t5-barcarena-oeiras-ID1iTFG",
+    "estate": "HOUSE",
+    "transaction": "SELL",
+    "images": [
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ims5bjA2ZWlrbjJ6cDMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.mFOxVd4y7_vPyBrBf5zc6dKmsH3SgAjS_I-uCX8XMDE/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ims5bjA2ZWlrbjJ6cDMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.mFOxVd4y7_vPyBrBf5zc6dKmsH3SgAjS_I-uCX8XMDE/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ims5bjA2ZWlrbjJ6cDMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.mFOxVd4y7_vPyBrBf5zc6dKmsH3SgAjS_I-uCX8XMDE/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im8ybXF0NTZ1ZWoyYi1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.pWzn9fecivOL4CxWfxa8VLhV0MgEu44OFR4WzsFONB0/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im8ybXF0NTZ1ZWoyYi1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.pWzn9fecivOL4CxWfxa8VLhV0MgEu44OFR4WzsFONB0/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im8ybXF0NTZ1ZWoyYi1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.pWzn9fecivOL4CxWfxa8VLhV0MgEu44OFR4WzsFONB0/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjRyN2FkdWlsMGVzZC1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.9M92bZBgkmeDc6Idsp40aQbeCpe5Y9rZHaekgaUTn-0/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjRyN2FkdWlsMGVzZC1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.9M92bZBgkmeDc6Idsp40aQbeCpe5Y9rZHaekgaUTn-0/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjRyN2FkdWlsMGVzZC1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.9M92bZBgkmeDc6Idsp40aQbeCpe5Y9rZHaekgaUTn-0/image;s=1280x1024;q=80"
+     }
+    ],
+    "tags": [],
+    "investmentEstimatedDelivery": null,
+    "investmentState": null,
+    "investmentUnitsFloorsRange": null,
+    "investmentUnitsAreaInSquareMeters": null,
+    "investmentUnitsNumber": null,
+    "investmentUnitsRoomsNumber": null,
+    "source": "urn:partner:proppy",
+    "isCrossListed": false,
+    "agency": {
+     "id": 49058,
+     "name": "Coldwell Banker City",
+     "type": "AGENCY",
+     "slug": "coldwell-banker-city-ID49058",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ijk4eW51ZTRvMXFlcjItQVBUIn0.opwaJZ-rrnLIEkUkH7LeJLisMqgXAyHrVE2Vi4-PIsI/image",
+     "brandingVisible": true,
+     "highlightedAds": false,
+     "enhancedBrandingFeatures": [
+      "ENHANCED_BRANDING_COMPANY_NAME",
+      "ENHANCED_BRANDING_GALLERY_CONTACT_SLIDE",
+      "ENHANCED_BRANDING_LOGO_DISPLAY",
+      "ENHANCED_BRANDING_LOGO_REDIRECT",
+      "ENHANCED_BRANDING_SELLER_TYPE"
+     ]
+    },
+    "areaInSquareMeters": 144,
+    "dateCreated": "2026-09-18T11:06:17Z",
+    "createdAtFirst": "2026-09-18T11:06:17+00:00",
+    "development": null,
+    "developmentId": 0,
+    "developmentTitle": "",
+    "developmentUrl": "",
+    "floorNumber": null,
+    "hasRemoteServices": false,
+    "hidePrice": false,
+    "isExclusiveOffer": false,
+    "isPrivateOwner": false,
+    "isPromoted": false,
+    "extendedAdvertiserType": "business",
+    "links": {
+     "localPlanUrl": "",
+     "walkaroundUrl": "",
+     "videoUrl": "",
+     "view3dUrl": ""
+    },
+    "location": {
+     "mapDetails": {
+      "radius": 0
+     },
+     "address": {
+      "street": {
+       "name": "Oeiras",
+       "number": null
+      },
+      "city": null,
+      "province": null
+     },
+     "reverseGeocoding": {
+      "locations": [
+       {
+        "id": "lisboa",
+        "locationLevel": "district",
+        "name": "Lisboa",
+        "fullName": "Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras",
+        "locationLevel": "council",
+        "name": "Oeiras",
+        "fullName": "Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/barcarena",
+        "locationLevel": "parish",
+        "name": "Barcarena",
+        "fullName": "Barcarena, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/barcarena/tercena",
+        "locationLevel": "neighborhood",
+        "name": "Tercena",
+        "fullName": "Tercena, Barcarena, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       }
+      ]
+     }
+    },
+    "openDays": null,
+    "unifiedOpenDays": null,
+    "peoplePerRoom": null,
+    "priceFromPerSquareMeter": null,
+    "pricePerSquareMeter": {
+     "value": 4437.5,
+     "currency": "EUR"
+    },
+    "pushedUpAt": null,
+    "rentPrice": null,
+    "roomsNumber": "SIX",
+    "shortDescription": null,
+    "specialOffer": null,
+    "terrainAreaInSquareMeters": null,
+    "totalPossibleImages": 37,
+    "totalPrice": {
+     "value": 639000,
+     "currency": "EUR"
+    },
+    "showPremiumTile": false,
+    "organisationAssignedMember": null,
+    "advertOwner": {
+     "name": "Coldwell Banker City",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ijk4eW51ZTRvMXFlcjItQVBUIn0.opwaJZ-rrnLIEkUkH7LeJLisMqgXAyHrVE2Vi4-PIsI/image",
+     "contacts": [
+      {
+       "name": "Sofia Vilela",
+       "imageURLSmall": ""
+      }
+     ]
+    },
+    "href": "[lang]/ad/moradia-t5-barcarena-oeiras-ID1iTFG"
+   },
+   {
+    "id": 19250249,
+    "title": "Moradia de gaveto com jardim, sotão e anexo - Porto Salvo (Oeiras)",
+    "slug": "moradia-de-gaveto-com-jardim-sotao-e-anexo-porto-salvo-oeiras-ID1iLRT",
+    "estate": "HOUSE",
+    "transaction": "SELL",
+    "images": [
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjUzMm1oNHk3OW5wZjMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.cVp5WDBf95NLYFyUNLr_N45STW0jurqPL4sRzHFV8q0/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjUzMm1oNHk3OW5wZjMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.cVp5WDBf95NLYFyUNLr_N45STW0jurqPL4sRzHFV8q0/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjUzMm1oNHk3OW5wZjMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.cVp5WDBf95NLYFyUNLr_N45STW0jurqPL4sRzHFV8q0/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImFha3J0NThkY2Rocy1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.kPFzFWFGiZhsov6b4lfvYBZxnEnj_fRvFc3Po6cLge4/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImFha3J0NThkY2Rocy1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.kPFzFWFGiZhsov6b4lfvYBZxnEnj_fRvFc3Po6cLge4/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImFha3J0NThkY2Rocy1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.kPFzFWFGiZhsov6b4lfvYBZxnEnj_fRvFc3Po6cLge4/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Inhodjl1aThwY295MTEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.Aro_NnlqT9JmA3q5atin7pnLda1X9bG1LMm_LejmtxI/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Inhodjl1aThwY295MTEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.Aro_NnlqT9JmA3q5atin7pnLda1X9bG1LMm_LejmtxI/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Inhodjl1aThwY295MTEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.Aro_NnlqT9JmA3q5atin7pnLda1X9bG1LMm_LejmtxI/image;s=1280x1024;q=80"
+     }
+    ],
+    "tags": [],
+    "investmentEstimatedDelivery": null,
+    "investmentState": null,
+    "investmentUnitsFloorsRange": null,
+    "investmentUnitsAreaInSquareMeters": null,
+    "investmentUnitsNumber": null,
+    "investmentUnitsRoomsNumber": null,
+    "source": "urn:partner:century21",
+    "isCrossListed": false,
+    "agency": {
+     "id": 512648,
+     "name": "Century21 Dreamline",
+     "type": "AGENCY",
+     "slug": "century21-dreamline-ID512648",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ijdyd3p2cG5xcjhhNTItQVBUIn0.cBdSCq4ECDQjn0FrsMmR6NDHX3Kh5XXgkQpDUygVnig/image",
+     "brandingVisible": true,
+     "highlightedAds": false,
+     "enhancedBrandingFeatures": [
+      "ENHANCED_BRANDING_COMPANY_NAME",
+      "ENHANCED_BRANDING_LOGO_DISPLAY",
+      "ENHANCED_BRANDING_SELLER_TYPE"
+     ]
+    },
+    "areaInSquareMeters": 208,
+    "dateCreated": "2026-08-19T17:26:43Z",
+    "createdAtFirst": "2026-08-19T17:26:43+00:00",
+    "development": null,
+    "developmentId": 0,
+    "developmentTitle": "",
+    "developmentUrl": "",
+    "floorNumber": null,
+    "hasRemoteServices": false,
+    "hidePrice": false,
+    "isExclusiveOffer": false,
+    "isPrivateOwner": false,
+    "isPromoted": false,
+    "extendedAdvertiserType": "business",
+    "links": {
+     "localPlanUrl": "",
+     "walkaroundUrl": "",
+     "videoUrl": "",
+     "view3dUrl": ""
+    },
+    "location": {
+     "mapDetails": {
+      "radius": 0
+     },
+     "address": {
+      "street": {
+       "name": "Rua António Jervis Pereira",
+       "number": null
+      },
+      "city": null,
+      "province": null
+     },
+     "reverseGeocoding": {
+      "locations": [
+       {
+        "id": "lisboa",
+        "locationLevel": "district",
+        "name": "Lisboa",
+        "fullName": "Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras",
+        "locationLevel": "council",
+        "name": "Oeiras",
+        "fullName": "Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/porto-salvo",
+        "locationLevel": "parish",
+        "name": "Porto Salvo",
+        "fullName": "Porto Salvo, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       }
+      ]
+     }
+    },
+    "openDays": null,
+    "unifiedOpenDays": null,
+    "peoplePerRoom": null,
+    "priceFromPerSquareMeter": null,
+    "pricePerSquareMeter": {
+     "value": 3076.92,
+     "currency": "EUR"
+    },
+    "pushedUpAt": null,
+    "rentPrice": null,
+    "roomsNumber": "SEVEN",
+    "shortDescription": null,
+    "specialOffer": null,
+    "terrainAreaInSquareMeters": null,
+    "totalPossibleImages": 57,
+    "totalPrice": {
+     "value": 640000,
+     "currency": "EUR"
+    },
+    "showPremiumTile": false,
+    "organisationAssignedMember": null,
+    "advertOwner": {
+     "name": "Century21 Dreamline",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ijdyd3p2cG5xcjhhNTItQVBUIn0.cBdSCq4ECDQjn0FrsMmR6NDHX3Kh5XXgkQpDUygVnig/image",
+     "contacts": [
+      {
+       "name": "Teresa Rocha",
+       "imageURLSmall": "https://ireland.apollo.olxcdn.com/v1/files/eyJmbiI6IndxdjBoOWh0cHVwYzEtQVBUIn0.kk2tsKEAe3N9FkR8nYE6PUeFHSa6-vPVa79S4cqBG2g/image"
+      }
+     ]
+    },
+    "href": "[lang]/ad/moradia-de-gaveto-com-jardim-sotao-e-anexo-porto-salvo-oeiras-ID1iLRT"
+   },
+   {
+    "id": 19190760,
+    "title": "Moradia em Barcarena com Potencial para T3 ou Investimento (2x T1)",
+    "slug": "moradia-em-barcarena-com-potencial-para-t3-ou-investimento-2x-t1-ID1ivoo",
+    "estate": "HOUSE",
+    "transaction": "SELL",
+    "images": [
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImIxcmdkZGJucnpqazItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.ghdrGVZC10zPwDr93GUNEkOtJW3BPr98h9TEG7kDQ60/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImIxcmdkZGJucnpqazItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.ghdrGVZC10zPwDr93GUNEkOtJW3BPr98h9TEG7kDQ60/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImIxcmdkZGJucnpqazItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.ghdrGVZC10zPwDr93GUNEkOtJW3BPr98h9TEG7kDQ60/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImJpN214ZjdlcXVwYTItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.-211xuhNrMORFmPrAmR3lACOuRrjgYCnT5qk-5YXvig/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImJpN214ZjdlcXVwYTItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.-211xuhNrMORFmPrAmR3lACOuRrjgYCnT5qk-5YXvig/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImJpN214ZjdlcXVwYTItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.-211xuhNrMORFmPrAmR3lACOuRrjgYCnT5qk-5YXvig/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IngzMDFkdGgwNTJiOC1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.ksbSO0d880-xjmGc-oB8JPiowtTYvTG-lKxHCk4Un7Y/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IngzMDFkdGgwNTJiOC1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.ksbSO0d880-xjmGc-oB8JPiowtTYvTG-lKxHCk4Un7Y/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IngzMDFkdGgwNTJiOC1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.ksbSO0d880-xjmGc-oB8JPiowtTYvTG-lKxHCk4Un7Y/image;s=1280x1024;q=80"
+     }
+    ],
+    "tags": [],
+    "investmentEstimatedDelivery": null,
+    "investmentState": null,
+    "investmentUnitsFloorsRange": null,
+    "investmentUnitsAreaInSquareMeters": null,
+    "investmentUnitsNumber": null,
+    "investmentUnitsRoomsNumber": null,
+    "source": "urn:partner:soukwportugal",
+    "isCrossListed": false,
+    "agency": {
+     "id": 4089748,
+     "name": "KW Believe",
+     "type": "AGENCY",
+     "slug": "kw-believe-ID4089748",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im1wZTQ4YXZ2NDhodzItQVBUIn0.WUSd4dBP8mIXAFvGtvoq6ToX5J4LeyhL1A4uWwmlKS0/image",
+     "brandingVisible": true,
+     "highlightedAds": false,
+     "enhancedBrandingFeatures": [
+      "ENHANCED_BRANDING_COMPANY_NAME",
+      "ENHANCED_BRANDING_LOGO_DISPLAY",
+      "ENHANCED_BRANDING_SELLER_TYPE"
+     ]
+    },
+    "areaInSquareMeters": 93,
+    "dateCreated": "2026-06-25T17:00:33Z",
+    "createdAtFirst": "2026-06-25T17:00:33+00:00",
+    "development": null,
+    "developmentId": 0,
+    "developmentTitle": "",
+    "developmentUrl": "",
+    "floorNumber": null,
+    "hasRemoteServices": false,
+    "hidePrice": false,
+    "isExclusiveOffer": false,
+    "isPrivateOwner": false,
+    "isPromoted": false,
+    "extendedAdvertiserType": "business",
+    "links": {
+     "localPlanUrl": "",
+     "walkaroundUrl": "",
+     "videoUrl": "",
+     "view3dUrl": ""
+    },
+    "location": {
+     "mapDetails": {
+      "radius": 0
+     },
+     "address": {
+      "street": {
+       "name": "Largo Rodrigues de Freitas",
+       "number": null
+      },
+      "city": null,
+      "province": null
+     },
+     "reverseGeocoding": {
+      "locations": [
+       {
+        "id": "lisboa",
+        "locationLevel": "district",
+        "name": "Lisboa",
+        "fullName": "Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras",
+        "locationLevel": "council",
+        "name": "Oeiras",
+        "fullName": "Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/barcarena",
+        "locationLevel": "parish",
+        "name": "Barcarena",
+        "fullName": "Barcarena, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/barcarena/vale-de-barcarena",
+        "locationLevel": "neighborhood",
+        "name": "Vale de Barcarena",
+        "fullName": "Vale de Barcarena, Barcarena, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       }
+      ]
+     }
+    },
+    "openDays": null,
+    "unifiedOpenDays": null,
+    "peoplePerRoom": null,
+    "priceFromPerSquareMeter": null,
+    "pricePerSquareMeter": {
+     "value": 4623.66,
+     "currency": "EUR"
+    },
+    "pushedUpAt": null,
+    "rentPrice": null,
+    "roomsNumber": "FOUR",
+    "shortDescription": null,
+    "specialOffer": null,
+    "terrainAreaInSquareMeters": null,
+    "totalPossibleImages": 25,
+    "totalPrice": {
+     "value": 430000,
+     "currency": "EUR"
+    },
+    "showPremiumTile": false,
+    "organisationAssignedMember": null,
+    "advertOwner": {
+     "name": "KW Believe",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im1wZTQ4YXZ2NDhodzItQVBUIn0.WUSd4dBP8mIXAFvGtvoq6ToX5J4LeyhL1A4uWwmlKS0/image",
+     "contacts": [
+      {
+       "name": "Diogo Baldaque da Silva",
+       "imageURLSmall": "https://ireland.apollo.olxcdn.com/v1/files/eyJmbiI6IjljNmZsMGFqbnJjZy1BUFQifQ.aVswWprk5Da5RsDNzBomQujPleZvA_57Qb1OWZw7k1A/image"
+      }
+     ]
+    },
+    "href": "[lang]/ad/moradia-em-barcarena-com-potencial-para-t3-ou-investimento-2x-t1-ID1ivoo"
+   },
+   {
+    "id": 19125819,
+    "title": "Moradia Unifamiliar com Logradouro e Terraço em Caxias, Oeiras, Perto",
+    "slug": "moradia-unifamiliar-com-logradouro-e-terraco-em-caxias-oeiras-perto-ID1ifuX",
+    "estate": "HOUSE",
+    "transaction": "SELL",
+    "images": [
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjRybzcwam5jbWx6ci1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.QtNmNhBdzyWN1bqW62WeNadHzUu1qe-igr6i24SI5UM/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjRybzcwam5jbWx6ci1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.QtNmNhBdzyWN1bqW62WeNadHzUu1qe-igr6i24SI5UM/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjRybzcwam5jbWx6ci1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.QtNmNhBdzyWN1bqW62WeNadHzUu1qe-igr6i24SI5UM/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjB6aTRkNHhqMDNyczItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.QHg6OlJOvXxpFDCEE8e70Cq1VcJFN6W-1g8YQwEPhec/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjB6aTRkNHhqMDNyczItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.QHg6OlJOvXxpFDCEE8e70Cq1VcJFN6W-1g8YQwEPhec/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjB6aTRkNHhqMDNyczItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.QHg6OlJOvXxpFDCEE8e70Cq1VcJFN6W-1g8YQwEPhec/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im0wY252ZHM5dmg1ZS1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.ibFdVXghEM4bL3iC1KztCxlQ1PX65G4c9lQ_Zailnjg/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im0wY252ZHM5dmg1ZS1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.ibFdVXghEM4bL3iC1KztCxlQ1PX65G4c9lQ_Zailnjg/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im0wY252ZHM5dmg1ZS1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.ibFdVXghEM4bL3iC1KztCxlQ1PX65G4c9lQ_Zailnjg/image;s=1280x1024;q=80"
+     }
+    ],
+    "tags": [],
+    "investmentEstimatedDelivery": null,
+    "investmentState": null,
+    "investmentUnitsFloorsRange": null,
+    "investmentUnitsAreaInSquareMeters": null,
+    "investmentUnitsNumber": null,
+    "investmentUnitsRoomsNumber": null,
+    "source": "urn:partner:pulse",
+    "isCrossListed": false,
+    "agency": {
+     "id": 5224832,
+     "name": "RODOLFO NATÁRIO VILLA",
+     "type": "AGENCY",
+     "slug": "rodolfo-natario-villa-ID5224832",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Imo3d2w4Yzc0djZ0dzEtQVBUIn0.3EEAA8zyHqt9bIc7b6UAae9skIuN_QznlX82iwmYHYw/image",
+     "brandingVisible": true,
+     "highlightedAds": false,
+     "enhancedBrandingFeatures": [
+      "ENHANCED_BRANDING_COMPANY_NAME",
+      "ENHANCED_BRANDING_GALLERY_CONTACT_SLIDE",
+      "ENHANCED_BRANDING_LOGO_DISPLAY",
+      "ENHANCED_BRANDING_LOGO_REDIRECT",
+      "ENHANCED_BRANDING_SELLER_TYPE"
+     ]
+    },
+    "areaInSquareMeters": 59,
+    "dateCreated": "2026-04-24T16:14:05Z",
+    "createdAtFirst": "2026-04-24T16:14:05+00:00",
+    "development": null,
+    "developmentId": 0,
+    "developmentTitle": "",
+    "developmentUrl": "",
+    "floorNumber": null,
+    "hasRemoteServices": false,
+    "hidePrice": false,
+    "isExclusiveOffer": false,
+    "isPrivateOwner": false,
+    "isPromoted": false,
+    "extendedAdvertiserType": "business",
+    "links": {
+     "localPlanUrl": "",
+     "walkaroundUrl": "",
+     "videoUrl": "",
+     "view3dUrl": ""
+    },
+    "location": {
+     "mapDetails": {
+      "radius": 0
+     },
+     "address": {
+      "street": {
+       "name": "Rua Cova Funda",
+       "number": null
+      },
+      "city": null,
+      "province": null
+     },
+     "reverseGeocoding": {
+      "locations": [
+       {
+        "id": "lisboa",
+        "locationLevel": "district",
+        "name": "Lisboa",
+        "fullName": "Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras",
+        "locationLevel": "council",
+        "name": "Oeiras",
+        "fullName": "Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/oeiras-e-s-juliao-da-barra-paco-de-arcos-e-caxias",
+        "locationLevel": "parish",
+        "name": "Oeiras e S. Julião da Barra, Paço de Arcos e Caxias",
+        "fullName": "Oeiras e S. Julião da Barra, Paço de Arcos e Caxias, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/oeiras-e-s-juliao-da-barra-paco-de-arcos-e-caxias/murganhal--laveiras",
+        "locationLevel": "neighborhood",
+        "name": "Murganhal - Laveiras",
+        "fullName": "Murganhal - Laveiras, Oeiras e S. Julião da Barra, Paço de Arcos e Caxias, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       }
+      ]
+     }
+    },
+    "openDays": null,
+    "unifiedOpenDays": null,
+    "peoplePerRoom": null,
+    "priceFromPerSquareMeter": null,
+    "pricePerSquareMeter": {
+     "value": 7966.1,
+     "currency": "EUR"
+    },
+    "pushedUpAt": "2026-05-01T16:18:26+01:00",
+    "rentPrice": null,
+    "roomsNumber": "THREE",
+    "shortDescription": null,
+    "specialOffer": null,
+    "terrainAreaInSquareMeters": null,
+    "totalPossibleImages": 26,
+    "totalPrice": {
+     "value": 470000,
+     "currency": "EUR"
+    },
+    "showPremiumTile": false,
+    "organisationAssignedMember": null,
+    "advertOwner": {
+     "name": "RODOLFO NATÁRIO VILLA",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Imo3d2w4Yzc0djZ0dzEtQVBUIn0.3EEAA8zyHqt9bIc7b6UAae9skIuN_QznlX82iwmYHYw/image",
+     "contacts": [
+      {
+       "name": "Isabel Sofia Santos",
+       "imageURLSmall": "https://ireland.apollo.olxcdn.com/v1/files/eyJmbiI6InpwYmUxbXpwMnZtdDEtQVBUIn0.Y_hYfjrBuanaPMH-8Yp0SDeh7hYuAu1Sw3Dv2feS5ho/image"
+      }
+     ]
+    },
+    "href": "[lang]/ad/moradia-unifamiliar-com-logradouro-e-terraco-em-caxias-oeiras-perto-ID1ifuX"
+   },
+   {
+    "id": 18883557,
+    "title": "Moradia T3 para venda",
+    "slug": "moradia-t3-para-venda-ID1hetw",
+    "estate": "HOUSE",
+    "transaction": "SELL",
+    "images": [
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InoyNzg4d2Rlb2RsMzMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.5HsRACXokYnQeNNdF6_B1sRA622kG4gOZjoeN31nl80/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InoyNzg4d2Rlb2RsMzMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.5HsRACXokYnQeNNdF6_B1sRA622kG4gOZjoeN31nl80/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InoyNzg4d2Rlb2RsMzMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.5HsRACXokYnQeNNdF6_B1sRA622kG4gOZjoeN31nl80/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImNtb3N3enpjbHUxazItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.-EybBwbR2CV53JVUE4Im4YFlFrN7WaDaHgcmkRCdO0E/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImNtb3N3enpjbHUxazItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.-EybBwbR2CV53JVUE4Im4YFlFrN7WaDaHgcmkRCdO0E/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImNtb3N3enpjbHUxazItRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.-EybBwbR2CV53JVUE4Im4YFlFrN7WaDaHgcmkRCdO0E/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InpxaTl4NnBja2h5cy1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.9GBPknQg5mCgOGSrQJk1jdjvIM3EyAqIujrtxYECW7g/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InpxaTl4NnBja2h5cy1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.9GBPknQg5mCgOGSrQJk1jdjvIM3EyAqIujrtxYECW7g/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InpxaTl4NnBja2h5cy1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.9GBPknQg5mCgOGSrQJk1jdjvIM3EyAqIujrtxYECW7g/image;s=1280x1024;q=80"
+     }
+    ],
+    "tags": [
+     {
+      "value": "PARKING_SPOT",
+      "weight": 15,
+      "__typename": "AdvertListItemTag"
+     }
+    ],
+    "investmentEstimatedDelivery": null,
+    "investmentState": null,
+    "investmentUnitsFloorsRange": null,
+    "investmentUnitsAreaInSquareMeters": null,
+    "investmentUnitsNumber": null,
+    "investmentUnitsRoomsNumber": null,
+    "source": "urn:partner:maxwork",
+    "isCrossListed": false,
+    "agency": {
+     "id": 4062704,
+     "name": "Remax Grupo Team",
+     "type": "AGENCY",
+     "slug": "remax-grupo-team-ID4062704",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImIyMHVzd2RtbGJ6eC1BUFQifQ.VK2mnOIMLC5f7kQAhKD4JZiibwB1qenoPodTOhK4heE/image",
+     "brandingVisible": true,
+     "highlightedAds": false,
+     "enhancedBrandingFeatures": [
+      "ENHANCED_BRANDING_COMPANY_NAME",
+      "ENHANCED_BRANDING_LOGO_DISPLAY",
+      "ENHANCED_BRANDING_SELLER_TYPE"
+     ]
+    },
+    "areaInSquareMeters": 170,
+    "dateCreated": "2025-09-21T15:09:16Z",
+    "createdAtFirst": "2025-09-21T15:09:16+00:00",
+    "development": null,
+    "developmentId": 0,
+    "developmentTitle": "",
+    "developmentUrl": "",
+    "floorNumber": null,
+    "hasRemoteServices": false,
+    "hidePrice": false,
+    "isExclusiveOffer": false,
+    "isPrivateOwner": false,
+    "isPromoted": false,
+    "extendedAdvertiserType": "business",
+    "links": {
+     "localPlanUrl": "",
+     "walkaroundUrl": "",
+     "videoUrl": "",
+     "view3dUrl": ""
+    },
+    "location": {
+     "mapDetails": {
+      "radius": 0
+     },
+     "address": {
+      "street": {
+       "name": "Travessa Escadinhas",
+       "number": null
+      },
+      "city": null,
+      "province": null
+     },
+     "reverseGeocoding": {
+      "locations": [
+       {
+        "id": "lisboa",
+        "locationLevel": "district",
+        "name": "Lisboa",
+        "fullName": "Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras",
+        "locationLevel": "council",
+        "name": "Oeiras",
+        "fullName": "Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/barcarena",
+        "locationLevel": "parish",
+        "name": "Barcarena",
+        "fullName": "Barcarena, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/barcarena/valejas",
+        "locationLevel": "neighborhood",
+        "name": "Valejas",
+        "fullName": "Valejas, Barcarena, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       }
+      ]
+     }
+    },
+    "openDays": null,
+    "unifiedOpenDays": null,
+    "peoplePerRoom": null,
+    "priceFromPerSquareMeter": null,
+    "pricePerSquareMeter": {
+     "value": 2935.29,
+     "currency": "EUR"
+    },
+    "pushedUpAt": null,
+    "rentPrice": null,
+    "roomsNumber": "FOUR",
+    "shortDescription": null,
+    "specialOffer": null,
+    "terrainAreaInSquareMeters": null,
+    "totalPossibleImages": 26,
+    "totalPrice": {
+     "value": 499000,
+     "currency": "EUR"
+    },
+    "showPremiumTile": false,
+    "organisationAssignedMember": null,
+    "advertOwner": {
+     "name": "Remax Grupo Team",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImIyMHVzd2RtbGJ6eC1BUFQifQ.VK2mnOIMLC5f7kQAhKD4JZiibwB1qenoPodTOhK4heE/image",
+     "contacts": [
+      {
+       "name": "Team",
+       "imageURLSmall": "https://ireland.apollo.olxcdn.com/v1/files/eyJmbiI6InJndW5hbW83aTluaC1BUFQifQ.71IZWucBecOSWjye-11EBwhAd_G43lrBfMe96skRtic/image"
+      }
+     ]
+    },
+    "href": "[lang]/ad/moradia-t3-para-venda-ID1hetw"
+   },
+   {
+    "id": 17436242,
+    "title": "Moradias reconstruídas e reconfiguradas para arrendamento a estudan...",
+    "slug": "moradias-reconstruidas-e-reconfiguradas-para-arrendamento-a-estudan-ID1b9XI",
+    "estate": "HOUSE",
+    "transaction": "SELL",
+    "images": [
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im5nYzByZ3UyMGk1bzMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.glxmOGviVMsXgOwbHRTGudZoy_qjEgLaM7GGtA1HOoU/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im5nYzByZ3UyMGk1bzMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.glxmOGviVMsXgOwbHRTGudZoy_qjEgLaM7GGtA1HOoU/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im5nYzByZ3UyMGk1bzMtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.glxmOGviVMsXgOwbHRTGudZoy_qjEgLaM7GGtA1HOoU/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjZzdHM3bTV4Ynl0cjEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.aDUFn9xUoKgn4w1QF1KZ9eNBBAJ3TT1XZbK6-PuBOUA/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjZzdHM3bTV4Ynl0cjEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.aDUFn9xUoKgn4w1QF1KZ9eNBBAJ3TT1XZbK6-PuBOUA/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjZzdHM3bTV4Ynl0cjEtRUNPU1lTVEVNIiwidyI6W3siZm4iOiI2OW5scGE3ZWNxbTcxLUFQVCIsInMiOiIxNiIsImEiOiIwIiwicCI6IjEwLC0xMCJ9XX0.aDUFn9xUoKgn4w1QF1KZ9eNBBAJ3TT1XZbK6-PuBOUA/image;s=1280x1024;q=80"
+     },
+     {
+      "small": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjA0dnVhYm40ZW5oOS1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.pkSfX5QBse64QEuNVl17Y-ukgwua45AJ8rApFX1RPmY/image;s=314x236;q=80",
+      "medium": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjA0dnVhYm40ZW5oOS1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.pkSfX5QBse64QEuNVl17Y-ukgwua45AJ8rApFX1RPmY/image;s=655x491;q=80",
+      "large": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjA0dnVhYm40ZW5oOS1FQ09TWVNURU0iLCJ3IjpbeyJmbiI6IjY5bmxwYTdlY3FtNzEtQVBUIiwicyI6IjE2IiwiYSI6IjAiLCJwIjoiMTAsLTEwIn1dfQ.pkSfX5QBse64QEuNVl17Y-ukgwua45AJ8rApFX1RPmY/image;s=1280x1024;q=80"
+     }
+    ],
+    "tags": [],
+    "investmentEstimatedDelivery": null,
+    "investmentState": null,
+    "investmentUnitsFloorsRange": null,
+    "investmentUnitsAreaInSquareMeters": null,
+    "investmentUnitsNumber": null,
+    "investmentUnitsRoomsNumber": null,
+    "source": "urn:partner:ego",
+    "isCrossListed": false,
+    "agency": {
+     "id": 115957,
+     "name": "Casas Rui Pedro",
+     "type": "AGENCY",
+     "slug": "casas-rui-pedro-ID115957",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ijk1ZzdldzduOGt6MjItQVBUIn0.Afm4aTR6JvGpN0f83Q23K2k-uOPCCedYpg73SbMvdDQ/image",
+     "brandingVisible": true,
+     "highlightedAds": false,
+     "enhancedBrandingFeatures": [
+      "ENHANCED_BRANDING_COMPANY_NAME",
+      "ENHANCED_BRANDING_GALLERY_CONTACT_SLIDE",
+      "ENHANCED_BRANDING_LOGO_DISPLAY",
+      "ENHANCED_BRANDING_LOGO_REDIRECT",
+      "ENHANCED_BRANDING_SELLER_TYPE"
+     ]
+    },
+    "areaInSquareMeters": 155.8,
+    "dateCreated": "2023-05-16T14:24:08Z",
+    "createdAtFirst": "2023-05-16T14:24:08+00:00",
+    "development": null,
+    "developmentId": 0,
+    "developmentTitle": "",
+    "developmentUrl": "",
+    "floorNumber": null,
+    "hasRemoteServices": false,
+    "hidePrice": false,
+    "isExclusiveOffer": false,
+    "isPrivateOwner": false,
+    "isPromoted": false,
+    "extendedAdvertiserType": "business",
+    "links": {
+     "localPlanUrl": "",
+     "walkaroundUrl": "",
+     "videoUrl": "",
+     "view3dUrl": ""
+    },
+    "location": {
+     "mapDetails": {
+      "radius": 100
+     },
+     "address": {
+      "street": {
+       "name": "Beco Machado",
+       "number": null
+      },
+      "city": null,
+      "province": null
+     },
+     "reverseGeocoding": {
+      "locations": [
+       {
+        "id": "lisboa",
+        "locationLevel": "district",
+        "name": "Lisboa",
+        "fullName": "Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras",
+        "locationLevel": "council",
+        "name": "Oeiras",
+        "fullName": "Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/alges-linda-a-velha-e-cruz-quebrada-dafundo",
+        "locationLevel": "parish",
+        "name": "Algés, Linda-a-Velha e Cruz Quebrada-Dafundo",
+        "fullName": "Algés, Linda-a-Velha e Cruz Quebrada-Dafundo, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/alges-linda-a-velha-e-cruz-quebrada-dafundo/linda-a-velha",
+        "locationLevel": "neighborhood",
+        "name": "Linda-a-Velha",
+        "fullName": "Linda-a-Velha, Algés, Linda-a-Velha e Cruz Quebrada-Dafundo, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       }
+      ]
+     }
+    },
+    "openDays": null,
+    "unifiedOpenDays": null,
+    "peoplePerRoom": null,
+    "priceFromPerSquareMeter": null,
+    "pricePerSquareMeter": {
+     "value": 3565.47,
+     "currency": "EUR"
+    },
+    "pushedUpAt": null,
+    "rentPrice": null,
+    "roomsNumber": "TEN",
+    "shortDescription": null,
+    "specialOffer": null,
+    "terrainAreaInSquareMeters": null,
+    "totalPossibleImages": 28,
+    "totalPrice": {
+     "value": 555500,
+     "currency": "EUR"
+    },
+    "showPremiumTile": false,
+    "organisationAssignedMember": null,
+    "advertOwner": {
+     "name": "Casas Rui Pedro",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ijk1ZzdldzduOGt6MjItQVBUIn0.Afm4aTR6JvGpN0f83Q23K2k-uOPCCedYpg73SbMvdDQ/image",
+     "contacts": [
+      {
+       "name": "",
+       "imageURLSmall": "https://ireland.apollo.olxcdn.com/v1/files/eyJmbiI6Ijk1ZzdldzduOGt6MjItQVBUIn0.oZpVT4fbSdUzed-U0MW_TaaI3OtCBves7oLiM-W4mDE/image"
+      }
+     ]
+    },
+    "href": "[lang]/ad/moradias-reconstruidas-e-reconfiguradas-para-arrendamento-a-estudan-ID1b9XI"
+   },
+   {
+    "id": 9000062259,
+    "title": "Moradia T2 para venda",
+    "slug": "moradia-t2-para-venda-ID1iZ6K",
+    "estate": "HOUSE",
+    "transaction": "SELL",
+    "images": [],
+    "tags": [],
+    "investmentEstimatedDelivery": null,
+    "investmentState": null,
+    "investmentUnitsFloorsRange": null,
+    "investmentUnitsAreaInSquareMeters": null,
+    "investmentUnitsNumber": null,
+    "investmentUnitsRoomsNumber": null,
+    "source": "urn:partner:maxwork",
+    "isCrossListed": false,
+    "agency": {
+     "id": 4009208,
+     "name": "RE/MAX + Grupo Vantagem",
+     "type": "AGENCY",
+     "slug": "re-max-grupo-vantagem-ID4009208",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImY0cHZoeHAxZ2V0dS1BUFQifQ.tpMODcgRJzK3QgR4QswdY4wmE1E9E2OkyzXxyNLkUOE/image",
+     "brandingVisible": true,
+     "highlightedAds": false,
+     "enhancedBrandingFeatures": [
+      "ENHANCED_BRANDING_COMPANY_NAME",
+      "ENHANCED_BRANDING_LOGO_DISPLAY",
+      "ENHANCED_BRANDING_SELLER_TYPE"
+     ]
+    },
+    "areaInSquareMeters": 186.56,
+    "dateCreated": "1999-02-29 00:00:01",
+    "createdAtFirst": "1999-02-29 00:00:01",
+    "development": null,
+    "developmentId": 0,
+    "developmentTitle": "",
+    "developmentUrl": "",
+    "floorNumber": null,
+    "hasRemoteServices": false,
+    "hidePrice": false,
+    "isExclusiveOffer": false,
+    "isPrivateOwner": false,
+    "isPromoted": false,
+    "extendedAdvertiserType": "business",
+    "links": {
+     "localPlanUrl": "",
+     "walkaroundUrl": "",
+     "videoUrl": "",
+     "view3dUrl": ""
+    },
+    "location": {
+     "mapDetails": {
+      "radius": 0
+     },
+     "address": {
+      "street": {
+       "name": "Travessa 31 de Janeiro",
+       "number": null
+      },
+      "city": null,
+      "province": null
+     },
+     "reverseGeocoding": {
+      "locations": [
+       {
+        "id": "lisboa",
+        "locationLevel": "district",
+        "name": "Lisboa",
+        "fullName": "Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras",
+        "locationLevel": "council",
+        "name": "Oeiras",
+        "fullName": "Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/barcarena",
+        "locationLevel": "parish",
+        "name": "Barcarena",
+        "fullName": "Barcarena, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       },
+       {
+        "id": "lisboa/oeiras/barcarena/vale-de-barcarena",
+        "locationLevel": "neighborhood",
+        "name": "Vale de Barcarena",
+        "fullName": "Vale de Barcarena, Barcarena, Oeiras, Lisboa",
+        "__typename": "BasicLocationObject"
+       }
+      ]
+     }
+    },
+    "openDays": null,
+    "unifiedOpenDays": null,
+    "peoplePerRoom": null,
+    "priceFromPerSquareMeter": null,
+    "pricePerSquareMeter": {
+     "value": 2304.89,
+     "currency": "EUR"
+    },
+    "pushedUpAt": null,
+    "rentPrice": null,
+    "roomsNumber": "THREE",
+    "shortDescription": null,
+    "specialOffer": null,
+    "terrainAreaInSquareMeters": null,
+    "totalPossibleImages": 44,
+    "totalPrice": {
+     "value": 430000,
+     "currency": "EUR"
+    },
+    "showPremiumTile": false,
+    "organisationAssignedMember": null,
+    "advertOwner": {
+     "name": "RE/MAX + Grupo Vantagem",
+     "imageUrl": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImY0cHZoeHAxZ2V0dS1BUFQifQ.tpMODcgRJzK3QgR4QswdY4wmE1E9E2OkyzXxyNLkUOE/image",
+     "contacts": [
+      {
+       "name": "Vantagem Planície",
+       "imageURLSmall": "https://ireland.apollo.olxcdn.com/v1/files/eyJmbiI6ImdsMXp6anM4dWFmOC1BUFQifQ.QXVuqbKBouMNtIqwQWgBuTBOjcl4FSTSZVM3qmRdQY4/image"
+      }
+     ]
+    },
+    "href": "hpr/[lang]/ad/moradia-1-quartos-87-m2-novo-ID9P5lkw",
+    "relatedAds": []
+   }
+  ],
+  "pagination": {
+   "itemsPerPage": 36,
+   "totalItems": 13,
+   "totalPages": 1,
+   "currentPage": 1
+  },
+  "geometries": [
+   "{\"geometry\":{\"coordinates\":[[[-9.329500443127472,38.69150183774764],[-9.33000044315122,38.69800183805637],[-9.320000442676246,38.700001838151366],[-9.323500442842487,38.70300183829386],[-9.323500442842487,38.70600183843635],[-9.320000442676246,38.70700183848385],[-9.321500442747492,38.70900183857884],[-9.322000442771241,38.711501838697586],[-9.323500442842487,38.711501838697586],[-9.323500442842487,38.71300183876883],[-9.320000442676246,38.712501838745084],[-9.319000442628749,38.71450183884008],[-9.317500442557503,38.71450183884008],[-9.318500442605,38.715501838887576],[-9.317500442557503,38.71750183898257],[-9.315500442462508,38.71800183900632],[-9.315500442462508,38.719110829134856],[-9.315605657,38.719395943],[-9.315651368,38.719657873],[-9.315624568,38.719685078],[-9.315500442462508,38.719730536518625],[-9.315500442462508,38.72300183924381],[-9.317000442533754,38.7250018393388],[-9.316500442510005,38.727501839457545],[-9.319000442628749,38.72850183950504],[-9.319500442652497,38.73050183960004],[-9.319000442628749,38.731501839647535],[-9.315000442438759,38.73250183969503],[-9.311500442272518,38.735001839813776],[-9.311500442272518,38.73750183993252],[-9.310000442201272,38.739001840003766],[-9.310000442201272,38.74100184009876],[-9.308500442130025,38.743001840193756],[-9.309000442153774,38.7455018403125],[-9.30700044205878,38.74800184043124],[-9.309000442153774,38.75000184052624],[-9.309000442153774,38.751001840573736],[-9.305500441987533,38.751501840597484],[-9.304500441940036,38.75250184064498],[-9.303500441892538,38.75250184064498],[-9.302000441821292,38.751001840573736],[-9.302000441821292,38.747501840407494],[-9.293500441417564,38.747001840383746],[-9.288000441156328,38.74800184043124],[-9.288000441156328,38.74900184047874],[-9.286500441085082,38.74900184047874],[-9.286500441085082,38.75250184064498],[-9.281000440823846,38.751501840597484],[-9.27900044072885,38.74950184050249],[-9.276500440610107,38.74850184045499],[-9.270500440325122,38.74950184050249],[-9.270000440301374,38.74850184045499],[-9.266500440135133,38.747001840383746],[-9.260000439826399,38.74800184043124],[-9.25950043980265,38.747001840383746],[-9.264000440016389,38.74400184024125],[-9.263000439968891,38.743501840217505],[-9.263000439968891,38.74150184012251],[-9.265000440063886,38.740001840051264],[-9.264000440016389,38.739001840003766],[-9.261500439897645,38.739001840003766],[-9.260000439826399,38.73700183990877],[-9.257500439707655,38.736001839861274],[-9.258500439755153,38.73400183976628],[-9.258000439731404,38.73350183974253],[-9.258000439731404,38.73450183979003],[-9.25600043963641,38.73650183988502],[-9.255000439588912,38.73650183988502],[-9.255000439588912,38.73400183976628],[-9.254000439541414,38.73400183976628],[-9.253000439493917,38.735001839813776],[-9.25150043942267,38.735001839813776],[-9.246000439161435,38.73750183993252],[-9.244500439090189,38.73750183993252],[-9.243500439042691,38.73650183988502],[-9.238500438805204,38.73700183990877],[-9.23600043868646,38.735501839837525],[-9.225000438163988,38.735001839813776],[-9.214000437641516,38.72650183941005],[-9.210500437475275,38.72200183919631],[-9.218500437855255,38.71800183900632],[-9.220000437926501,38.715501838887576],[-9.222000438021496,38.71400183881633],[-9.223000438068993,38.70950183860259],[-9.221500437997747,38.7065018384601],[-9.225500438187737,38.704501838365104],[-9.227000438258983,38.69850183808012],[-9.226000438211486,38.69800183805637],[-9.226000438211486,38.69700183800887],[-9.227038455270753,38.69700183800887],[-9.227237892,38.696808153],[-9.227445087,38.696914784],[-9.227653093564772,38.69700183800887],[-9.22850043833023,38.69700183800887],[-9.229000438353978,38.69500183791388],[-9.230500438425224,38.69400183786638],[-9.23250043852022,38.69550183793763],[-9.234000438591465,38.69450183789013],[-9.233500438567717,38.69350183784263],[-9.234500438615214,38.69300183781888],[-9.238000438781455,38.69750183803262],[-9.24000043887645,38.69750183803262],[-9.241500438947696,38.69850183808012],[-9.242000438971445,38.69850183808012],[-9.242500438995194,38.69850183808012],[-9.243000439018942,38.69850183808012],[-9.243500439042691,38.69850183808012],[-9.24400043906644,38.69850183808012],[-9.244500439090189,38.69850183808012],[-9.245000439113937,38.69850183808012],[-9.245500439137686,38.69850183808012],[-9.246000439161435,38.69850183808012],[-9.246500439185183,38.69850183808012],[-9.247000439208932,38.69850183808012],[-9.247500439232681,38.69850183808012],[-9.24800043925643,38.69850183808012],[-9.248500439280178,38.69850183808012],[-9.249000439303927,38.69850183808012],[-9.249500439327676,38.69850183808012],[-9.250000439351425,38.69850183808012],[-9.250500439375173,38.69850183808012],[-9.250500439375173,38.69700183800887],[-9.25150043942267,38.69700183800887],[-9.25150043942267,38.69800183805637],[-9.25600043963641,38.69950183812762],[-9.262000439921394,38.69950183812762],[-9.266000440111384,38.69800183805637],[-9.269500440277625,38.69850183808012],[-9.270000440301374,38.69750183803262],[-9.27550044056261,38.69750183803262],[-9.27550044056261,38.696501837985124],[-9.277000440633856,38.696501837985124],[-9.277000440633856,38.69800183805637],[-9.281500440847594,38.69800183805637],[-9.282000440871343,38.696501837985124],[-9.286000441061333,38.696501837985124],[-9.286500441085082,38.69550183793763],[-9.289000441203825,38.69550183793763],[-9.289000441203825,38.69450183789013],[-9.29100044129882,38.69400183786638],[-9.290500441275071,38.69300183781888],[-9.292500441370066,38.69150183774764],[-9.293000441393815,38.69000183767639],[-9.298000441631302,38.68950183765264],[-9.301500441797543,38.6860018374864],[-9.304000441916287,38.68550183746265],[-9.305000441963784,38.684001837391406],[-9.312500442320015,38.684001837391406],[-9.312500442320015,38.68300183734391],[-9.313500442367513,38.68300183734391],[-9.314000442391261,38.68200183729641],[-9.314000442391261,38.680501837225165],[-9.316500442510005,38.67800183710642],[-9.31633474584997,38.677173353806246],[-9.316305897,38.67715907],[-9.316270958,38.677113396],[-9.316255551,38.677019566],[-9.31627768583176,38.6768880537152],[-9.316000442486256,38.67550183698768],[-9.317500442557503,38.67450183694018],[-9.320500442699995,38.67450183694018],[-9.321500442747492,38.67550183698768],[-9.323000442818739,38.67550183698768],[-9.324000442866236,38.67500183696393],[-9.323000442818739,38.67450183694018],[-9.323500442842487,38.672501836845186],[-9.32650044298498,38.673001836868934],[-9.328000443056226,38.67450183694018],[-9.327000443008728,38.67750183708267],[-9.325000442913733,38.67750183708267],[-9.323500442842487,38.68150183727266],[-9.325000442913733,38.68200183729641],[-9.325500442937482,38.68750183755765],[-9.327000443008728,38.68750183755765],[-9.328500443079975,38.69150183774764],[-9.329500443127472,38.69150183774764]]],\"type\":\"Polygon\"},\"properties\":null,\"type\":\"Feature\"}"
+  ],
+  "recommendationLink": null,
+  "locationString": "",
+  "locationsObjects": [
+   {
+    "id": "lisboa/oeiras",
+    "detailedLevel": "council",
+    "name": "Oeiras",
+    "fullName": "Oeiras, Lisboa",
+    "parentIds": [
+     "lisboa"
+    ],
+    "__typename": "LocationObject",
+    "parents": [
+     {
+      "id": "lisboa",
+      "detailedLevel": "district",
+      "name": "Lisboa",
+      "fullName": "Lisboa",
+      "parentIds": [],
+      "__typename": "LocationObject"
+     }
+    ],
+    "children": [
+     {
+      "id": "lisboa/oeiras/alges-linda-a-velha-e-cruz-quebrada-dafundo",
+      "detailedLevel": "parish",
+      "name": "Algés, Linda-a-Velha e Cruz Quebrada-Dafundo",
+      "fullName": "Algés, Linda-a-Velha e Cruz Quebrada-Dafundo, Oeiras, Lisboa",
+      "parentIds": [
+       "lisboa",
+       "lisboa/oeiras"
+      ],
+      "__typename": "LocationObject"
+     }
+    ]
+   }
+  ],
+  "stats": [
+   {
+    "__typename": "StatItem",
+    "statType": "PRICE",
+    "min": 400000,
+    "max": 650000,
+    "mean": 520961.53846153844
+   }
+  ]
+ },
+ "locationName": "Oeiras, Lisboa",
+ "pageProps_keys": [
+  "baxterResolvedSsrProps",
+  "breadcrumbItems",
+  "canonicalURL",
+  "cookiesCategorisation",
+  "currentUser",
+  "data",
+  "desktopHeader",
+  "estate",
+  "experiments",
+  "faqDynamicData",
+  "featureFlags",
+  "fieldsMetadataExperimentsVariants",
+  "filterAttributes",
+  "filterLocations",
+  "filteringQueryParams",
+  "googleSuggestion",
+  "isUnifiedMapListingEnabled",
+  "isUnifiedMapPinsEnabled",
+  "lang",
+  "laquesisResult",
+  "location",
+  "locationName",
+  "mapPreviewImages",
+  "market",
+  "neighborhoodPoiCategories",
+  "pageDescription",
+  "pageHeading",
+  "pageTitle",
+  "promotedAgency",
+  "shouldEnableIndexingByMetaRobots",
+  "shouldKeepBoundingBox",
+  "sortingOption",
+  "targeting",
+  "tracking",
+  "transaction",
+  "unconfirmedUserAuthToken",
+  "urlViewType",
+  "userSessionId",
+  "viewMode"
+ ]
+}

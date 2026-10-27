@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{{ buyer.label }}{% endblock %}
+{% block content %}
+<h2>{{ buyer.label }}
+  {% if buyer.active %}<span class="tag ok">ativo</span>{% else %}<span class="tag off">em pausa desde {{ buyer.paused_at.strftime('%Y-%m-%d') }}</span>{% endif %}
+</h2>
+<p>
+  {% if buyer.active %}
+  <form class="inline" method="post" action="/buyers/{{ buyer.id }}/pause"><button class="secondary">Pausar (continua a vigiar, sem alertas)</button></form>
+  {% else %}
+  <form class="inline" method="post" action="/buyers/{{ buyer.id }}/resume"><button>Retomar</button></form>
+  {% endif %}
+  <a role="button" class="outline" href="/criteria/new?buyer={{ buyer.id }}">Nova pesquisa</a>
+  <a role="button" href="/properties?buyer={{ buyer.id }}">Ver imóveis</a>
+</p>
+<h3>Pesquisas</h3>
+{% for c in buyer.criteria %}
+<article>
+  <header>
+    <strong>{{ TRANSACTIONS[c.transaction] }} · {{ c.estate_types | join(', ') }} · {{ typology_label(c.typology_min, c.typology_max) }} · {{ price_label(c.price_min, c.price_max) }}</strong>
+    {% if not c.active %}<span class="tag off">inativa</span>{% endif %}
+  </header>
+  <p><b>Zonas:</b> {% for z in c.zones %}{{ z.geo.name }}{% if z.geo.level == 'district' %} (distrito){% endif %}{{ ', ' if not loop.last }}{% endfor %}</p>
+  <p><b>Obrigatório:</b> {% for f in c.must_have %}{{ FEATURES.get(f, f) }}{{ ', ' if not loop.last }}{% else %}—{% endfor %}
+     &nbsp; <b>Desejável:</b> {% for f in c.nice_to_have %}{{ FEATURES.get(f, f) }}{{ ', ' if not loop.last }}{% else %}—{% endfor %}
+     {% if c.area_min %}&nbsp; <b>Área mín.:</b> {{ c.area_min }} m²{% endif %}
+     {% if c.exclude %}&nbsp; <b>Excluir:</b> {{ c.exclude | join(', ') }}{% endif %}</p>
+  <p class="muted"><small>Dados em falta: {{ UNKNOWN_POLICIES[c.unknown_policy] | lower }}{% if c.source_text %} · Texto original: “{{ c.source_text }}”{% endif %} · via {{ c.input_channel }} · atualizado {{ c.updated_at.strftime('%Y-%m-%d %H:%M') }}</small></p>
+  <footer>
+    <a role="button" class="outline" href="/criteria/{{ c.id }}/edit">Editar</a>
+    <form class="inline" method="post" action="/criteria/{{ c.id }}/toggle"><input type="hidden" name="active" value="{{ '0' if c.active else '1' }}"><button class="secondary outline">{{ 'Desativar' if c.active else 'Ativar' }}</button></form>
+  </footer>
+</article>
+{% else %}
+<p class="muted">Sem pesquisas. <a href="/criteria/new?buyer={{ buyer.id }}">Criar a primeira</a>.</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,8 @@
+.env
+.venv
+__pycache__
+*.pyc
+backups
+.git
+.pytest_cache
+docs/manual_pt/images

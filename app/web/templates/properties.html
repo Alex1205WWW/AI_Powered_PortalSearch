@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Imóveis{% endblock %}
+{% block content %}
+<h2>Imóveis correspondentes <small class="muted">({{ count }})</small></h2>
+<form method="get" action="/properties" class="grid">
+  <select name="buyer">
+    <option value="">Todos os compradores</option>
+    {% for b in buyers %}<option value="{{ b.id }}" {{ 'selected' if filters.buyer == b.id }}>{{ b.label }}</option>{% endfor %}
+  </select>
+  <select name="state">
+    <option value="">Todos os estados</option>
+    {% for s in states %}<option value="{{ s }}" {{ 'selected' if filters.state == s }}>{{ s }}</option>{% endfor %}
+  </select>
+  <select name="grade">
+    <option value="">Confirmadas e possíveis</option>
+    <option value="confirmada" {{ 'selected' if filters.grade == 'confirmada' }}>Só confirmadas</option>
+    <option value="possivel" {{ 'selected' if filters.grade == 'possivel' }}>Só possíveis</option>
+  </select>
+  <button type="submit" class="secondary">Filtrar</button>
+</form>
+{% set back = '/properties' ~ ('?buyer=' ~ filters.buyer if filters.buyer else '') %}
+<table>
+  <thead><tr><th>Comprador</th><th>Imóvel</th><th>Preço</th><th>Zona</th><th>Requisitos</th><th>Mediadora</th><th>Fontes</th><th>Estado</th></tr></thead>
+  <tbody>
+  {% for it in items %}
+  {% set p = it.primary %}
+  <tr>
+    <td>{{ it.buyer_label }}<br><span class="tag {{ 'ok' if it.match.grade == 'confirmada' else 'warn' }}">{{ 'confirmada' if it.match.grade == 'confirmada' else 'possível' }}</span></td>
+    <td><a href="{{ p.url }}" target="_blank" rel="noopener">{{ (p.estate_type or 'imóvel') | capitalize }} {{ 'T' ~ p.rooms if p.rooms is not none else 'T?' }}</a>
+        <br><small class="muted">{{ p.title }}</small>
+        <br><small class="muted">{{ (p.area_util or p.area_bruta) | round | int ~ ' m²' if (p.area_util or p.area_bruta) else 'área n/d' }}{% if p.land_area %} · terreno {{ p.land_area | round | int }} m²{% endif %}{% if p.is_private_owner %} · <b>particular</b>{% endif %}{% if p.is_new_development %} · empreendimento{% endif %}</small></td>
+    <td>{% if p.hide_price or p.price is none %}sob consulta{% else %}{{ '{:,.0f}'.format(p.price).replace(',', '.') }} €{% endif %}</td>
+    <td>{{ it.zone or '—' }}{% if p.street %}<br><small class="muted">{{ p.street }}</small>{% endif %}</td>
+    <td><small>
+      {% for k in it.criteria.must_have %}{{ FEATURES.get(k, k) }}: <b>{{ 'confirmado' if p.features and p.features.get(k) and p.features[k].tier == 'confirmed' else ('mencionado' if p.features and p.features.get(k) and p.features[k].tier == 'mentioned' else ('não tem' if p.features and p.features.get(k) and p.features[k].tier == 'absent' else 'não indicado')) }}</b><br>{% endfor %}
+      {% for k in it.criteria.nice_to_have %}<span class="muted">{{ FEATURES.get(k, k) }}: {{ 'sim' if p.features and p.features.get(k) and p.features[k].value else 'n/d' }}</span><br>{% endfor %}
+      {% if it.match.unknown %}<span class="muted">em falta: {{ it.match.unknown | join(', ') }}</span>{% endif %}
+    </small></td>
+    <td><small>{{ p.agency_name_raw or '—' }}{% if p.agency_phone_raw %}<br>{{ p.agency_phone_raw }}{% endif %}</small></td>
+    <td><small>{% for l in it.listings %}<a href="{{ l.url }}" target="_blank" rel="noopener">{{ source_names.get(l.source_id, 'fonte') }}</a>{{ ' · ' if not loop.last }}{% endfor %}<br><span class="muted">visto {{ p.first_seen_at.strftime('%d/%m') }}</span></small></td>
+    <td>
+      <form method="post" action="/matches/{{ it.match.id }}/state">
+        <input type="hidden" name="back" value="{{ back }}">
+        <select name="state" onchange="this.form.submit()">
+          {% for s in states %}<option value="{{ s }}" {{ 'selected' if it.match.state == s }}>{{ s }}</option>{% endfor %}
+        </select>
+        <input name="commission_share_pct" placeholder="partilha %" value="{{ it.match.commission_share_pct or '' }}" style="max-width:7rem" onchange="this.form.submit()">
+      </form>
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="8" class="muted">Sem correspondências. Crie uma pesquisa; a busca inicial corre no worker em poucos minutos.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

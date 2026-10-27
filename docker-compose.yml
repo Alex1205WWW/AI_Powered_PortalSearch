@@ -1,0 +1,81 @@
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-imoveis}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-imoveis}
+      POSTGRES_DB: ${POSTGRES_DB:-imoveis}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-imoveis} -d ${POSTGRES_DB:-imoveis}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  web:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-imoveis}:${POSTGRES_PASSWORD:-imoveis}@db:5432/${POSTGRES_DB:-imoveis}
+    command: >
+      sh -c "alembic upgrade head
+      && python -m app.cli seed-geo
+      && python -m app.cli seed-sources
+      && uvicorn app.web.main:app --host 0.0.0.0 --port 8000 --proxy-headers --forwarded-allow-ips=*"
+    depends_on:
+      db:
+        condition: service_healthy
+    expose:
+      - "8000"
+
+  worker:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-imoveis}:${POSTGRES_PASSWORD:-imoveis}@db:5432/${POSTGRES_DB:-imoveis}
+    command: python -m app.worker.main
+    depends_on:
+      db:
+        condition: service_healthy
+      web:
+        condition: service_started
+    volumes:
+      - backups:/backups
+
+  bot:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-imoveis}:${POSTGRES_PASSWORD:-imoveis}@db:5432/${POSTGRES_DB:-imoveis}
+    command: python -m app.bot.main
+    depends_on:
+      db:
+        condition: service_healthy
+      web:
+        condition: service_started
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    environment:
+      PANEL_HOST: ${PANEL_HOST:-localhost}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web
+
+volumes:
+  pgdata:
+  backups:
+  caddy_data:
+  caddy_config:

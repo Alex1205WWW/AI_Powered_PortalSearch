@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Fontes{% endblock %}
+{% block content %}
+<h2>Fontes</h2>
+<form method="post" action="/sources/refresh-robots"><button class="secondary outline">Verificar robots.txt agora</button></form>
+<table>
+  <thead><tr><th>Fonte</th><th>Tipo</th><th>Ativa</th><th>Estado</th><th>robots.txt</th><th>Content-Signal</th><th>Intervalo</th><th>Notas</th></tr></thead>
+  <tbody>
+  {% for s in sources %}
+  <tr>
+    <td>{{ s.name }}<br><small class="muted">{{ s.base_url }}</small></td>
+    <td>{{ s.kind }}</td>
+    <td><form class="inline" method="post" action="/sources/{{ s.id }}/toggle"><input type="hidden" name="enabled" value="{{ '0' if s.enabled else '1' }}"><button class="{{ 'secondary' if s.enabled else '' }} outline">{{ 'Desativar' if s.enabled else 'Ativar' }}</button></form></td>
+    <td><span class="tag {{ 'ok' if s.status == 'ok' else ('warn' if s.status == 'degraded' else 'bad') }}">{{ s.status }}</span></td>
+    <td>{% if s.robots_status is none %}<span class="muted">por verificar</span>{% else %}HTTP {{ s.robots_status }} · {{ 'permite' if s.robots_allowed else 'bloqueia' }}<br><small class="muted">{{ s.robots_fetched_at.strftime('%Y-%m-%d %H:%M') }}</small>{% endif %}</td>
+    <td>{{ s.content_signal or '—' }}</td>
+    <td>{{ (s.schedule_minutes ~ ' min') if s.schedule_minutes else '—' }}</td>
+    <td><small>{{ s.notes }}</small></td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
