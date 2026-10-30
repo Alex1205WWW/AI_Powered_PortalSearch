@@ -176,6 +176,7 @@ class Listing(Base):
     land_area: Mapped[float | None] = mapped_column(Float)
     rooms: Mapped[int | None] = mapped_column(Integer)
     wc: Mapped[int | None] = mapped_column(Integer)
+    floor: Mapped[int | None] = mapped_column(Integer)  # -1 cave, 0 res-do-chao, 11 = above tenth; NULL unknown
     estate_type: Mapped[str | None] = mapped_column(String(20))  # apartamento | moradia | ...
     transaction: Mapped[str] = mapped_column(String(10), default="sale", nullable=False)
     geo_code: Mapped[str | None] = mapped_column(ForeignKey("geo.code"))

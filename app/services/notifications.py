@@ -26,8 +26,10 @@ def enqueue(session: Session, *, buyer_id: int, property_id: int, reason: str, p
         pg_insert(Notification)
         .values(buyer_id=buyer_id, property_id=property_id, reason=reason, price_at_send=price, payload=payload)
         .on_conflict_do_nothing(constraint="uq_notification_once")
+        .returning(Notification.id)
     )
-    return session.execute(stmt).rowcount == 1
+    # `rowcount` is -1 for INSERT ... ON CONFLICT under psycopg3 (verified 2026-10-28); RETURNING yields the id only on a real insert.
+    return session.execute(stmt).scalar() is not None
 
 
 def pending(session: Session) -> list[Notification]:

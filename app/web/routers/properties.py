@@ -10,6 +10,7 @@ from sqlalchemy import select
 from app.db.models import Buyer, Criteria, Geo, Listing, PropertyMatch, Source
 from app.domain.criteria import STATES
 from app.services import matches as match_svc
+from app.services import properties as prop_svc
 from app.web.deps import DB, User, render
 
 router = APIRouter()
@@ -71,6 +72,18 @@ async def set_state(request: Request, db: DB, user: User, match_id: int, state: 
         return RedirectResponse(f"{back}{'&' if '?' in back else '?'}msg={quote(str(exc))}", status_code=303)
     target = back if back.startswith("/") and not back.startswith("//") else "/properties"
     return RedirectResponse(target, status_code=303)
+
+
+@router.post("/listings/{listing_id}/split")
+async def split_listing(request: Request, db: DB, user: User, listing_id: int, back: Annotated[str, Form()] = "/properties"):
+    """Operator override: this listing is not the same property as the others in its cluster."""
+    target = back if back.startswith("/") and not back.startswith("//") else "/properties"
+    try:
+        prop_svc.split(db, listing_id)
+        db.commit()
+    except ValueError as exc:
+        return RedirectResponse(f"{target}{'&' if '?' in target else '?'}msg={quote(str(exc))}", status_code=303)
+    return RedirectResponse(f"{target}{'&' if '?' in target else '?'}msg={quote('Anúncio separado. Volta a aparecer como imóvel próprio na próxima correspondência.')}", status_code=303)
 
 
 def back_url(filters: dict) -> str:

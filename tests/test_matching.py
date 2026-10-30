@@ -94,3 +94,15 @@ def test_features_from_text_is_accent_insensitive_regex():
     merged = merge_features({"elevator": None, "garagem": False}, hits)
     assert merged["garagem"] == {"value": False, "tier": "absent"}  # typed 'no' beats a keyword hit
     assert merged["jardim"]["tier"] == "mentioned"
+
+
+def test_listing_located_only_at_district_level_is_unknown_for_a_council_zone():
+    """An alert email may only say "Lisboa" (district). That is "não indicado" at council granularity, not a rejection."""
+    r = evaluate(listing(geo_code="lisboa", features={"exterior": {"value": True, "tier": "confirmed"}}), C(), ROSA_ZONES)
+    assert r.ok and r.grade == GRADE_POSSIBLE and "zona" in r.unknown
+    r = evaluate(listing(geo_code="setubal", features={"exterior": {"value": True, "tier": "confirmed"}}), C(), ROSA_ZONES)
+    assert not r.ok and "zona" in r.unsatisfied
+    r = evaluate(listing(geo_code="lisboa", features={"exterior": {"value": True, "tier": "confirmed"}}), C(unknown_policy="hide"), ROSA_ZONES)
+    assert r.ok and r.grade == GRADE_POSSIBLE  # hide is about obligatory features; a coarse zone stays 'possivel'
+    r = evaluate(listing(geo_code="lisboa", features={}), C(unknown_policy="hide"), ROSA_ZONES)
+    assert not r.ok and "exterior:nao-indicado" in r.unsatisfied and "zona:nao-indicado" not in r.unsatisfied

@@ -1,6 +1,7 @@
 """Persist canonical listings: geo rows learned lazily, agency upsert, listing upsert with price history.
-This is the only module that writes `listings`, `listing_images`, `listing_price_history`, `agencies`, `properties`.
-Until dedup (Day 3) clusters them, every new listing gets its own `properties` row."""
+This is the only module that writes `listings`, `listing_images`, `listing_price_history`, `agencies`.
+`properties` is owned by `services/properties.py` (dedup): a new listing leaves here with `property_id = NULL`
+and `runs.ingest()` assigns it right after."""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -9,7 +10,7 @@ from datetime import datetime, timezone
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.db.models import Agency, Geo, Listing, ListingImage, ListingPriceHistory, Property, Source
+from app.db.models import Agency, Geo, Listing, ListingImage, ListingPriceHistory, Source
 from app.domain.listing import CanonicalListing, normalize_text
 from app.geo.resolve import level_of
 
@@ -63,6 +64,7 @@ def _apply(row: Listing, c: CanonicalListing, agency: Agency | None) -> None:
     row.land_area = c.land_area
     row.rooms = c.rooms
     row.wc = c.wc
+    row.floor = c.floor
     row.estate_type = c.estate_type
     row.transaction = c.transaction
     row.geo_code = c.geo_code
@@ -106,10 +108,7 @@ def persist(session: Session, source: Source, c: CanonicalListing) -> PersistRes
     old_price = None if is_new else row.price
     old_status = None if is_new else row.status
     if is_new:
-        prop = Property()
-        session.add(prop)
-        session.flush()
-        row = Listing(source_id=source.id, external_id=c.external_id, property_id=prop.id, first_seen_at=now)
+        row = Listing(source_id=source.id, external_id=c.external_id, first_seen_at=now)
         session.add(row)
     _apply(row, c, agency)
     row.last_seen_at = now

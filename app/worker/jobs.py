@@ -1,5 +1,4 @@
-"""Scheduled jobs. Every job: open a session, take the advisory lock, do idempotent work, log one line.
-Source sweeps are registered here from Day 2 (imovirtual_sweep, remax_incremental, ...)."""
+"""Scheduled jobs. Every job: open a session, take the advisory lock, do idempotent work, log one line."""
 from __future__ import annotations
 
 import logging
@@ -26,7 +25,7 @@ def run_queued() -> None:
     """Execute queued initial runs (created when criteria are added in the panel or by the bot)."""
     from app.services import runs
 
-    with session_scope() as session, advisory_lock(session, "run_queued") as ok:
+    with session_scope() as session, advisory_lock("run_queued") as ok:
         if not ok:
             return
         done = runs.run_queued(session)
@@ -38,17 +37,27 @@ def sweep_source(source_key: str) -> None:
     """Incremental sweep of one portal, then matching, events and Telegram flush."""
     from app.services import runs
 
-    with session_scope() as session, advisory_lock(session, f"sweep:{source_key}") as ok:
+    with session_scope() as session, advisory_lock(f"sweep:{source_key}") as ok:
         if not ok:
             log.info("sweep already running, skipped", extra={"job": "sweep", "source": source_key})
             return
         runs.execute_sweep(session, source_key)
 
 
+def poll_email() -> None:
+    """Read new Idealista alert emails from the dedicated mailbox and ingest their listings."""
+    from app.services import runs
+
+    with session_scope() as session, advisory_lock("poll_email") as ok:
+        if not ok:
+            return
+        runs.execute_email_poll(session)
+
+
 def flush_notifications() -> None:
     from app.services import notifications
 
-    with session_scope() as session, advisory_lock(session, "flush_notifications") as ok:
+    with session_scope() as session, advisory_lock("flush_notifications") as ok:
         if ok:
             sent = notifications.flush(session)
             if sent:
@@ -56,7 +65,7 @@ def flush_notifications() -> None:
 
 
 def robots_recheck() -> None:
-    with session_scope() as session, advisory_lock(session, "robots_recheck") as ok:
+    with session_scope() as session, advisory_lock("robots_recheck") as ok:
         if not ok:
             return
         results = robots.refresh_all(session)

@@ -21,7 +21,7 @@ def eur(value: int | None) -> str:
 
 
 def typology(rooms: int | None) -> str:
-    return "T?" if rooms is None else ("T10+" if rooms >= 11 else f"T{rooms}")
+    return "T?" if rooms is None else ("T10+" if rooms >= 10 else f"T{rooms}")
 
 
 def headline(listing: Listing) -> str:

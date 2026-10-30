@@ -3,7 +3,7 @@ Voice intake, confirmation cards and state buttons arrive on Day 6. Run: python 
 from __future__ import annotations
 
 import logging
-import sys
+import time
 
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
@@ -34,8 +34,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 def main() -> None:
     setup_logging(settings.log_level)
     if not settings.telegram_bot_token:
-        log.warning("TELEGRAM_BOT_TOKEN not set; bot exits")
-        sys.exit(0)
+        # Under compose `restart: unless-stopped` an exit would loop every few seconds until Day 6 sets the token;
+        # idling keeps the container quiet and "Up" instead.
+        log.warning("TELEGRAM_BOT_TOKEN not set; bot idle until it is configured (restart the container afterwards)")
+        while True:
+            time.sleep(3600)
+            log.warning("bot idle: TELEGRAM_BOT_TOKEN still not set")
     application = Application.builder().token(settings.telegram_bot_token).build()
     application.add_handler(CommandHandler("start", start))
     log.info("bot polling started")

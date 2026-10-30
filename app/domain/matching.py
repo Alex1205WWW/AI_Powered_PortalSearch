@@ -6,7 +6,8 @@ Three outcome sets, never collapsed (the promise in the proposal and in the foll
   unknown      the listing does not say -> shown as "não indicado", never counted as confirmed
 
 Grade: "confirmada" when everything passed and nothing is unknown; "possivel" when it passed but
-some check is unknown. `criteria.unknown_policy == "hide"` turns an unknown must-have into a reject.
+some check is unknown. `criteria.unknown_policy == "hide"` rejects an ad that does not state an obligatory feature;
+price, zone or typology left unknown still show as "possivel" (that is what "obrigatorio" meant in the message to her).
 Hard checks are deterministic rules only; no LLM is involved anywhere in matching.
 """
 from __future__ import annotations
@@ -15,7 +16,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from app.domain.listing import POSITIVE_TIERS, TIER_ABSENT, TIER_UNKNOWN, feature_tier, normalize_text
-from app.geo.resolve import in_any_zone
+from app.geo.resolve import in_any_zone, is_within
 
 GRADE_CONFIRMED = "confirmada"
 GRADE_POSSIBLE = "possivel"
@@ -34,6 +35,19 @@ def _area(listing: Any) -> float | None:
     return listing.area_util if listing.area_util is not None else listing.area_bruta
 
 
+def zone_verdict(geo_code: str | None, zone_codes: list[str]) -> bool | None:
+    """True inside a zone; None when the listing is only located at a coarser level than the zone asks for
+    (an alert email saying just "Lisboa" against a concelho zone: "não indicado", not a rejection); False otherwise.
+    A listing with no location at all is a fail, or it would surface for every buyer everywhere."""
+    if not geo_code:
+        return False
+    if in_any_zone(geo_code, zone_codes):
+        return True
+    if any(is_within(z, geo_code) for z in zone_codes):
+        return None
+    return False
+
+
 def evaluate(listing: Any, criteria: Any, zone_codes: list[str]) -> MatchResult:
     """`listing` and `criteria` are duck-typed: ORM rows or dataclasses with the same attribute names."""
     satisfied: list[str] = []
@@ -46,10 +60,7 @@ def evaluate(listing: Any, criteria: Any, zone_codes: list[str]) -> MatchResult:
     check("ativo", getattr(listing, "status", "active") == "active")
     check("transacao", listing.transaction == criteria.transaction)
     check("tipo", None if listing.estate_type is None else listing.estate_type in criteria.estate_types)
-
-    # A listing with no location cannot be placed in any zone; treat as a fail, not unknown, or it
-    # would surface for every buyer everywhere.
-    check("zona", bool(listing.geo_code) and in_any_zone(listing.geo_code, zone_codes))
+    check("zona", zone_verdict(listing.geo_code, zone_codes))
 
     if listing.rooms is None:
         check("tipologia", None)
@@ -90,7 +101,7 @@ def evaluate(listing: Any, criteria: Any, zone_codes: list[str]) -> MatchResult:
         else:
             check(key, None)
             if criteria.unknown_policy == "hide":
-                unsatisfied.append(f"{key}:nao-indicado")
+                unsatisfied.append(f"{key}:nao-indicado")  # obligatory and not stated: hidden, as promised to her
     for key in criteria.nice_to_have:
         if feature_tier(features, key) in POSITIVE_TIERS:
             satisfied.append(f"+{key}")

@@ -1,0 +1,52 @@
+MIME-Version: 1.0
+From: idealista <noreply@idealista.pt>
+To: alertas.imoveis@gmail.com
+Subject: 2 novos imoveis em Lisboa que te podem interessar
+Date: Tue, 28 Oct 2026 08:15:02 +0000
+Message-ID: <alert-fixture-001@idealista.pt>
+Content-Type: multipart/alternative; boundary="b1"
+
+--b1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Apartamento T2 em Rua dos Remédios, Alfama, Lisboa
+365.000 €
+62 m² · 2.º andar com elevador
+https://www.idealista.pt/imovel/34567890/?utm_source=alert
+
+Moradia T3 em Colares, Sintra
+548.000 €
+96 m² · Garagem
+https://www.idealista.pt/imovel/34567891/
+
+--b1
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<html><body>
+<img src="https://e.idealista.pt/open/pixel.gif?u=abc" width="1" height="1" alt="">
+<table width="600">
+<tr><td>
+  <table class="card">
+    <tr><td><a href="https://www.idealista.pt/imovel/34567890/?utm_source=alert&utm_medium=email"><img src="https://img4.idealista.pt/blur/WEB_LISTING/0/id.pro.pt.image.master/aa/bb/cc/1.jpg" width="260" alt="foto"></a></td></tr>
+    <tr><td><a href="https://www.idealista.pt/imovel/34567890/?utm_source=alert&utm_medium=email">Apartamento T2 em Rua dos Remédios, Alfama, Lisboa</a></td></tr>
+    <tr><td><strong>365.000 €</strong></td></tr>
+    <tr><td>62 m² · 2.º andar com elevador</td></tr>
+    <tr><td>Apartamento totalmente remodelado, com varanda e vista de rio.</td></tr>
+    <tr><td><img src="https://img4.idealista.pt/blur/WEB_LISTING/0/id.pro.pt.image.master/aa/bb/cc/2.jpg" width="120"><img src="https://img4.idealista.pt/blur/WEB_LISTING/0/id.pro.pt.image.master/aa/bb/cc/3.jpg" width="120"></td></tr>
+  </table>
+</td></tr>
+<tr><td>
+  <table class="card">
+    <tr><td><a href="https://click.idealista.pt/r?url=https%3A%2F%2Fwww.idealista.pt%2Fimovel%2F34567891%2F%3Futm_source%3Dalert"><img src="https://img4.idealista.pt/blur/WEB_LISTING/0/id.pro.pt.image.master/dd/ee/ff/1.jpg" width="260" alt="foto"></a></td></tr>
+    <tr><td><a href="https://click.idealista.pt/r?url=https%3A%2F%2Fwww.idealista.pt%2Fimovel%2F34567891%2F%3Futm_source%3Dalert">Moradia T3 em Colares, Sintra</a></td></tr>
+    <tr><td><strong>548.000 €</strong></td></tr>
+    <tr><td>96 m² · Garagem</td></tr>
+  </table>
+</td></tr>
+</table>
+<p><a href="https://www.idealista.pt/alertas/gerir">Gerir os meus alertas</a></p>
+</body></html>
+
+--b1--

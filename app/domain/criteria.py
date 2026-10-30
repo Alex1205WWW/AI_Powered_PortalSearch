@@ -16,7 +16,7 @@ FEATURES = {
     "arrecadacao": "Arrecadação",
     "vista": "Vista (mar / rio)",
 }
-UNKNOWN_POLICIES = {"show": "Mostrar assinalado como 'não indicado'", "hide": "Esconder se o anúncio não indicar"}
+UNKNOWN_POLICIES = {"show": "Mostrar assinalado como 'não indicado'", "hide": "Esconder anúncios que não indicam uma característica obrigatória"}
 STATES = ["novo", "analisado", "contactado", "disponivel", "indisponivel"]
 
 

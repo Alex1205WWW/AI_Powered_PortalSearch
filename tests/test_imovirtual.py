@@ -36,7 +36,7 @@ def test_parse_and_normalise_search_fixture():
     assert first.external_id == "1iZ6K" and first.raw["id"] == 19301142  # keyed by the slug token, not the numeric id
     assert first.url == "https://www.imovirtual.com/pt/anuncio/moradia-t2-para-venda-ID1iZ6K"
     assert first.price == 430000 and first.currency == "EUR" and not first.hide_price
-    assert first.rooms == 3 and first.estate_type == "moradia" and first.transaction == "sale"
+    assert first.rooms == 2 and first.estate_type == "moradia" and first.transaction == "sale"  # slug says T2; roomsNumber THREE = divisions
     assert first.area_util == 186.56 and first.land_area is None
     assert first.geo_code == "lisboa/oeiras/barcarena"
     assert [p[1] for p in first.geo_path] == ["district", "council", "parish"]
@@ -46,7 +46,7 @@ def test_parse_and_normalise_search_fixture():
     assert first.images and first.images[0].startswith("https://")
     assert first.street == "Travessa 31 de Janeiro"
     rooms = sorted(imo.normalise_item(i, "moradia").rooms for i in items)
-    assert rooms[0] >= 2 and 10 in rooms  # TEN maps to 10; open upper bound works
+    assert rooms[0] >= 1 and 9 in rooms  # TEN divisions = T9; open upper bound works
 
 
 def test_every_fixture_item_normalises_with_key_fields():
@@ -59,6 +59,7 @@ def test_every_fixture_item_normalises_with_key_fields():
         undated += listing.published_at is None
     # One real item carries dateCreated "1999-02-29 00:00:01" (an impossible date): tolerated as unknown, never a crash.
     assert undated == 1
+    assert sum(imo.normalise_item(i, "moradia").published_unknown for i in items) == 1
 
 
 def test_promoted_tiles_are_keyed_by_their_real_listing():
@@ -76,7 +77,7 @@ def test_promoted_tiles_are_keyed_by_their_real_listing():
 def test_parse_detail_fixture():
     detail = imo.parse_detail(load_detail())
     assert detail["status"] == "active" and detail["price"] == 430000 and not detail["hide_price"]
-    assert detail["rooms"] == 3 and detail["wc"] == 2 and detail["build_year"] == 1951
+    assert detail["rooms"] == 2 and detail["wc"] == 2 and detail["build_year"] == 1951  # Rooms_num "3" = divisions = T2
     assert detail["reference"] == "125011292-32"
     assert detail["agency_phone"] == "+351808200030"  # office number, not the agent's personal phone
     assert abs(detail["lat"] - 38.732204) < 1e-6 and detail["geo_code"] == "lisboa/oeiras/barcarena"
@@ -122,3 +123,39 @@ def test_paginate_newest_stops_at_watermark():
 
     got_all = [l.external_id for l in imo.paginate_newest(fetch, since=None)]
     assert got_all == ["1", "2", "3", "4", "5", "6"]
+
+
+def test_rooms_and_floor_follow_the_verified_convention():
+    """Imovirtual roomsNumber counts divisions (T1 -> TWO); floorNumber is an enum. Verified live 2026-10-28."""
+    base = {"id": 1, "slug": "apartamento-t1-para-venda-IDabc", "estate": "FLAT", "transaction": "SELL", "totalPrice": {"value": 1},
+            "location": {}}
+    l = imo.normalise_item({**base, "roomsNumber": "TWO", "floorNumber": "FOURTH"}, "apartamento")
+    assert l.rooms == 1 and l.floor == 4
+    assert imo.normalise_item({**base, "roomsNumber": "ONE", "floorNumber": "GROUND"}, "apartamento").rooms == 0
+    assert imo.normalise_item({**base, "roomsNumber": "MORE", "floorNumber": "ABOVE_TENTH"}, "apartamento").rooms == 10
+    l = imo.normalise_item({**base, "roomsNumber": None, "floorNumber": None}, "apartamento")
+    assert l.rooms is None and l.floor is None and "tipologia" in l.missing_fields()
+    assert imo.normalise_item({**base, "roomsNumber": "ONE", "floorNumber": "CELLAR"}, "apartamento").floor == -1
+
+
+def test_field_fill_canary_on_the_fixture_and_on_drift():
+    """Below the sample size nothing fires; on the real fixture replicated to 30+ items nothing fires; a layout change
+    that drops agency and area from most items fires with a readable reason."""
+    from app.domain.listing import CANARY_MIN_SAMPLE, FillStats
+
+    items, _ = imo.parse_search(load_search())
+    stats = FillStats()
+    for item in items:
+        stats.add(imo.normalise_item(item, "moradia"))
+    assert stats.n == 14 and stats.breaches() == []  # under the sample size: never fires
+    while stats.n < CANARY_MIN_SAMPLE:
+        for item in items:
+            stats.add(imo.normalise_item(item, "moradia"))
+    assert stats.breaches() == [] and stats.ratios()["agency"] >= 0.85 and stats.ratios()["published"] == 1.0  # 13/14 dated + 1 placeholder-dated
+    drift = FillStats()
+    for item in items * 3:
+        broken = {**item, "agency": None, "advertOwner": None, "areaInSquareMeters": None}
+        drift.add(imo.normalise_item(broken, "moradia"))
+    reasons = drift.breaches()
+    assert any(r.startswith("agency 0%") for r in reasons) and any(r.startswith("area 0%") for r in reasons)
+    assert not any(r.startswith("rooms") for r in reasons)

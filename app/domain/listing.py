@@ -5,6 +5,11 @@ Tiers (Roadmap_M1.md §3 item 12):
   mentioned  keyword found in title/description by plain regex (never an LLM)
   absent     typed field on the source says no
   unknown    nothing on the listing says anything -> shown as "não indicado", never a confirmed match
+
+Conventions shared by every adapter:
+  rooms  = Portuguese typology T (bedrooms). Imovirtual's `roomsNumber` counts divisions, so the adapter
+           subtracts one (verified 2026-10-28). T10+ is stored as 10.
+  floor  = -1 cave, 0 rés-do-chão, 1..10, 11 = above the tenth. None when the source does not say.
 """
 from __future__ import annotations
 
@@ -19,6 +24,7 @@ TIER_MENTIONED = "mentioned"
 TIER_ABSENT = "absent"
 TIER_UNKNOWN = "unknown"
 POSITIVE_TIERS = {TIER_CONFIRMED, TIER_MENTIONED}
+TYPED_TIERS = {TIER_CONFIRMED, TIER_ABSENT}
 
 # Matched against accent-stripped, lower-cased text.
 FEATURE_PATTERNS: dict[str, re.Pattern] = {
@@ -64,6 +70,34 @@ def feature_tier(features: dict[str, dict] | None, key: str) -> str:
     return entry["tier"] if entry else TIER_UNKNOWN
 
 
+CANARY_MIN_SAMPLE = 30
+CANARY_THRESHOLDS = {"agency": 0.85, "area": 0.90, "rooms": 0.90, "published": 0.90}  # plan Day 2 said date 100 %; real ads carry occasional impossible dates, so 90 % (live fill 2026-10-28: 100 / 100 / 99.5 / 99.4 %)
+
+
+class FillStats:
+    """Parser-drift canary: field-fill ratios over the listings one run produced. A source that suddenly returns
+    listings without agency, area, typology or date is almost always a changed page layout, not a changed market."""
+
+    def __init__(self) -> None:
+        self.n = 0
+        self.hits = {key: 0 for key in CANARY_THRESHOLDS}
+
+    def add(self, c: "CanonicalListing") -> None:
+        self.n += 1
+        self.hits["agency"] += bool(c.agency_name)
+        self.hits["area"] += c.area_util is not None or c.area_bruta is not None
+        self.hits["rooms"] += c.rooms is not None
+        self.hits["published"] += c.published_at is not None or c.published_unknown  # a placeholder date is a present field, not drift
+
+    def ratios(self) -> dict[str, float]:
+        return {key: (self.hits[key] / self.n if self.n else 0.0) for key in CANARY_THRESHOLDS}
+
+    def breaches(self) -> list[str]:
+        if self.n < CANARY_MIN_SAMPLE:
+            return []
+        return [f"{key} {ratio:.0%} < {CANARY_THRESHOLDS[key]:.0%}" for key, ratio in self.ratios().items() if ratio < CANARY_THRESHOLDS[key]]
+
+
 @dataclass
 class CanonicalListing:
     """What an adapter hands to the persistence layer. Field names mirror `db.models.Listing`."""
@@ -80,6 +114,7 @@ class CanonicalListing:
     land_area: float | None = None
     rooms: int | None = None
     wc: int | None = None
+    floor: int | None = None
     estate_type: str | None = None
     transaction: str = "sale"
     geo_code: str | None = None
@@ -98,6 +133,7 @@ class CanonicalListing:
     images: list[str] = field(default_factory=list)
     description: str | None = None
     published_at: datetime | None = None
+    published_unknown: bool = False  # the source carried a date field but marked it unknown (Imovirtual: 1999-02-29 00:00:01)
     previous_price: int | None = None
     status: str = "active"
     raw: dict = field(default_factory=dict)

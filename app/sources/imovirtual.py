@@ -1,9 +1,12 @@
 """Imovirtual adapter (Milestone1_Plan.md §1.1, Roadmap_M1.md §7).
 
-Contract verified 2026-10-27:
+Contract verified 2026-10-27 / 2026-10-28:
 - search: /pt/resultados/comprar/<apartamento|moradia>/<distrito>/<concelho>?by=LATEST&direction=DESC&page=N
   (+ priceMin / priceMax). JSON in <script id="__NEXT_DATA__"> at props.pageProps.data.searchAds.{items,pagination}
 - detail: /pt/anuncio/<slug> -> props.pageProps.ad
+- `roomsNumber` counts DIVISIONS, not bedrooms (slug T2 -> "THREE"), so typology = roomsNumber - 1. The detail page's
+  `Rooms_num` / `rooms_num` follow the same convention. Verified on a live page (26/26) and 1 268 stored ads.
+- `floorNumber` is an enum (CELLAR, GROUND, FIRST ... TENTH, ABOVE_TENTH); null on most houses.
 - robots Content-Signal ai-input=no: nothing from this source is ever sent to an LLM. Extraction is rules only.
 """
 from __future__ import annotations
@@ -23,7 +26,10 @@ log = logging.getLogger(__name__)
 
 BASE = "https://www.imovirtual.com"
 NEXT_DATA_RE = re.compile(r'<script[^>]*id="__NEXT_DATA__"[^>]*>(.*?)</script>', re.S)
-ROOMS = {"ONE": 1, "TWO": 2, "THREE": 3, "FOUR": 4, "FIVE": 5, "SIX": 6, "SEVEN": 7, "EIGHT": 8, "NINE": 9, "TEN": 10, "MORE": 11}
+# Number of divisions as Imovirtual sends it; typology T = divisions - 1 (see module docstring). MORE = more than ten.
+DIVISIONS = {"ONE": 1, "TWO": 2, "THREE": 3, "FOUR": 4, "FIVE": 5, "SIX": 6, "SEVEN": 7, "EIGHT": 8, "NINE": 9, "TEN": 10, "MORE": 11}
+FLOORS = {"CELLAR": -1, "GROUND": 0, "FIRST": 1, "SECOND": 2, "THIRD": 3, "FOURTH": 4, "FIFTH": 5, "SIXTH": 6, "SEVENTH": 7,
+          "EIGHTH": 8, "NINTH": 9, "TENTH": 10, "ABOVE_TENTH": 11}
 ESTATE = {"FLAT": "apartamento", "HOUSE": "moradia", "TERRAIN": "terreno"}
 TRANSACTION = {"SELL": "sale", "RENT": "rent"}
 GEO_LEVELS = ("district", "council", "parish")  # neighbourhood is dropped: our taxonomy stops at parish
@@ -39,6 +45,16 @@ TYPED_FEATURES = {
     "exterior": ("garden", "terrace", "jardim", "terraco", "quintal", "logradouro", "terreno", "patio"),
 }
 TAG_RE = re.compile(r"<[^>]+>")
+
+
+def typology_from_divisions(value) -> int | None:
+    """Imovirtual division count (enum string or number) -> Portuguese typology T. None when absent."""
+    if value is None or value == "":
+        return None
+    divisions = DIVISIONS.get(value) if isinstance(value, str) and not value.isdigit() else int(value)
+    if divisions is None:
+        return None
+    return max(divisions - 1, 0)
 
 
 def extract_next_data(html: str) -> dict | None:
@@ -123,7 +139,8 @@ def normalise_item(item: dict, default_estate: str | None = None) -> CanonicalLi
         hide_price=bool(item.get("hidePrice")),
         area_util=float(item["areaInSquareMeters"]) if item.get("areaInSquareMeters") is not None else None,
         land_area=float(item["terrainAreaInSquareMeters"]) if item.get("terrainAreaInSquareMeters") is not None else None,
-        rooms=ROOMS.get(item.get("roomsNumber") or ""),
+        rooms=typology_from_divisions(item.get("roomsNumber")),
+        floor=FLOORS.get(item.get("floorNumber") or ""),
         estate_type=estate,
         transaction=TRANSACTION.get(item.get("transaction") or "SELL", "sale"),
         geo_code=geo_code,
@@ -138,6 +155,7 @@ def normalise_item(item: dict, default_estate: str | None = None) -> CanonicalLi
         images=[u for u in images if u][:10],
         description=short,
         published_at=_parse_dt(item.get("dateCreated")) or _parse_dt(item.get("createdAtFirst")),
+        published_unknown=bool(item.get("dateCreated")) and _parse_dt(item.get("dateCreated")) is None,  # "1999-02-29 00:00:01" on ~3 % of ads
         raw=item,
     )
 
@@ -190,7 +208,7 @@ def parse_detail(data: dict) -> dict | None:
         "status": "active" if active else "removed",
         "price": int(target["Price"]) if target.get("Price") not in (None, "") else (int(float(chars["price"])) if chars.get("price") else None),
         "hide_price": _truthy(target.get("hidePrice")) or (ad.get("price") or {}).get("type") == "HIDDEN",
-        "rooms": int(rooms_raw) if rooms_raw not in (None, "") else None,
+        "rooms": typology_from_divisions(rooms_raw),
         "wc": int(extra["bathrooms_num"]) if extra.get("bathrooms_num") else None,
         "build_year": int(extra["build_year"]) if extra.get("build_year") else None,
         "area_util": float(chars["m"]) if chars.get("m") else None,

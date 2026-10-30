@@ -12,6 +12,9 @@
   sweep <source_key>       one incremental sweep + matching + alerts (the worker does this on schedule)
   flush-notifications      send unsent alerts
   rewind-watermarks <source_key> <hours>   look further back on the next sweep
+  rematch                  silently re-evaluate every active criteria against stored properties (no alerts)
+  poll-email               read new Idealista alert emails now (the worker does this every 3 min)
+  split <listing_id>       dedup override: this listing is not the same property as its siblings
 """
 from __future__ import annotations
 
@@ -52,7 +55,8 @@ def cmd_hash_password(args: list[str]) -> None:
 
     if not args:
         sys.exit("usage: hash-password <password>")
-    print(hash_password(args[0]))
+    # Single quotes matter: docker compose interpolates '$' in .env files and would truncate the hash.
+    print(f"ADMIN_PASSWORD_HASH='{hash_password(args[0])}'")
 
 
 def cmd_send_test(args: list[str]) -> None:
@@ -93,7 +97,7 @@ def cmd_seed_demo_buyers(args: list[str]) -> None:
             )
             if set(data.must_have) & set(data.nice_to_have):
                 data.nice_to_have = []
-            criteria.create(session, data)
+            criteria.create(session, data, queue_initial_run=False)  # local test data: never crawl for demo buyers
             created += 1
         print(f"demo buyers created: {created}")
 
@@ -149,6 +153,34 @@ def cmd_flush_notifications(_: list[str]) -> None:
         print(f"messages sent: {notifications.flush(session)}")
 
 
+def cmd_rematch(_: list[str]) -> None:
+    """rematch: re-evaluate every active criteria against every stored property. Silent (no alerts); run after a data
+    correction (e.g. migration 0003) or when criteria were edited."""
+    from app.services import runs
+
+    with session_scope() as session:
+        for criteria_id, count in runs.rematch_all(session).items():
+            print(f"criteria {criteria_id}: {count} matching properties")
+
+
+def cmd_poll_email(_: list[str]) -> None:
+    from app.services import runs
+
+    with session_scope() as session:
+        run = runs.execute_email_poll(session)
+        print(f"run {run.id} {run.status}: messages={run.pages_fetched} new={run.listings_new} updated={run.listings_updated} error={run.error}")
+
+
+def cmd_split(args: list[str]) -> None:
+    from app.services import properties
+
+    if not args:
+        sys.exit("usage: split <listing_id>")
+    with session_scope() as session:
+        prop = properties.split(session, int(args[0]))
+        print(f"listing {args[0]} moved to its own property {prop.id}")
+
+
 def cmd_rewind_watermarks(args: list[str]) -> None:
     """rewind-watermarks <source_key> <hours>: make the next sweep look further back (testing / after downtime)."""
     from app.services import runs
@@ -165,6 +197,9 @@ COMMANDS = {
     "sweep": cmd_sweep,
     "flush-notifications": cmd_flush_notifications,
     "rewind-watermarks": cmd_rewind_watermarks,
+    "rematch": cmd_rematch,
+    "poll-email": cmd_poll_email,
+    "split": cmd_split,
     "seed-geo": cmd_seed_geo,
     "seed-sources": cmd_seed_sources,
     "refresh-robots": cmd_refresh_robots,

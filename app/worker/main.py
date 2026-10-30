@@ -28,6 +28,9 @@ def build_scheduler() -> BackgroundScheduler:
     scheduler.add_job(jobs.flush_notifications, "interval", minutes=2, id="flush_notifications")
     for key, minutes in enabled_portal_schedules():
         scheduler.add_job(jobs.sweep_source, "interval", minutes=minutes, args=[key], id=f"sweep:{key}", jitter=120)
+    email_minutes = email_schedule()
+    if email_minutes:
+        scheduler.add_job(jobs.poll_email, "interval", minutes=email_minutes, id="poll_email")
     return scheduler
 
 
@@ -45,6 +48,20 @@ def enabled_portal_schedules() -> list[tuple[str, int]]:
     with session_scope() as session:
         rows = session.scalars(select(Source).where(Source.enabled.is_(True), Source.kind == "portal"))
         return [(s.key, s.schedule_minutes or 180) for s in rows if s.key in ADAPTERS]
+
+
+def email_schedule() -> int | None:
+    """Poll interval for the Idealista alert mailbox, or None when IMAP is not configured or the source is off."""
+    from sqlalchemy import select
+
+    from app.db.models import Source
+    from app.db.session import session_scope
+
+    if not settings.imap_user or not settings.imap_password:
+        return None
+    with session_scope() as session:
+        source = session.scalar(select(Source).where(Source.key == "idealista_email", Source.enabled.is_(True)))
+        return (source.schedule_minutes or 3) if source else None
 
 
 def main() -> None:
