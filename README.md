@@ -24,6 +24,17 @@ backups) · `bot` (Telegram) · `caddy` (TLS). O Postgres nunca é exposto fora 
 Pré-requisitos: servidor com 2 vCPU / 4 GB na conta da cliente, chave SSH adicionada na criação,
 nome DuckDNS (gratuito, `https://www.duckdns.org`) a apontar para o IP do servidor.
 
+**Processador ARM (Hetzner CAX) ou Intel/AMD (CX): ambos funcionam.** O servidor em produção é um
+CAX11 (Ampere, `aarch64`). Toda a stack tem binários para arm64 — as imagens `postgres:16`,
+`caddy:2` e `python:3.12-slim` publicam `linux/arm64/v8`, todas as dependências têm wheels
+`manylinux_aarch64` e o repositório PGDG serve arm64. **Construa sempre a imagem no próprio
+servidor** (`docker compose build`): uma imagem construída num portátil Intel não arranca em ARM,
+e não há registry neste desenho.
+
+**`docker compose build` sem argumentos.** Os três serviços (`web`, `worker`, `bot`) são imagens
+separadas a partir do mesmo Dockerfile. Construir só `web` deixa o worker a correr código antigo —
+aconteceu em 2026-10-30 e custou meia hora a diagnosticar.
+
 ```sh
 ssh root@<IP>
 apt-get update && apt-get -y upgrade
@@ -41,6 +52,36 @@ docker compose exec worker python -c "from app.worker.jobs import backup; print(
 
 Depois de uma correção de dados (como a migração `0003`, que corrige as tipologias do Imovirtual):
 `docker compose exec worker python -m app.cli rematch` (silencioso, sem alertas).
+
+### Primeiro arranque: aquecer os hashes antes do backfill
+
+O backfill da RE/MAX compara fotografias com as outras fontes. Cada fotografia é descarregada **uma
+vez** e o hash fica em cache para sempre, mas se a cache estiver fria o backfill paga esse custo
+enquanto rastreia (medido a 2026-10-30: 25 anúncios → 316 descarregamentos, 292 deles de fotografias
+do Imovirtual). Aqueça primeiro:
+
+```sh
+docker compose exec -d worker sh -c "python -m app.cli warm-hashes 8000 >/tmp/warm.log 2>&1"
+docker compose exec worker python -m app.cli warm-hashes 1   # mostra quantas faltam
+```
+
+O worker também aquece sozinho, 400 de cada vez, de 15 em 15 minutos. Com a cache quente, o
+backfill completo são cerca de 7 h: ~4,3 h de páginas (1,5 s cada, 10 298 anúncios) e o resto de
+fotografias. Corre sozinho de 20 em 20 minutos e retoma onde ficou (`crawl_runs.cursor`), por isso
+não precisa de ficar a ver. Termina quando o run de `kind='backfill'` fica em `status='ok'`;
+`partial` significa que foi uma fatia deliberada (`--limit`) e que ainda falta catálogo.
+
+### Notas de operação
+
+```sh
+docker compose exec worker sh -c "python -m app.cli backfill remax 200"   # fatia medida
+docker compose exec worker sh -c "python -m app.cli poll-email --rescan --silent"  # reler a caixa após corrigir o parser
+docker compose exec worker python -m app.cli matched-refresh              # detalhes dos imóveis correspondentes
+docker compose exec worker python -m app.cli export /tmp/imoveis.xlsx     # folha de cálculo
+```
+
+Passe sempre as opções com `sh -c "..."`: o `docker compose exec` consome os `--flags` que vêm
+soltos e o comando corre sem elas, em silêncio.
 
 ## Desenvolvimento local
 
