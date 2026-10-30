@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Annotated
 
 from fastapi import Depends, Request
+from pydantic import BeforeValidator
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
@@ -44,3 +45,22 @@ def _banner() -> list[dict]:
             return health.banner(session)
     except Exception:  # noqa: BLE001
         return []
+
+
+# --- query parameters that come from HTML forms -------------------------------------------------
+# A browser submits EVERY field in a form, including the ones left blank, so `<option value="">Todos os
+# compradores</option>` arrives as `buyer=`. Pydantic cannot parse "" into `int | None` - it is not the same
+# as the parameter being absent - and FastAPI answers 422 with a raw JSON error page.
+#
+# This is why pressing "Filtrar" with nothing selected returned
+#   {"detail":[{"type":"int_parsing","loc":["query","buyer"], ...}]}
+# It had been true of `buyer` since the page was written; it only became obvious when more numeric filters
+# were added. Test optional query parameters by submitting the whole form, not by hand-crafting a URL with
+# only the parameters you care about.
+
+def _blank_to_none(value):
+    return None if isinstance(value, str) and not value.strip() else value
+
+
+OptInt = Annotated[int | None, BeforeValidator(_blank_to_none)]
+OptStr = Annotated[str | None, BeforeValidator(_blank_to_none)]

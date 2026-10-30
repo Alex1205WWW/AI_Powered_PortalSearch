@@ -12,7 +12,7 @@ from app.domain.criteria import ESTATE_TYPES, STATES
 from app.services import export
 from app.services import matches as match_svc
 from app.services import properties as prop_svc
-from app.web.deps import DB, User, render
+from app.web.deps import DB, OptInt, OptStr, User, render
 
 router = APIRouter()
 
@@ -56,10 +56,10 @@ def _zone_choices(db):
 
 
 @router.get("/properties")
-async def list_properties(request: Request, db: DB, user: User, buyer: int | None = None, state: str | None = None,
-                          grade: str | None = None, zone: str | None = None, price_min: int | None = None,
-                          price_max: int | None = None, rooms_min: int | None = None, rooms_max: int | None = None,
-                          estate: str | None = None, q: str | None = None, limit: int = 200):
+async def list_properties(request: Request, db: DB, user: User, buyer: OptInt = None, state: OptStr = None,
+                          grade: OptStr = None, zone: OptStr = None, price_min: OptInt = None,
+                          price_max: OptInt = None, rooms_min: OptInt = None, rooms_max: OptInt = None,
+                          estate: OptStr = None, q: OptStr = None, limit: int = 200):
     stmt = (
         select(PropertyMatch, Buyer.label, Criteria)
         .join(Buyer, Buyer.id == PropertyMatch.buyer_id)
@@ -115,8 +115,8 @@ async def list_properties(request: Request, db: DB, user: User, buyer: int | Non
 
 
 @router.get("/properties/export.xlsx")
-async def export_properties(request: Request, db: DB, user: User, buyer: int | None = None,
-                            state: str | None = None, grade: str | None = None):
+async def export_properties(request: Request, db: DB, user: User, buyer: OptInt = None,
+                            state: OptStr = None, grade: OptStr = None):
     """The same set the panel is showing, as a spreadsheet (deliverable 2)."""
     label = db.scalar(select(Buyer.label).where(Buyer.id == buyer)) if buyer else None
     stream = export.workbook(db, buyer_id=buyer, state=state, grade=grade)

@@ -14,7 +14,7 @@ from sqlalchemy import func, or_, select
 
 from app.db.models import Agency, Source
 from app.services import agencies as svc
-from app.web.deps import DB, User, render
+from app.web.deps import DB, OptInt, OptStr, User, render
 
 router = APIRouter(prefix="/agencies")
 PAGE_SIZE = 50
@@ -22,8 +22,10 @@ FILTERS = ("legiveis", "com-site", "sem-site", "problemas", "todas")
 
 
 @router.get("")
-async def list_agencies(request: Request, db: DB, user: User, page: int = 1, f: str = "legiveis", q: str = ""):
-    page = max(1, page)
+async def list_agencies(request: Request, db: DB, user: User, page: OptInt = None, f: OptStr = None, q: OptStr = None):
+    page = max(1, page or 1)
+    f = f or "legiveis"
+    q = q or ""
     stmt = select(Agency, Source).outerjoin(Source, Source.id == Agency.watch_source_id)
     if f == "legiveis":
         stmt = stmt.where(Source.confidence.in_(("full", "partial")))
@@ -44,8 +46,10 @@ async def list_agencies(request: Request, db: DB, user: User, page: int = 1, f: 
 
 
 @router.post("/add")
-async def add(request: Request, db: DB, user: User, website_url: Annotated[str, Form()],
+async def add(request: Request, db: DB, user: User, website_url: Annotated[str, Form()] = "",
               name: Annotated[str, Form()] = ""):
+    if not website_url.strip():
+        return RedirectResponse(f"/agencies?msg={quote('Indique o endereço do site da mediadora.')}", status_code=303)
     try:
         agency = svc.add_manual_website(db, name.strip() or website_url, website_url.strip())
         svc.ensure_source(db, agency)

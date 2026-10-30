@@ -14,6 +14,8 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from app.config import settings
 from app.logging_setup import setup_logging
+from fastapi.exceptions import RequestValidationError
+
 from app.web.auth import NotAuthenticated
 from app.web.routers import agencies, buyers, criteria, dashboard, findings, properties, settings_page, sources
 
@@ -34,6 +36,22 @@ app.mount("/static", StaticFiles(directory=str(Path(__file__).resolve().parent /
 @app.exception_handler(NotAuthenticated)
 async def _redirect_to_login(request: Request, exc: NotAuthenticated):
     return RedirectResponse(url=f"/login?next={quote(str(request.url.path))}", status_code=303)
+
+
+@app.exception_handler(RequestValidationError)
+async def _invalid_input(request: Request, exc: RequestValidationError):
+    """A bad form value must never show her FastAPI's raw JSON.
+
+    HTML forms submit every field, including blank ones, so a blank `<option value="">` reaches an `int`
+    parameter as "" and Pydantic rejects it. The parameters themselves are tolerant now (`deps.OptInt`),
+    but this is the net: anything still invalid sends her back where she was with a sentence she can act
+    on, instead of `{"detail":[{"type":"int_parsing",...}]}`."""
+    fields = ", ".join(str(e.get("loc", ["?"])[-1]) for e in exc.errors()[:4]) or "desconhecido"
+    log.warning("invalid input on %s: %s", request.url.path, exc.errors()[:4])
+    back = request.headers.get("referer") or request.url.path
+    joiner = "&" if "?" in back else "?"
+    message = f"Valor inválido em: {fields}. Verifique os campos e tente outra vez."
+    return RedirectResponse(f"{back}{joiner}msg={quote(message)}", status_code=303)
 
 
 @app.exception_handler(OperationalError)

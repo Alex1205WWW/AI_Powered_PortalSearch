@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from app.db.models import Buyer, Geo
 from app.domain.criteria import CriteriaInput
 from app.services import criteria as svc
-from app.web.deps import DB, User, render
+from app.web.deps import DB, OptInt, User, render
 
 router = APIRouter(prefix="/criteria")
 
@@ -81,7 +81,7 @@ FormList = Annotated[list[str], Form()]
 
 
 @router.get("/new")
-async def new_form(request: Request, db: DB, user: User, buyer: int | None = None):
+async def new_form(request: Request, db: DB, user: User, buyer: OptInt = None):
     data = CriteriaInput(buyer_id=buyer or 0)
     return render(request, "criteria_form.html", **_form_context(db, data, None, []))
 
