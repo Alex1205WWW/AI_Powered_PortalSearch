@@ -52,9 +52,17 @@ def month_spend_cents(session: Session, now: datetime | None = None) -> int:
 
 
 def budget_guard(session: Session, *, estimate_cents: int = 0) -> None:
-    cap = settings.ai_cap_cents_month
-    if cap and month_spend_cents(session) + estimate_cents > cap:
-        raise BudgetExceeded(f"monthly AI cap of {cap} cents reached")
+    """The one place the monthly cap is enforced - every model call passes through here.
+
+    Delegates to `services.budget`, which owns the cap value (stored in `app_settings` so she can change it
+    without a redeploy) and fires the 80 % warning. Imported locally because `services.budget` reads the
+    ledger this module writes."""
+    from app.services import budget as budget_svc
+
+    try:
+        budget_svc.ensure_within(session, estimate_cents=estimate_cents)
+    except budget_svc.BudgetExceeded as exc:
+        raise BudgetExceeded(str(exc)) from exc
 
 
 def record_spend(session: Session, *, provider: str, operation: str, model: str | None = None,

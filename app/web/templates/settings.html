@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Configurações{% endblock %}
+{% block content %}
+<h2>Configurações</h2>
+
+<article>
+  <h3>Gasto de IA este mês</h3>
+  <p>
+    <strong>{{ money(spend.spent_cents) }}</strong> de {{ money(spend.cap_cents) if spend.cap_cents else 'sem teto' }}
+    {% if spend.cap_cents %}({{ (spend.share * 100)|round|int }}%){% endif %}
+    —
+    {% if spend.state == 'suspended' %}<span class="tag bad">IA suspensa</span>
+    {% elif spend.state == 'warning' %}<span class="tag warn">perto do limite</span>
+    {% else %}<span class="tag ok">dentro do limite</span>{% endif %}
+  </p>
+  {% if spend.state == 'suspended' %}
+  <p><small>As notas de voz deixam de ser interpretadas até ao próximo mês ou até aumentar o limite.
+    <strong>As pesquisas, as comparações e os alertas continuam a funcionar</strong> — e pode criar pesquisas
+    no formulário, que não usa IA.</small></p>
+  {% endif %}
+  {% if spend_rows %}
+  <table>
+    <thead><tr><th>Operação</th><th>Modelo</th><th>Chamadas</th><th>Custo</th></tr></thead>
+    <tbody>
+    {% for operation, model, calls, cents in spend_rows %}
+      <tr><td>{{ operation }}</td><td><small>{{ model or '—' }}</small></td><td>{{ calls }}</td><td>{{ money(cents) }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}<p><small class="muted">Ainda sem chamadas de IA este mês.</small></p>{% endif %}
+</article>
+
+<form method="post" action="/settings">
+  <h3>Alertas</h3>
+  <div class="grid">
+    <label>Começar às
+      <input type="number" name="alert_from" min="0" max="23" value="{{ alert_from }}" required>
+    </label>
+    <label>Parar às
+      <input type="number" name="alert_to" min="1" max="24" value="{{ alert_to }}" required>
+    </label>
+    <label>Resumo diário
+      <input type="time" name="digest_at" value="{{ digest_at }}" required>
+    </label>
+  </div>
+  <small class="muted">Fora deste horário nada se perde: os alertas ficam em espera e chegam no início do
+    horário seguinte.</small>
+
+  <h3>Limite de IA</h3>
+  <label>Máximo por mês (USD)
+    <input type="text" name="cap_usd" value="{{ '%.2f'|format(spend.cap_cents / 100) }}" inputmode="decimal">
+  </label>
+  <small class="muted">Só limita a interpretação de voz e de texto. 0 remove o teto.</small>
+
+  <p><button type="submit">Guardar</button></p>
+</form>
+
+<article>
+  <h3>Telegram</h3>
+  {% if chat_id %}
+    <p>Ligado ao chat <code>{{ chat_id }}</code>.</p>
+  {% else %}
+    <p><span class="tag warn">por ligar</span> Abra o bot no Telegram e carregue em <strong>Start</strong>.
+      Enquanto não o fizer, o Telegram não permite enviar-lhe mensagens.</p>
+  {% endif %}
+</article>
+
+{% if banner %}
+<article>
+  <h3>Fontes com problemas</h3>
+  <ul>
+    {% for row in banner %}<li><strong>{{ row.name }}</strong> — {{ row.error or row.status }}</li>{% endfor %}
+  </ul>
+</article>
+{% endif %}
+{% endblock %}

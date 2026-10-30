@@ -223,3 +223,78 @@ tests/             testes unitários com fixtures guardadas
 2. Acrescentar a entrada em `SOURCE_SEED` (`app/sources/registry.py`) ou criar a fonte no painel.
 3. Guardar uma página real em `tests/fixtures/` e escrever o teste do normalizador.
 4. Tudo passa por `runs.ingest()`: deduplicação, correspondência e alertas vêm de graça.
+
+## Runbook — operar e recuperar
+
+### Atualizar o código no servidor
+
+Construir **sempre no servidor** (não há registry e uma imagem amd64 não arranca na ARM), e recriar o `web`
+primeiro porque é ele que corre as migrações:
+
+```sh
+# no portátil
+tar -czf /tmp/imoveis.tgz --exclude=.venv --exclude=.env --exclude=__pycache__     --exclude=.pytest_cache --exclude=.git --exclude=.pg16 .
+scp /tmp/imoveis.tgz root@<ip>:/tmp/
+
+# no servidor
+cd /srv/imoveis
+tar -xzf /tmp/imoveis.tgz                 # o .env fica intacto: não está no arquivo
+docker compose build                      # sem argumento: web, worker e bot saem do mesmo Dockerfile
+docker compose up -d --force-recreate web
+docker compose logs --tail=20 web | grep -i alembic     # confirmar a migração
+docker compose up -d --force-recreate worker bot
+```
+
+### Cópias de segurança
+
+O `worker` corre `pg_dump -Fc` todas as noites às 03:30 e guarda as 14 mais recentes no volume `/backups`.
+
+```sh
+./scripts/backup.sh                                     # cópia manual agora
+docker compose exec worker ls -la /backups/              # ver o que existe
+```
+
+### Recuperar (e ensaiar a recuperação)
+
+**Ensaio — não toca nos dados reais.** Restaura para uma base de dados temporária, compara as contagens e
+apaga-a. Faça isto de vez em quando: um dump que nunca foi restaurado não é uma cópia de segurança.
+
+```sh
+./scripts/restore.sh imoveis-20261030-194024.dump --rehearse
+```
+
+**Recuperação a sério** (substitui a base de dados viva; pede confirmação):
+
+```sh
+./scripts/restore.sh imoveis-20261030-194024.dump
+```
+
+> O `restore.sh` **não** faz `. ./.env` — `HTTP_USER_AGENT` tem parênteses e não é shell válido, por isso
+> com `set -e` o restauro abortava antes de começar. As credenciais são lidas do ambiente do contentor.
+> (Defeito encontrado pelo ensaio de recuperação, 2026-10-31.)
+
+### Acrescentar uma fonte
+
+**Mediadora** (sem código): painel → **Mediadoras** → *Acrescentar uma mediadora à mão*, ou
+`python -m app.cli agency-add https://www.mediadora.pt "Nome"`. É analisada na passagem seguinte e fica com
+um nível de confiança (`full` / `partial` / `none`, com a razão quando é `none`).
+
+**Portal novo** (com código): escrever um adaptador em `app/sources/`, registá-lo em
+`app/sources/registry.py`, acrescentar a linha em `SOURCE_SEED` e correr `python -m app.cli seed-sources`.
+O contrato está em `app/sources/base.py`; o `remax.py` é o exemplo de catálogo e o `imovirtual.py` o de
+consulta por zona.
+
+### Limite de gastos de IA
+
+Painel → **Configurações**. Afeta **apenas** a transcrição de voz e a interpretação de critérios; a recolha,
+a comparação e os alertas continuam a funcionar com o limite atingido. `python -m app.cli ai-spend` mostra o
+gasto do mês por operação.
+
+### Testes
+
+```sh
+.venv/Scripts/python -m pytest -q          # unitários, sem rede e sem base de dados
+.venv/Scripts/python -m scripts.smoke      # Dias 1-4 contra a base de dados real
+.venv/Scripts/python -m scripts.smoke_day6 # intake, rascunhos, horário, /faltou
+.venv/Scripts/python -m scripts.smoke_day7 # teto de IA, pausa, contagem do teste
+```

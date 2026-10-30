@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Imóveis que faltaram{% endblock %}
+{% block content %}
+<h2>Imóveis que faltaram</h2>
+
+<article>
+  {% if score is none %}
+    <p>Ainda não registou nenhum imóvel em falta.</p>
+    <p><small>No Telegram, envie <code>/faltou &lt;link&gt;</code> quando encontrar um imóvel à mão que o
+      sistema não lhe trouxe. É assim que medimos o resultado do teste.</small></p>
+  {% else %}
+    <p>
+      Cobertura: <strong>{{ (score * 100)|round|int }}%</strong>
+      ({{ had }} de {{ counted }} contavam e já tínhamos)
+      {% if score >= 0.8 %}<span class="tag ok">acima dos 80% acordados</span>
+      {% else %}<span class="tag warn">abaixo dos 80% acordados</span>{% endif %}
+    </p>
+    <p><small>{{ excluded }} registo(s) excluído(s) por serem de fontes fora do âmbito acordado.</small></p>
+  {% endif %}
+</article>
+
+<table>
+  <thead><tr><th>Quando</th><th>Link</th><th>Resultado</th><th>No sistema</th></tr></thead>
+  <tbody>
+  {% for row in rows %}
+  <tr>
+    <td><small>{{ row.finding.reported_at.strftime('%d/%m %H:%M') }}</small></td>
+    <td><a href="{{ row.finding.url }}" rel="noopener"><small>{{ row.finding.url[:70] }}</small></a></td>
+    <td>
+      {% if row.finding.verdict == 'ja_tinha' %}<span class="tag ok">{{ row.label }}</span>
+      {% elif row.finding.verdict == 'fonte_acordada' %}<span class="tag bad">{{ row.label }}</span>
+      {% else %}<span class="tag">{{ row.label }}</span>{% endif %}
+    </td>
+    <td>{% if row.listing %}<a href="/properties?q={{ row.listing.property_id }}"><small>{{ row.listing.title[:48] if row.listing.title else row.listing.id }}</small></a>
+        {% else %}<span class="muted">—</span>{% endif %}</td>
+  </tr>
+  {% else %}
+  <tr><td colspan="4" class="muted">Nada registado.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
