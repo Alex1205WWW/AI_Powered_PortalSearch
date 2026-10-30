@@ -1,0 +1,239 @@
+{
+ "companies": [
+  {
+   "id": "f62771aa-6726-43b7-bc62-339f660862b3",
+   "type": "AGENCY",
+   "name": "Best Space - Sociedade Imobiliária, Lda.",
+   "photo": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Imk4a3Bha2xrZDI3bDItQVBUIn0.Pxh8ZK4T8GnykWpaNUf_0ijR_WPhfdQErNU5tcDO_Wc/image",
+   "createdAt": "2018-09-05T19:46:27Z",
+   "location": {
+    "address": "Av. da Liberdade, 129 B",
+    "postalCode": "1250-140",
+    "name": "Santo António",
+    "fullName": "Santo António, Lisboa, Lisboa",
+    "__typename": "AccountLocation"
+   },
+   "contacts": {
+    "phone": "+351919997900",
+    "__typename": "CompanyContacts"
+   },
+   "attributes": {
+    "slug": "best-space-sociedade-imobiliaria-lda-ID2396902",
+    "__typename": "CompanyAttributes"
+   },
+   "statistics": {
+    "adsSell": {
+     "activeAdsCount": 0,
+     "maxPrice": null,
+     "minPrice": null,
+     "__typename": "AdCategoryStatistics"
+    },
+    "adsRent": {
+     "activeAdsCount": 0,
+     "maxPrice": null,
+     "minPrice": null,
+     "__typename": "AdCategoryStatistics"
+    },
+    "__typename": "AccountStatistics"
+   },
+   "__typename": "Company"
+  },
+  {
+   "id": "f6f4abd2-829b-43d0-8d0d-c2d3d7afeb60",
+   "type": "AGENCY",
+   "name": "UNIQUEWAY - REAL ESTATE, LDA.",
+   "photo": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImtrOHFvZHoweDEwZTMtQVBUIn0.jTwZJd5pp8T5hl7IJlGfuwwFLgx3X_BFR8hkibil1uQ/image",
+   "createdAt": "2021-05-12T16:19:15Z",
+   "location": {
+    "address": "AVENIDA URUGUAI 34, R/C - B",
+    "postalCode": "1500-615",
+    "name": "Benfica",
+    "fullName": "Benfica, Lisboa, Lisboa",
+    "__typename": "AccountLocation"
+   },
+   "contacts": {
+    "phone": "+351965239266",
+    "__typename": "CompanyContacts"
+   },
+   "attributes": {
+    "slug": "uniqueway-real-estate-lda-ID3884884",
+    "__typename": "CompanyAttributes"
+   },
+   "statistics": {
+    "adsSell": {
+     "activeAdsCount": 0,
+     "maxPrice": null,
+     "minPrice": null,
+     "__typename": "AdCategoryStatistics"
+    },
+    "adsRent": {
+     "activeAdsCount": 0,
+     "maxPrice": null,
+     "minPrice": null,
+     "__typename": "AdCategoryStatistics"
+    },
+    "__typename": "AccountStatistics"
+   },
+   "__typename": "Company"
+  },
+  {
+   "id": "f737f932-59d8-424e-89fc-18538976c0d6",
+   "type": "AGENCY",
+   "name": "IMOBILIÁRIA CGP",
+   "photo": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjdtczF4djdqeTBvMTItQVBUIn0.QQ3PxeeLLHj1E6_AYgVC0zCXsPQEUhq8OoAXEboL70M/image",
+   "createdAt": "2017-05-23T20:56:34Z",
+   "location": {
+    "address": "Rua Manuel Teixeira Gomes, LT 104 6° C",
+    "postalCode": "1950-189",
+    "name": "Marvila",
+    "fullName": "Marvila, Lisboa, Lisboa",
+    "__typename": "AccountLocation"
+   },
+   "contacts": {
+    "phone": "+351961693259",
+    "__typename": "CompanyContacts"
+   },
+   "attributes": {
+    "slug": "imobiliaria-cgp-ID567240",
+    "__typename": "CompanyAttributes"
+   },
+   "statistics": {
+    "adsSell": {
+     "activeAdsCount": 0,
+     "maxPrice": null,
+     "minPrice": null,
+     "__typename": "AdCategoryStatistics"
+    },
+    "adsRent": {
+     "activeAdsCount": 0,
+     "maxPrice": null,
+     "minPrice": null,
+     "__typename": "AdCategoryStatistics"
+    },
+    "__typename": "AccountStatistics"
+   },
+   "__typename": "Company"
+  },
+  {
+   "id": "f75ef6c8-ca71-410f-a7d0-7140b350734e",
+   "type": "AGENCY",
+   "name": "Prodigy Compendium Lda",
+   "photo": null,
+   "createdAt": "2024-08-28T14:12:00Z",
+   "location": {
+    "address": "avenida infante santo nº 43, 3º esquerdo",
+    "postalCode": "1350-177",
+    "name": "Estrela",
+    "fullName": "Estrela, Lisboa, Lisboa",
+    "__typename": "AccountLocation"
+   },
+   "contacts": {
+    "phone": "+351924093492",
+    "__typename": "CompanyContacts"
+   },
+   "attributes": {
+    "slug": "prodigy-compendium-lda-ID4854799",
+    "__typename": "CompanyAttributes"
+   },
+   "statistics": {
+    "adsSell": {
+     "activeAdsCount": 0,
+     "maxPrice": null,
+     "minPrice": null,
+     "__typename": "AdCategoryStatistics"
+    },
+    "adsRent": {
+     "activeAdsCount": 0,
+     "maxPrice": null,
+     "minPrice": null,
+     "__typename": "AdCategoryStatistics"
+    },
+    "__typename": "AccountStatistics"
+   },
+   "__typename": "Company"
+  },
+  {
+   "id": "f8c8c7f6-e389-4060-a09e-08fd3cd5039c",
+   "type": "AGENCY",
+   "name": "Pedro Costa",
+   "photo": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InpxMHJlcWM1dHE1NzMtQVBUIn0.dtF5-WxzpD4RaYaM7Ysat8a6w7PK0O482pOwNJR5U4o/image",
+   "createdAt": "2022-03-16T17:48:19Z",
+   "location": {
+    "address": "Rua Cidade de Bissau  49",
+    "postalCode": "1800-240",
+    "name": "Olivais",
+    "fullName": "Olivais, Lisboa, Lisboa",
+    "__typename": "AccountLocation"
+   },
+   "contacts": {
+    "phone": "+351926822012",
+    "__typename": "CompanyContacts"
+   },
+   "attributes": {
+    "slug": "pedro-costa-ID4127948",
+    "__typename": "CompanyAttributes"
+   },
+   "statistics": {
+    "adsSell": {
+     "activeAdsCount": 0,
+     "maxPrice": null,
+     "minPrice": null,
+     "__typename": "AdCategoryStatistics"
+    },
+    "adsRent": {
+     "activeAdsCount": 0,
+     "maxPrice": null,
+     "minPrice": null,
+     "__typename": "AdCategoryStatistics"
+    },
+    "__typename": "AccountStatistics"
+   },
+   "__typename": "Company"
+  },
+  {
+   "id": "f92b28e9-246e-4165-8934-b259d663a4b0",
+   "type": "AGENCY",
+   "name": "OLX PORTUGAL SA.",
+   "photo": null,
+   "createdAt": "2020-10-26T09:42:28Z",
+   "location": {
+    "address": "Praça Duque de Saldanha 1,  Edifício Atrium Saldanha,",
+    "postalCode": "1050-094",
+    "name": "Arroios",
+    "fullName": "Arroios, Lisboa, Lisboa",
+    "__typename": "AccountLocation"
+   },
+   "contacts": {
+    "phone": "+351210203812",
+    "__typename": "CompanyContacts"
+   },
+   "attributes": {
+    "slug": "olx-portugal-sa-ID3721582",
+    "__typename": "CompanyAttributes"
+   },
+   "statistics": {
+    "adsSell": {
+     "activeAdsCount": 0,
+     "maxPrice": null,
+     "minPrice": null,
+     "__typename": "AdCategoryStatistics"
+    },
+    "adsRent": {
+     "activeAdsCount": 0,
+     "maxPrice": null,
+     "minPrice": null,
+     "__typename": "AdCategoryStatistics"
+    },
+    "__typename": "AccountStatistics"
+   },
+   "__typename": "Company"
+  }
+ ],
+ "total": 760,
+ "pagination": {
+  "offset": 740,
+  "limit": 20,
+  "hasNext": false,
+  "__typename": "OffsetPageInfo"
+ }
+}

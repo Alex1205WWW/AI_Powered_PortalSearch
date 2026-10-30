@@ -16,6 +16,7 @@ from __future__ import annotations
 import html
 import re
 import unicodedata
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from datetime import datetime
 
@@ -73,13 +74,39 @@ def feature_tier(features: dict[str, dict] | None, key: str) -> str:
 CANARY_MIN_SAMPLE = 30
 CANARY_THRESHOLDS = {"agency": 0.85, "area": 0.90, "rooms": 0.90, "published": 0.90}  # plan Day 2 said date 100 %; real ads carry occasional impossible dates, so 90 % (live fill 2026-10-28: 100 / 100 / 99.5 / 99.4 %)
 
+# Which canary key each profile field promises. Agency sites publish far less than a portal: eGO types no
+# area at all and carries no publication date, so holding them to the Imovirtual contract would flag every
+# eGO source as `degraded` on its first run (Plan_Day5.md section 5 item 1).
+CANARY_FROM_PROFILE_FIELD = {"area": "area", "typology": "rooms", "published": "published"}
+
+
+def canary_fields(fields_present: Iterable[str] | None) -> set[str]:
+    """The canary keys a source has actually promised. A field the profile never promised cannot be drift.
+
+    `agency` is always expected on an agency site: the advertiser is the site owner, so a listing without one
+    really is a parsing failure."""
+    promised = set(fields_present or ())
+    keys = {"agency"}
+    keys.update(canary for field, canary in CANARY_FROM_PROFILE_FIELD.items() if field in promised)
+    return keys
+
+
+def canary_fields_for(source_kind: str | None, profile: dict | None) -> set[str] | None:
+    """None = the full portal contract (every threshold applies). A set = only what this source promised."""
+    if source_kind != "agency":
+        return None
+    return canary_fields((profile or {}).get("fields_present"))
+
 
 class FillStats:
     """Parser-drift canary: field-fill ratios over the listings one run produced. A source that suddenly returns
-    listings without agency, area, typology or date is almost always a changed page layout, not a changed market."""
+    listings without agency, area, typology or date is almost always a changed page layout, not a changed market.
 
-    def __init__(self) -> None:
+    `expect` narrows the check to the fields a source promised; None keeps the full portal contract."""
+
+    def __init__(self, expect: Iterable[str] | None = None) -> None:
         self.n = 0
+        self.expect = set(CANARY_THRESHOLDS) if expect is None else {k for k in expect if k in CANARY_THRESHOLDS}
         self.hits = {key: 0 for key in CANARY_THRESHOLDS}
 
     def add(self, c: "CanonicalListing") -> None:
@@ -95,7 +122,8 @@ class FillStats:
     def breaches(self) -> list[str]:
         if self.n < CANARY_MIN_SAMPLE:
             return []
-        return [f"{key} {ratio:.0%} < {CANARY_THRESHOLDS[key]:.0%}" for key, ratio in self.ratios().items() if ratio < CANARY_THRESHOLDS[key]]
+        return [f"{key} {ratio:.0%} < {CANARY_THRESHOLDS[key]:.0%}" for key, ratio in self.ratios().items()
+                if key in self.expect and ratio < CANARY_THRESHOLDS[key]]
 
 
 @dataclass

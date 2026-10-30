@@ -15,6 +15,14 @@
   rematch                  silently re-evaluate every active criteria against stored properties (no alerts)
   poll-email               read new Idealista alert emails now (the worker does this every 3 min)
   split <listing_id>       dedup override: this listing is not the same property as its siblings
+
+  agency-directory [pages] crawl the Imovirtual agency directory for her 50 concelhos (142 pages, ~5 min)
+  agency-websites [n]      resolve agency websites from their Imovirtual profile pages
+  agency-profile [n]       profile unprofiled agency sites (platform, pattern, measured confidence)
+  agency-watch [n]         read the agency sites that are due; first read per site is silent
+  agency-add <url> [name]  add one agency site by hand (her list, or anything she pastes later)
+  agency-summary           how many agencies found / with a site / readable, and by confidence
+  agency-evidence          listings an agency site had that no portal did (the Day 5 proof)
 """
 from __future__ import annotations
 
@@ -257,6 +265,101 @@ def cmd_rewind_watermarks(args: list[str]) -> None:
         print(f"watermarks rewound: {runs.rewind_watermarks(session, args[0], float(args[1]))}")
 
 
+def cmd_agency_directory(args: list[str]) -> None:
+    from app.services import agencies
+
+    with session_scope() as session:
+        stats = agencies.crawl_directory(session, max_pages=int(args[0]) if args else None)
+    print(f"mediadoras: {stats}")
+
+
+def cmd_agency_websites(args: list[str]) -> None:
+    from app.services import agencies
+
+    with session_scope() as session:
+        print(agencies.resolve_websites(session, limit=int(args[0]) if args else 100))
+
+
+def cmd_agency_profile(args: list[str]) -> None:
+    from app.services import agencies
+
+    limit = int(args[0]) if args else 10
+    with session_scope() as session:
+        pending = agencies.pending_profiles(session, limit=limit)
+        if not pending:
+            print("nada para perfilar: ou já estão todas feitas, ou nenhuma tem site.")
+            return
+        for agency in pending:
+            source = agencies.profile_agency(session, agency)
+            session.commit()
+            if source is None:
+                continue
+            profile = source.profile or {}
+            print(f"{source.key:<34} {str(source.confidence):<8} {profile.get('platform'):<8} "
+                  f"catalogo={(profile.get('index') or {}).get('catalogue_size')} "
+                  f"inc={profile.get('incremental')} campos={','.join(profile.get('fields_present') or []) or '-'}"
+                  + (f"  [{profile.get('notes')}]" if profile.get("notes") else ""))
+
+
+def cmd_agency_watch(args: list[str]) -> None:
+    from app.services import agencies
+
+    limit = int(args[0]) if args else 10
+    with session_scope() as session:
+        due = agencies.due_for_watch(session, limit=limit)
+        if not due:
+            print("nenhuma mediadora perfilada e ativa.")
+            return
+        for source in due:
+            first = source.last_ok_at is None
+            run = agencies.watch(session, source, initial=first)
+            ratio = agencies.refresh_offportal(session, source)
+            session.commit()
+            print(f"{source.key:<34} {run.status:<8} novos={run.listings_new:<5} "
+                  f"lidos={run.pages_fetched:<5} {'(1a leitura, silenciosa)' if first else ''} "
+                  f"fora-dos-portais={'-' if ratio is None else f'{ratio:.0%}'}  {run.cursor or {}}")
+
+
+def cmd_agency_add(args: list[str]) -> None:
+    from app.services import agencies
+
+    if not args:
+        sys.exit("usage: agency-add <url> [nome]")
+    url = args[0]
+    name = " ".join(args[1:]) or url.split("//")[-1].split("/")[0]
+    with session_scope() as session:
+        agency = agencies.add_manual_website(session, name, url)
+        source = agencies.ensure_source(session, agency)
+        session.commit()
+        print(f"adicionada: {agency.name} -> {agency.website_url} (fonte {source.key if source else '-'})")
+
+
+def cmd_agency_summary(_: list[str]) -> None:
+    from app.services import agencies
+
+    with session_scope() as session:
+        data = agencies.summary(session)
+    print(f"mediadoras encontradas       : {data['agencies']}")
+    print(f"  com anuncios de venda      : {data['with_sale_ads']}")
+    print(f"  perfis ja verificados      : {data['profiles_checked']}")
+    print(f"  com site proprio           : {data['with_website']}")
+    print(f"  legiveis (full|partial)    : {data['readable']}")
+    print(f"  por confianca              : {data['by_confidence']}")
+
+
+def cmd_agency_evidence(_: list[str]) -> None:
+    from app.services import agencies
+
+    with session_scope() as session:
+        found = agencies.offportal_examples(session, limit=10)
+        if not found:
+            print("ainda sem provas: nenhum imovel de mediadora sem correspondencia num portal.")
+            return
+        for listing in found:
+            print(f"- {listing.url}")
+            print(f"    {listing.title or ''} | {listing.price} EUR | T{listing.rooms} | {listing.geo_code}")
+
+
 COMMANDS = {
     "run-initial": cmd_run_initial,
     "run-queued": cmd_run_queued,
@@ -277,6 +380,13 @@ COMMANDS = {
     "send-test": cmd_send_test,
     "seed-demo-buyers": cmd_seed_demo_buyers,
     "delete-demo-buyers": cmd_delete_demo_buyers,
+    "agency-directory": cmd_agency_directory,
+    "agency-websites": cmd_agency_websites,
+    "agency-profile": cmd_agency_profile,
+    "agency-watch": cmd_agency_watch,
+    "agency-add": cmd_agency_add,
+    "agency-summary": cmd_agency_summary,
+    "agency-evidence": cmd_agency_evidence,
 }
 
 

@@ -16,6 +16,18 @@ HEADERS = {
 SOURCE_NAMES = {"imovirtual": "Imovirtual", "remax": "RE/MAX", "idealista_email": "Idealista", "century21": "Century21"}
 
 
+def source_label(key: str | None) -> str:
+    """Display name for a link. Agency sources are created at runtime with the key `agency:<host>`, so they
+    can never be in `SOURCE_NAMES`; showing the host is far more useful to her than a generic "Fonte"."""
+    if not key:
+        return "Fonte"
+    if key in SOURCE_NAMES:
+        return SOURCE_NAMES[key]
+    if key.startswith("agency:"):
+        return key.split(":", 1)[1].removeprefix("www.")
+    return "Fonte"
+
+
 def eur(value: int | None) -> str:
     return "preço sob consulta" if value is None else f"{value:,.0f} €".replace(",", ".")
 
@@ -46,7 +58,7 @@ def property_alert(reason: str, primary: Listing, listings: list[Listing], buyer
         lines.append(f"Mediadora: {contact}")
     if primary.is_private_owner:
         lines.append("Anúncio de particular")
-    links = " · ".join(f'<a href="{escape(l.url)}">{SOURCE_NAMES.get(source_keys.get(l.source_id, ""), "Fonte")}</a>' for l in listings)
+    links = " · ".join(f'<a href="{escape(l.url)}">{escape(source_label(source_keys.get(l.source_id)))}</a>' for l in listings)
     lines.append(f"Ver: {links}")
     return "\n".join(lines)
 

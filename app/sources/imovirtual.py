@@ -324,3 +324,63 @@ class ImovirtualAdapter:
 
 def now_utc() -> datetime:
     return datetime.now(timezone.utc)
+
+
+# --- agency directory (Day 5) ------------------------------------------------------------------
+# /pt/empresas/agencias-imobiliarias/lista/<distrito>/<concelho>   (NO trailing slash: the slash form 308s)
+# 20 per page, hard: `limit` is fixed server-side and `?limit=72` is ignored. `?page=N` maps to the offset.
+# Sorted by DESCENDING ad count, so the low-activity agencies are on the LAST pages and an early stop would
+# return only the agencies whose stock the search sweep already has. Measured over her 50 concelhos on
+# 2026-10-31: 142 pages, 2 416 rows, 2 278 distinct agencies.
+# NOTE: this is Imovirtual content, so it is parsed by rules and never shown to an LLM (ai-input=no).
+
+DIRECTORY_PER_PAGE = 20
+
+
+def directory_url(district: str, council: str, page: int = 1) -> str:
+    base = f"{BASE}/pt/empresas/agencias-imobiliarias/lista/{district}/{council}"
+    return base if page <= 1 else f"{base}?page={page}"
+
+
+def profile_url(slug: str) -> str:
+    return f"{BASE}/pt/empresa/{slug}"
+
+
+def parse_directory(data: dict) -> tuple[list[dict], dict]:
+    companies = (((data or {}).get("props") or {}).get("pageProps") or {}).get("companies") or {}
+    return list(companies.get("companies") or []), {"total": companies.get("total"),
+                                                    "pagination": companies.get("pagination") or {}}
+
+
+def normalise_company(item: dict) -> dict:
+    """One directory row -> the fields `agencies` stores. `id` is the UUID and the real identity: two
+    different agencies can normalise to the same name, so `name_norm` cannot be the key."""
+    stats = item.get("statistics") or {}
+    location = item.get("location") or {}
+    return {
+        "id": item.get("id"),
+        "name": (item.get("name") or "").strip(),
+        "slug": (item.get("attributes") or {}).get("slug"),
+        "phone": (item.get("contacts") or {}).get("phone"),
+        "ads_sell": ((stats.get("adsSell") or {}).get("activeAdsCount")) or 0,
+        "ads_rent": ((stats.get("adsRent") or {}).get("activeAdsCount")) or 0,
+        "location_name": location.get("fullName") or location.get("address"),
+        "type": item.get("type"),
+    }
+
+
+WEBSITE_RE = re.compile(r'"website"\s*:\s*"(https?://[^"]+)"')
+
+
+def website_from_profile(page_html: str) -> str | None:
+    """The agency's own site, when its Imovirtual profile declares one.
+
+    Measured 2026-10-31 on a stratified random sample of 40 of the 776 agencies with sale ads: present on
+    27 %. Absent on 0/6 zero-ad agencies and on 8/9 ERA/Century21/KW franchise offices, which centralise on
+    their national sites. This field is therefore the liveness filter for the whole funnel."""
+    for match in WEBSITE_RE.finditer(page_html or ""):
+        url = html.unescape(match.group(1)).strip()
+        host = url.split("//", 1)[-1].split("/", 1)[0].lower()
+        if host and "imovirtual" not in host and "olx" not in host:
+            return url
+    return None

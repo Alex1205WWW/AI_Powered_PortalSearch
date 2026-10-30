@@ -20,7 +20,7 @@ from app.db.models import Criteria, Listing, PropertyMatch, Source
 from app.services import listings as listing_svc
 from app.services import runs as run_svc
 from app.sources.base import can_refresh
-from app.sources.registry import ADAPTERS
+from app.sources.registry import ADAPTERS, adapter_for
 
 log = logging.getLogger(__name__)
 
@@ -63,9 +63,12 @@ def refresh_matched(session: Session, limit: int = MAX_PER_RUN) -> dict:
     adapters: dict[int, object] = {}
     for listing in matched_listings(session, limit):
         source = sources.get(listing.source_id)
-        if source is None or source.key not in ADAPTERS or not source.enabled:
+        if source is None or not source.enabled:
             continue
-        adapter = adapters.get(source.id) or ADAPTERS[source.key](source)
+        adapter_cls = adapter_for(source)
+        if adapter_cls is None:
+            continue
+        adapter = adapters.get(source.id) or adapter_cls(source)
         adapters[source.id] = adapter
         if not can_refresh(adapter):
             continue  # e.g. the email source: there is no page to go back to

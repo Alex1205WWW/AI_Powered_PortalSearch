@@ -65,6 +65,9 @@ class Source(Base):
     profile: Mapped[dict | None] = mapped_column(JSONB)
     status: Mapped[str] = mapped_column(String(10), default="ok", nullable=False)  # ok | degraded | blocked
     consecutive_failures: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    # Size of the catalogue the last successful pass saw. The removal guard refuses to retire listings when a
+    # sitemap comes back short, so one truncated fetch cannot wipe an agency's stock (Plan_Day5.md section 3.3).
+    last_catalogue_size: Mapped[int | None] = mapped_column(Integer)
     last_ok_at: Mapped[datetime | None] = mapped_column(TS)
     last_error: Mapped[str | None] = mapped_column(Text)
     notes: Mapped[str | None] = mapped_column(Text)
@@ -141,8 +144,19 @@ class Agency(Base):
     website_url: Mapped[str | None] = mapped_column(Text)
     website_resolution: Mapped[str] = mapped_column(String(8), default="none", nullable=False)  # profile | manual | none
     imovirtual_slug: Mapped[str | None] = mapped_column(String(200))
+    # The advertiser's CRM/platform as the portal feed reports it, NOT an identity: measured 2026-10-31 the
+    # live values are `urn:partner:ego` (132 agencies), `urn:site:local` (65), `urn:partner:maxwork` (55),
+    # `urn:partner:century21` (54), `proppy`, `ximo`, `zomecrm`... It is a free platform fingerprint from the
+    # portal, available before the agency's own site is ever fetched.
     source_urn: Mapped[str | None] = mapped_column(String(120))
-    active_ads_count: Mapped[int | None] = mapped_column(Integer)
+    # The directory UUID: this is the real identity. `name_norm` is not, because two different agencies can
+    # normalise to the same string (Plan_Day5.md section 4).
+    imovirtual_id: Mapped[str | None] = mapped_column(String(40), unique=True)
+    active_ads_count: Mapped[int | None] = mapped_column(Integer)          # adsSell
+    active_ads_rent_count: Mapped[int | None] = mapped_column(Integer)     # adsRent: tells a dead account from a rental-only one
+    checked_at: Mapped[datetime | None] = mapped_column(TS)                # profile looked at; "no website" is a remembered answer
+    offportal_ratio: Mapped[float | None] = mapped_column(Float)           # share of its listings no portal had
+    listings_seen: Mapped[int | None] = mapped_column(Integer)             # denominator of the ratio
     geo_code: Mapped[str | None] = mapped_column(ForeignKey("geo.code"))
     watch_source_id: Mapped[int | None] = mapped_column(ForeignKey("sources.id"))
     created_at: Mapped[datetime] = mapped_column(TS, server_default=func.now(), nullable=False)

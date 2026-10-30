@@ -37,3 +37,16 @@ def register(key: str):
         ADAPTERS[key] = cls
         return cls
     return decorator
+
+
+def adapter_for(source):
+    """The adapter class for a source row, or None.
+
+    Agency sources are created at runtime with keys like `agency:dils.pt`, so they can never be in
+    `ADAPTERS`, which is keyed by the fixed portal keys. Resolving by `kind` keeps every caller from having
+    to know that."""
+    if getattr(source, "kind", None) == "agency":
+        from app.sources.agency_generic import AgencyAdapter
+
+        return AgencyAdapter if (source.profile or {}).get("index", {}).get("listing_url_re") else None
+    return ADAPTERS.get(source.key)

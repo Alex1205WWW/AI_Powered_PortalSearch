@@ -138,3 +138,62 @@ def backup() -> Path | None:
         old.unlink(missing_ok=True)
     log.info("backup written %s (%d bytes)", target.name, target.stat().st_size, extra={"job": "backup"})
     return target
+
+
+# --- agency discovery (Day 5) ------------------------------------------------------------------
+# Four paced jobs instead of one per agency: with hundreds of agency sources, one APScheduler job each
+# would mean hundreds of timers. `enabled_portal_schedules()` already filters `kind == 'portal'`, so the
+# agency rows never reach the per-source scheduling at all.
+
+def agency_directory() -> None:
+    """Re-read the Imovirtual agency directory for her 50 concelhos (142 pages, ~5 min). Weekly: new
+    agencies appear, and `adsSell` moving above zero is what re-opens a previously dead account."""
+    from app.services import agencies
+
+    with session_scope() as session, advisory_lock("agency_directory") as ok:
+        if not ok:
+            return
+        stats = agencies.crawl_directory(session)
+        log.info("agency directory: %s", stats, extra={"job": "agency_directory"})
+
+
+def agency_websites() -> None:
+    """Resolve agency websites from their Imovirtual profile pages, in bounded bites."""
+    from app.services import agencies
+
+    with session_scope() as session, advisory_lock("agency_websites") as ok:
+        if not ok:
+            return
+        stats = agencies.resolve_websites(session, limit=60)
+        if stats["checked"]:
+            log.info("agency websites: %s", stats, extra={"job": "agency_websites"})
+
+
+def agency_profile() -> None:
+    """Profile the next few unprofiled agency sites: platform, listing pattern, measured confidence."""
+    from app.services import agencies
+
+    with session_scope() as session, advisory_lock("agency_profile") as ok:
+        if not ok:
+            return
+        done = 0
+        for agency in agencies.pending_profiles(session, limit=8):
+            agencies.profile_agency(session, agency)
+            session.commit()
+            done += 1
+        if done:
+            log.info("agency profiles built: %d", done, extra={"job": "agency_profile"})
+
+
+def agency_watch() -> None:
+    """One pass over the agency sites that are due, oldest first, then refresh their off-portal ratios."""
+    from app.services import agencies
+
+    with session_scope() as session, advisory_lock("agency_watch") as ok:
+        if not ok:
+            return
+        for source in agencies.due_for_watch(session, limit=40):
+            first_pass = source.last_ok_at is None
+            agencies.watch(session, source, initial=first_pass)
+            agencies.refresh_offportal(session, source)
+            session.commit()

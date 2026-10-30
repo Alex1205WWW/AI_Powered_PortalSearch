@@ -1,0 +1,239 @@
+{
+ "companies": [
+  {
+   "id": "6fc196ad-2b1a-47b4-bcde-f2abef9fb578",
+   "type": "AGENCY",
+   "name": "Uniplaces",
+   "photo": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InF0c3dwMGdpb2d2azItQVBUIn0.q06wUVPqyfJ_hq8kCOxVgaohFeAzqBFK4mTeZXvz65M/image",
+   "createdAt": "2020-05-15T16:43:18Z",
+   "location": {
+    "address": "Lisboa",
+    "postalCode": "1200-000",
+    "name": "Santa Maria Maior",
+    "fullName": "Santa Maria Maior, Lisboa, Lisboa",
+    "__typename": "AccountLocation"
+   },
+   "contacts": {
+    "phone": "+351210202241",
+    "__typename": "CompanyContacts"
+   },
+   "attributes": {
+    "slug": "uniplaces-ID3549564",
+    "__typename": "CompanyAttributes"
+   },
+   "statistics": {
+    "adsSell": {
+     "activeAdsCount": 0,
+     "maxPrice": null,
+     "minPrice": null,
+     "__typename": "AdCategoryStatistics"
+    },
+    "adsRent": {
+     "activeAdsCount": 8130,
+     "maxPrice": 11875,
+     "minPrice": 150,
+     "__typename": "AdCategoryStatistics"
+    },
+    "__typename": "AccountStatistics"
+   },
+   "__typename": "Company"
+  },
+  {
+   "id": "1c1fb1d7-8da9-4d9f-9baf-e738815fedac",
+   "type": "AGENCY",
+   "name": "RE/MAX + Grupo Vantagem",
+   "photo": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6ImY0cHZoeHAxZ2V0dS1BUFQifQ.tpMODcgRJzK3QgR4QswdY4wmE1E9E2OkyzXxyNLkUOE/image",
+   "createdAt": "2021-10-21T13:15:44Z",
+   "location": {
+    "address": "Rua Alexandre Herculano, Nº 50, R/C Esqº",
+    "postalCode": "1250-011",
+    "name": "Santo António",
+    "fullName": "Santo António, Lisboa, Lisboa",
+    "__typename": "AccountLocation"
+   },
+   "contacts": {
+    "phone": "+351808200030",
+    "__typename": "CompanyContacts"
+   },
+   "attributes": {
+    "slug": "re-max-grupo-vantagem-ID4009208",
+    "__typename": "CompanyAttributes"
+   },
+   "statistics": {
+    "adsSell": {
+     "activeAdsCount": 5703,
+     "maxPrice": 397500000,
+     "minPrice": 3000,
+     "__typename": "AdCategoryStatistics"
+    },
+    "adsRent": {
+     "activeAdsCount": 388,
+     "maxPrice": 300000,
+     "minPrice": 85,
+     "__typename": "AdCategoryStatistics"
+    },
+    "__typename": "AccountStatistics"
+   },
+   "__typename": "Company"
+  },
+  {
+   "id": "6fa8e559-ef14-4bc6-bd57-444433f5eade",
+   "type": "AGENCY",
+   "name": "PREDIMED IMOBILÍARIA",
+   "photo": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Ijg5eTdlZ3ZsMnZtZjEtQVBUIn0.1Fu3pbZRG2igcerk6ZyjzfjR3KtqjXNwLPH-Ys2mi8o/image",
+   "createdAt": "2018-04-06T12:08:24Z",
+   "location": {
+    "address": "Avenida do Brasil nª 43, 12º",
+    "postalCode": "1700-062",
+    "name": "Alvalade",
+    "fullName": "Alvalade, Lisboa, Lisboa",
+    "__typename": "AccountLocation"
+   },
+   "contacts": {
+    "phone": "+351910292474",
+    "__typename": "CompanyContacts"
+   },
+   "attributes": {
+    "slug": "predimed-imobiliaria-ID1996063",
+    "__typename": "CompanyAttributes"
+   },
+   "statistics": {
+    "adsSell": {
+     "activeAdsCount": 5188,
+     "maxPrice": 26000000,
+     "minPrice": 1950,
+     "__typename": "AdCategoryStatistics"
+    },
+    "adsRent": {
+     "activeAdsCount": 225,
+     "maxPrice": 689000,
+     "minPrice": 50,
+     "__typename": "AdCategoryStatistics"
+    },
+    "__typename": "AccountStatistics"
+   },
+   "__typename": "Company"
+  },
+  {
+   "id": "5c596ec9-2ce9-47fb-acf5-81da7e5d1802",
+   "type": "AGENCY",
+   "name": "SAFTI Portugal",
+   "photo": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6Im45MWliZXZ0czBsYTMtQVBUIn0.JnuatBiYWHbX24u8CJQMVEwJydBN9-YamQQQgLOhBIM/image",
+   "createdAt": "2019-12-05T15:05:05Z",
+   "location": {
+    "address": "Avenida António Augusto de Aguiar nº136, 9º andar",
+    "postalCode": "1050-021",
+    "name": "Avenidas Novas",
+    "fullName": "Avenidas Novas, Lisboa, Lisboa",
+    "__typename": "AccountLocation"
+   },
+   "contacts": {
+    "phone": "+351210939964",
+    "__typename": "CompanyContacts"
+   },
+   "attributes": {
+    "slug": "safti-portugal-ID3401353",
+    "__typename": "CompanyAttributes"
+   },
+   "statistics": {
+    "adsSell": {
+     "activeAdsCount": 1420,
+     "maxPrice": 30000000,
+     "minPrice": 2000,
+     "__typename": "AdCategoryStatistics"
+    },
+    "adsRent": {
+     "activeAdsCount": 33,
+     "maxPrice": 46500,
+     "minPrice": 450,
+     "__typename": "AdCategoryStatistics"
+    },
+    "__typename": "AccountStatistics"
+   },
+   "__typename": "Company"
+  },
+  {
+   "id": "7ecb2962-bb31-4b55-b453-16008ec85e45",
+   "type": "AGENCY",
+   "name": "eXp Portugal",
+   "photo": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6InZ4MDFyZGc5MDN6MTEtQVBUIn0.8rkDfYbJzwEiRP1by4XFJt4YW8NDPvATQOVE5IStXfk/image",
+   "createdAt": "2020-12-17T15:21:47Z",
+   "location": {
+    "address": "Praça Marquês de Pombal 14",
+    "postalCode": "1250-162",
+    "name": "Santo António",
+    "fullName": "Santo António, Lisboa, Lisboa",
+    "__typename": "AccountLocation"
+   },
+   "contacts": {
+    "phone": "+351211238770",
+    "__typename": "CompanyContacts"
+   },
+   "attributes": {
+    "slug": "exp-portugal-ID3760955",
+    "__typename": "CompanyAttributes"
+   },
+   "statistics": {
+    "adsSell": {
+     "activeAdsCount": 1281,
+     "maxPrice": 9800000,
+     "minPrice": 10000,
+     "__typename": "AdCategoryStatistics"
+    },
+    "adsRent": {
+     "activeAdsCount": 38,
+     "maxPrice": 6900,
+     "minPrice": 210,
+     "__typename": "AdCategoryStatistics"
+    },
+    "__typename": "AccountStatistics"
+   },
+   "__typename": "Company"
+  },
+  {
+   "id": "42f33a05-28d9-435f-88f6-7eee88a0b2ef",
+   "type": "AGENCY",
+   "name": "Grupo RE/MAX Latina",
+   "photo": "https://ireland.apollo.olxcdn.com/v1/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmbiI6IjJub3JhZ2hwemh3MDMtQVBUIn0.GxOY7sYQK9v3E5fbg4pZh5xEYcy4dq3RydAGqyc5-dk/image",
+   "createdAt": "2022-02-17T14:16:04Z",
+   "location": {
+    "address": "Avenida Casal Ribeiro 12B",
+    "postalCode": "1000-092",
+    "name": "Arroios",
+    "fullName": "Arroios, Lisboa, Lisboa",
+    "__typename": "AccountLocation"
+   },
+   "contacts": {
+    "phone": "+351218163403",
+    "__typename": "CompanyContacts"
+   },
+   "attributes": {
+    "slug": "grupo-re-max-latina-ID4102492",
+    "__typename": "CompanyAttributes"
+   },
+   "statistics": {
+    "adsSell": {
+     "activeAdsCount": 1114,
+     "maxPrice": 12500000,
+     "minPrice": 7500,
+     "__typename": "AdCategoryStatistics"
+    },
+    "adsRent": {
+     "activeAdsCount": 149,
+     "maxPrice": 25676,
+     "minPrice": 185,
+     "__typename": "AdCategoryStatistics"
+    },
+    "__typename": "AccountStatistics"
+   },
+   "__typename": "Company"
+  }
+ ],
+ "total": 760,
+ "pagination": {
+  "offset": 0,
+  "limit": 20,
+  "hasNext": true,
+  "__typename": "OffsetPageInfo"
+ }
+}

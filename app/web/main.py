@@ -15,7 +15,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from app.config import settings
 from app.logging_setup import setup_logging
 from app.web.auth import NotAuthenticated
-from app.web.routers import buyers, criteria, dashboard, properties, sources
+from app.web.routers import agencies, buyers, criteria, dashboard, properties, sources
 
 setup_logging(settings.log_level)
 log = logging.getLogger(__name__)
@@ -55,3 +55,4 @@ app.include_router(buyers.router)
 app.include_router(criteria.router)
 app.include_router(properties.router)
 app.include_router(sources.router)
+app.include_router(agencies.router)

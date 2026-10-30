@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Mediadoras{% endblock %}
+{% block content %}
+<h2>Mediadoras</h2>
+
+<p>
+  <strong>{{ summary.agencies }}</strong> mediadoras encontradas nos seus 3 distritos ·
+  <strong>{{ summary.with_sale_ads }}</strong> com anúncios de venda ·
+  <strong>{{ summary.with_website }}</strong> com site próprio ·
+  <strong>{{ summary.readable }}</strong> legíveis
+  <br><small class="muted">Confiança por site: {% for level, n in summary.by_confidence.items() %}{{ level }} {{ n }}{% if not loop.last %} · {% endif %}{% endfor %}</small>
+</p>
+
+<details>
+  <summary>Acrescentar uma mediadora à mão</summary>
+  <form method="post" action="/agencies/add" class="grid">
+    <input type="url" name="website_url" placeholder="https://www.mediadora.pt" required>
+    <input type="text" name="name" placeholder="Nome (opcional)">
+    <button type="submit">Acrescentar</button>
+  </form>
+  <small class="muted">Não há limite. O site é analisado na próxima passagem e fica com um nível de confiança
+    indicado: <em>full</em> lê tudo, <em>partial</em> lê parte, <em>none</em> não é legível e diz porquê.</small>
+</details>
+
+<form method="get" action="/agencies" class="grid">
+  <select name="f">
+    {% for option in filters %}<option value="{{ option }}" {{ 'selected' if option == f }}>{{ option }}</option>{% endfor %}
+  </select>
+  <input type="search" name="q" value="{{ q }}" placeholder="Procurar por nome ou site">
+  <button class="secondary outline" type="submit">Filtrar</button>
+</form>
+
+<table>
+  <thead><tr>
+    <th>Mediadora</th><th>Site</th><th>Confiança</th><th>Plataforma</th>
+    <th>Anúncios no portal</th><th>Fora dos portais</th><th>Última leitura</th><th>Estado</th><th></th>
+  </tr></thead>
+  <tbody>
+  {% for agency, source in rows %}
+  <tr>
+    <td>{{ agency.name }}{% if agency.phone %}<br><small class="muted">{{ agency.phone }}</small>{% endif %}</td>
+    <td>{% if agency.website_url %}<a href="{{ agency.website_url }}" rel="noopener">{{ agency.website_url|replace('https://','')|replace('http://','') }}</a>
+        <br><small class="muted">{{ agency.website_resolution }}</small>
+        {% else %}<span class="muted">—</span>{% endif %}</td>
+    <td>{% if source and source.confidence %}
+          <span class="tag {{ 'ok' if source.confidence == 'full' else ('warn' if source.confidence == 'partial' else 'bad') }}">{{ source.confidence }}</span>
+        {% else %}<span class="muted">por analisar</span>{% endif %}</td>
+    <td><small>{{ (source.profile or {}).get('platform', '—') if source else '—' }}</small></td>
+    <td>{{ agency.active_ads_count if agency.active_ads_count is not none else '—' }}
+        {% if agency.active_ads_rent_count %}<br><small class="muted">{{ agency.active_ads_rent_count }} arrend.</small>{% endif %}</td>
+    <td>{% if agency.offportal_ratio is not none %}<strong>{{ (agency.offportal_ratio * 100)|round|int }}%</strong>
+          <br><small class="muted">de {{ agency.listings_seen }}</small>
+        {% else %}<span class="muted">—</span>{% endif %}</td>
+    <td><small>{{ source.last_ok_at.strftime('%d/%m %H:%M') if source and source.last_ok_at else '—' }}</small></td>
+    <td>{% if source %}<span class="tag {{ 'ok' if source.status == 'ok' else ('warn' if source.status == 'degraded' else 'bad') }}">{{ source.status }}</span>
+          {% if source.last_error %}<br><small class="muted">{{ source.last_error[:90] }}</small>{% endif %}
+        {% else %}<span class="muted">—</span>{% endif %}</td>
+    <td>{% if source %}<form class="inline" method="post" action="/agencies/{{ source.id }}/toggle">
+          <input type="hidden" name="enabled" value="{{ '0' if source.enabled else '1' }}">
+          <button class="{{ 'secondary' if source.enabled else '' }} outline">{{ 'Desativar' if source.enabled else 'Ativar' }}</button>
+        </form>{% endif %}</td>
+  </tr>
+  {% else %}
+  <tr><td colspan="9" class="muted">Nada neste filtro.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% if pages > 1 %}
+<p>
+  {% if page > 1 %}<a href="/agencies?page={{ page - 1 }}&f={{ f }}&q={{ q }}">&larr; anterior</a>{% endif %}
+  <small class="muted">página {{ page }} de {{ pages }} ({{ total }} mediadoras)</small>
+  {% if page < pages %}<a href="/agencies?page={{ page + 1 }}&f={{ f }}&q={{ q }}">seguinte &rarr;</a>{% endif %}
+</p>
+{% endif %}
+{% endblock %}

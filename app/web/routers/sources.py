@@ -14,7 +14,7 @@ router = APIRouter(prefix="/sources")
 
 @router.get("")
 async def list_sources(request: Request, db: DB, user: User):
-    return render(request, "sources.html", sources=svc.list_all(db))
+    return render(request, "sources.html", sources=svc.list_portals(db))
 
 
 @router.post("/{source_id}/toggle")

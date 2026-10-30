@@ -33,6 +33,11 @@ def build_scheduler() -> BackgroundScheduler:
     for key in catalogue_sources():
         # Resumable by construction: the tick is a no-op once the catalogue has been read through once.
         scheduler.add_job(jobs.backfill_source, "interval", minutes=20, args=[key], id=f"backfill:{key}", jitter=60)
+    # Agency discovery: four paced jobs, never one per agency site.
+    scheduler.add_job(jobs.agency_directory, "cron", day_of_week="mon", hour=4, minute=30, id="agency_directory")
+    scheduler.add_job(jobs.agency_websites, "interval", minutes=20, id="agency_websites", jitter=120)
+    scheduler.add_job(jobs.agency_profile, "interval", minutes=30, id="agency_profile", jitter=120)
+    scheduler.add_job(jobs.agency_watch, "interval", hours=6, id="agency_watch", jitter=300)
     email_minutes = email_schedule()
     if email_minutes:
         scheduler.add_job(jobs.poll_email, "interval", minutes=email_minutes, id="poll_email")

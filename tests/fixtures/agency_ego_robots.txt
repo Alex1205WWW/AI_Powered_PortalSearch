@@ -1,0 +1,15 @@
+# real extract: https://www.quintelaepenalva.pt/robots.txt, fetched 2026-10-31.
+# The /virtual/*.aspx + gerir-dados-rgpd rules are the eGO platform fingerprint.
+User-agent: *
+Disallow: /virtual/PrintProperty.aspx
+Disallow: /virtual/PrintDevelopment.aspx
+Disallow: /virtual/SmartLink.aspx
+Disallow: /virtual/SmartLinkDetail.aspx
+Disallow: /tel:
+Disallow: */smartLink/*
+Disallow: */gerir-dados-rgpd
+Disallow: */rgpd-update
+Content-Signal: ai-train=no, search=yes, ai-input=yes
+Disallow: /404$
+Disallow: /404/
+Sitemap: https://www.quintelaepenalva.pt/sitemap.xml

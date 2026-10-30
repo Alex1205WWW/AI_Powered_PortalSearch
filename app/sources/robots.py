@@ -4,10 +4,11 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from urllib.parse import urljoin, urlparse
 from urllib.robotparser import RobotFileParser
 
+from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
 from app.config import settings
@@ -84,9 +85,25 @@ def refresh_source(session: Session, source: Source, client: HttpClient | None =
     return info
 
 
-def refresh_all(session: Session) -> list[tuple[str, int | None, bool | None]]:
+STALE_AFTER = timedelta(days=7)
+RECHECK_CAP = 60  # per run: 60 fetches at 2 s is ~2 min, and the queue drains over a few nights
+
+
+def refresh_all(session: Session, *, cap: int = RECHECK_CAP, stale_after: timedelta = STALE_AFTER,
+                force: bool = False) -> list[tuple[str, int | None, bool | None]]:
+    """Re-check the robots.txt of the sources whose copy is oldest, bounded.
+
+    Day 4 had 8 sources and could refresh them all every week. With the agency sites that becomes hundreds,
+    so the sweep now takes the staleest first up to `cap` and leaves the rest for the next run; a source is
+    skipped entirely while its cached copy is still fresh. `force=True` keeps the old behaviour for the CLI,
+    where the operator is explicitly asking for a full refresh.
+    """
+    cutoff = datetime.now(timezone.utc) - stale_after
+    stmt = select(Source).order_by(Source.robots_fetched_at.asc().nullsfirst(), Source.id)
+    if not force:
+        stmt = stmt.where(or_(Source.robots_fetched_at.is_(None), Source.robots_fetched_at < cutoff)).limit(cap)
     results = []
-    for source in session.query(Source).order_by(Source.id):
+    for source in session.scalars(stmt):
         info = refresh_source(session, source)
         results.append((source.key, info.status_code, source.robots_allowed))
     return results

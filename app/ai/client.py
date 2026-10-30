@@ -27,9 +27,21 @@ class BudgetExceeded(RuntimeError):
     """Raised when the monthly AI cap is reached; callers fall back to the non-AI path."""
 
 
-def assert_llm_allowed(source_key: str | None, *, purpose: str) -> None:
+def assert_llm_allowed(source_key: str | None, *, purpose: str, signal_ai_input: str | None = None) -> None:
+    """`signal_ai_input` is the source's own `Content-Signal: ai-input=…`, as cached in `sources`.
+
+    The hard-coded `FORBIDDEN_SOURCES` stays as belt-and-braces for the one source we know declares `no`,
+    but it can never be the whole guard: agency sources are created at runtime, so the decision has to come
+    from their stored signal (Plan_Day5.md section 5 item 2)."""
+    if signal_ai_input and signal_ai_input.strip().lower() == "no":
+        raise AiGuardError(f"{source_key or 'source'} declares Content-Signal ai-input=no; purpose={purpose}")
     if source_key and source_key.lower() in FORBIDDEN_SOURCES:
         raise AiGuardError(f"{source_key} content may not be sent to an LLM (Content-Signal ai-input=no); purpose={purpose}")
+
+
+def assert_source_allows_llm(source, *, purpose: str) -> None:
+    """The data-driven guard: works for any `sources` row, including the agency sites discovered at runtime."""
+    assert_llm_allowed(source.key, purpose=purpose, signal_ai_input=source.signal_ai_input)
 
 
 def month_spend_cents(session: Session, now: datetime | None = None) -> int:
