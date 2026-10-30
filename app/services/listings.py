@@ -116,7 +116,12 @@ def persist(session: Session, source: Source, c: CanonicalListing) -> PersistRes
 
     price_changed = (not is_new) and c.price is not None and old_price is not None and c.price != old_price
     if is_new and c.previous_price and c.price is not None and c.previous_price != c.price:
-        session.add(ListingPriceHistory(listing_id=row.id, price=c.previous_price, observed_at=c.published_at or now, source_reported=True))
+        # A source-reported previous price is history, not an event: it happened before we ever saw the listing,
+        # so the buyer is alerted once as `new` and never also as `price_drop` (RE/MAX `previousPrice` has no
+        # direction - one of nine sampled listings was a price *rise*). `price_reduced_at` dates the row when
+        # the source says the change was a reduction.
+        session.add(ListingPriceHistory(listing_id=row.id, price=c.previous_price,
+                                        observed_at=c.price_reduced_at or c.published_at or now, source_reported=True))
     if (is_new and c.price is not None) or price_changed:
         session.add(ListingPriceHistory(listing_id=row.id, price=c.price, observed_at=now, source_reported=False))
     if not is_new and c.status != "active" and old_status == "active":

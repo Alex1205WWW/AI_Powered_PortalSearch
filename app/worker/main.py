@@ -26,8 +26,13 @@ def build_scheduler() -> BackgroundScheduler:
     scheduler.add_job(jobs.backup, "cron", hour=3, minute=30, id="backup")
     scheduler.add_job(jobs.run_queued, "interval", seconds=30, id="run_queued")
     scheduler.add_job(jobs.flush_notifications, "interval", minutes=2, id="flush_notifications")
+    scheduler.add_job(jobs.matched_refresh, "cron", hour=5, minute=0, id="matched_refresh")
+    scheduler.add_job(jobs.warm_hashes, "interval", minutes=15, id="warm_hashes", jitter=120)
     for key, minutes in enabled_portal_schedules():
         scheduler.add_job(jobs.sweep_source, "interval", minutes=minutes, args=[key], id=f"sweep:{key}", jitter=120)
+    for key in catalogue_sources():
+        # Resumable by construction: the tick is a no-op once the catalogue has been read through once.
+        scheduler.add_job(jobs.backfill_source, "interval", minutes=20, args=[key], id=f"backfill:{key}", jitter=60)
     email_minutes = email_schedule()
     if email_minutes:
         scheduler.add_job(jobs.poll_email, "interval", minutes=email_minutes, id="poll_email")
@@ -48,6 +53,22 @@ def enabled_portal_schedules() -> list[tuple[str, int]]:
     with session_scope() as session:
         rows = session.scalars(select(Source).where(Source.enabled.is_(True), Source.kind == "portal"))
         return [(s.key, s.schedule_minutes or 180) for s in rows if s.key in ADAPTERS]
+
+
+def catalogue_sources() -> list[str]:
+    """Enabled sources whose adapter reads a global catalogue, and therefore need a one-off backfill."""
+    from sqlalchemy import select
+
+    from app.db.models import Source
+    from app.db.session import session_scope
+    from app.sources import load_adapters
+    from app.sources.base import is_catalogue
+    from app.sources.registry import ADAPTERS
+
+    load_adapters()
+    with session_scope() as session:
+        rows = session.scalars(select(Source).where(Source.enabled.is_(True), Source.kind == "portal"))
+        return [s.key for s in rows if s.key in ADAPTERS and is_catalogue(ADAPTERS[s.key])]
 
 
 def email_schedule() -> int | None:

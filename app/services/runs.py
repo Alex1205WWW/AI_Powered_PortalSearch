@@ -18,14 +18,17 @@ from app.domain.listing import CanonicalListing, FillStats
 from app.services import listings as listing_svc
 from app.services import matches as match_svc
 from app.services import notifications as notif_svc
+from app.services import health
 from app.services import properties as prop_svc
 from app.sources import load_adapters
+from app.sources.base import is_catalogue
 from app.sources.registry import ADAPTERS
 
 log = logging.getLogger(__name__)
 load_adapters()
 
 INITIAL_SOURCES = ("imovirtual",)  # portals that support a targeted first pass for new criteria
+COMMIT_EVERY = 25  # listings between commits during a catalogue pass; also how often the cursor is saved
 EMAIL_SOURCE = "idealista_email"
 
 
@@ -33,6 +36,12 @@ EMAIL_SOURCE = "idealista_email"
 
 def _wm_key(source_key: str, estate: str, council: str) -> str:
     return f"watermark:{source_key}:{estate}:{council}"
+
+
+def _wm_key_catalogue(source_key: str) -> str:
+    """Catalogue sources (RE/MAX) have one global watermark, not one per (estate, council). The key keeps the
+    `watermark:<source>:` prefix so `rewind_watermarks` reaches it too."""
+    return f"watermark:{source_key}:catalogue"
 
 
 def get_watermark(session: Session, source_key: str, estate: str, council: str) -> datetime | None:
@@ -168,18 +177,11 @@ def _source(session: Session, key: str) -> Source:
 
 
 def _health_ok(source: Source) -> None:
-    source.consecutive_failures = 0
-    source.last_ok_at = datetime.now(timezone.utc)
-    source.last_error = None
-    if source.status == "degraded":
-        source.status = "ok"
+    health.mark_ok(source)
 
 
 def _health_fail(source: Source, error: str) -> None:
-    source.consecutive_failures = (source.consecutive_failures or 0) + 1
-    source.last_error = error[:2000]
-    if source.consecutive_failures >= 2 and source.status == "ok":
-        source.status = "degraded"
+    health.record_failure(source, error)
 
 
 def _apply_canary(source: Source, run: CrawlRun, stats: FillStats) -> None:
@@ -187,12 +189,20 @@ def _apply_canary(source: Source, run: CrawlRun, stats: FillStats) -> None:
     the run itself completed, because silently empty fields are how parser drift shows up."""
     breaches = stats.breaches()
     if breaches:
-        source.status = "degraded"
-        source.last_error = "canary: " + "; ".join(breaches)
-        run.error = source.last_error
-        log.warning("field-fill canary breached: %s", source.last_error, extra={"source": source.key, "run_id": run.id})
+        reason = "canary: " + "; ".join(breaches)
+        run.error = reason
+        health.degrade(source, reason)
     else:
         _health_ok(source)
+
+
+def backfill_pending(session: Session, source: Source) -> bool:
+    """True while a catalogue source has never completed its historical pass."""
+    done = session.scalar(select(CrawlRun.id).where(CrawlRun.source_id == source.id, CrawlRun.kind == "backfill",
+                                                    CrawlRun.status == "ok").limit(1))
+    started = session.scalar(select(CrawlRun.id).where(CrawlRun.source_id == source.id,
+                                                       CrawlRun.kind == "backfill").limit(1))
+    return bool(started) and not done
 
 
 def _can_crawl(source: Source) -> str | None:
@@ -254,12 +264,81 @@ def execute_initial(session: Session, run: CrawlRun) -> CrawlRun:
     return run
 
 
-def execute_sweep(session: Session, source_key: str) -> CrawlRun:
+def _sweep_query(session: Session, source: Source, adapter, run: CrawlRun, criteria_list: list[Criteria],
+                 started: datetime, stats: FillStats) -> int:
+    """One search per (estate x concelho), newest first, one watermark per pair. Imovirtual."""
+    queued = 0
+    for estate, district, council in sorted(sweep_scope(session)):
+        # No watermark yet (new scope): look back one day instead of paging through the whole council.
+        since = get_watermark(session, source.key, estate, council) or (started - timedelta(hours=24))
+        for canonical in adapter.iter_newest(estate, district, council, since):
+            stats.add(canonical)
+            result = ingest(session, source, canonical)
+            run.listings_new += result.is_new
+            run.listings_updated += not result.is_new
+            if result.is_new or result.price_changed or result.status_changed:
+                queued += match_and_notify(session, result, criteria_list, initial=False)
+        set_watermark(session, source.key, estate, council, started)
+        run.pages_fetched += 1
+        session.commit()
+    return queued
+
+
+def _sweep_catalogue(session: Session, source: Source, adapter, run: CrawlRun, criteria_list: list[Criteria],
+                     started: datetime, stats: FillStats, *, initial: bool = False, limit: int | None = None) -> int:
+    """One global catalogue filtered by its own change timestamps, one watermark. RE/MAX.
+
+    Also serves the backfill (`initial=True`, `since=None`): the same ingest path, with alerts suppressed,
+    because a historical bulk import of listings already on the market is panel material, not news."""
+    key = _wm_key_catalogue(source.key)
+    row = session.get(AppSetting, key)
+    stored = datetime.fromisoformat(row.value) if row and isinstance(row.value, str) else None
+    since = None if initial else (stored or (started - timedelta(hours=24)))
+    cursor = dict(run.cursor or {})
+    queued = 0
+    for canonical in adapter.iter_changed(since, limit=limit, cursor=cursor, session=session):
+        stats.add(canonical)
+        result = ingest(session, source, canonical)
+        run.listings_new += result.is_new
+        run.listings_updated += not result.is_new
+        if result.is_new or result.price_changed or result.status_changed:
+            queued += match_and_notify(session, result, criteria_list, initial=initial)
+        run.pages_fetched = int(cursor.get("index") or run.pages_fetched + 1)
+        if run.pages_fetched % COMMIT_EVERY == 0:
+            run.cursor = dict(cursor)
+            session.commit()
+    run.cursor = dict(cursor)
+    # The watermark only moves on a pass that was allowed to reach the end of the catalogue; a measured
+    # slice (`limit`) must not make the rest of the catalogue look already seen.
+    if limit is None and not initial:
+        if row is None:
+            session.add(AppSetting(key=key, value=started.isoformat()))
+        else:
+            row.value = started.isoformat()
+    return queued
+
+
+def _resumable_run(session: Session, source: Source, kind: str) -> CrawlRun | None:
+    """The newest unfinished run of this kind for this source, so a killed backfill continues where it
+    stopped instead of reading the catalogue from the beginning."""
+    return session.scalar(select(CrawlRun).where(CrawlRun.source_id == source.id, CrawlRun.kind == kind,
+                                                 CrawlRun.status.in_(("running", "failed", "queued")))
+                          .order_by(CrawlRun.id.desc()).limit(1))
+
+
+def execute_sweep(session: Session, source_key: str, *, initial: bool = False, limit: int | None = None,
+                  kind: str | None = None, resume: bool = False) -> CrawlRun:
     from app.services.criteria import list_active
 
     source = _source(session, source_key)
-    run = CrawlRun(source_id=source.id, kind="sweep", status="running")
-    session.add(run)
+    run = _resumable_run(session, source, kind or "sweep") if resume else None
+    if run is None:
+        run = CrawlRun(source_id=source.id, kind=kind or "sweep", status="running")
+        session.add(run)
+    else:
+        run.status, run.error = "running", None
+        log.info("resuming %s at index %s", run.kind, (run.cursor or {}).get("index"),
+                 extra={"source": source_key, "run_id": run.id})
     session.commit()  # the run row must survive a rollback so a failure can be recorded on it
     blocker = _can_crawl(source)
     if blocker:
@@ -267,39 +346,42 @@ def execute_sweep(session: Session, source_key: str) -> CrawlRun:
         session.commit()
         return run
     adapter = ADAPTERS[source.key](source)
+    if run.kind == "sweep" and is_catalogue(adapter) and backfill_pending(session, source):
+        # The historical pass is still reading the same catalogue; a second crawl would only compete with it.
+        run.status, run.error, run.finished_at = "ok", "backfill em curso: sweep adiado", datetime.now(timezone.utc)
+        session.commit()
+        return run
     criteria_list = list_active(session)
     started = datetime.now(timezone.utc)
-    queued = 0
     stats = FillStats()
     try:
-        for estate, district, council in sorted(sweep_scope(session)):
-            # No watermark yet (new scope): look back one day instead of paging through the whole council.
-            since = get_watermark(session, source.key, estate, council) or (started - timedelta(hours=24))
-            for canonical in adapter.iter_newest(estate, district, council, since):
-                stats.add(canonical)
-                result = ingest(session, source, canonical)
-                run.listings_new += result.is_new
-                run.listings_updated += not result.is_new
-                if result.is_new or result.price_changed or result.status_changed:
-                    queued += match_and_notify(session, result, criteria_list, initial=False)
-            set_watermark(session, source.key, estate, council, started)
-            run.pages_fetched += 1
-            session.commit()
+        if is_catalogue(adapter):
+            queued = _sweep_catalogue(session, source, adapter, run, criteria_list, started, stats,
+                                      initial=initial, limit=limit)
+        else:
+            queued = _sweep_query(session, source, adapter, run, criteria_list, started, stats)
         run.status, run.finished_at = "ok", datetime.now(timezone.utc)
         _apply_canary(source, run, stats)
         session.commit()
         sent = notif_svc.flush(session)
         session.commit()
-        log.info("sweep done: new=%d updated=%d alerts queued=%d sent=%d", run.listings_new, run.listings_updated, queued, sent,
-                 extra={"source": source.key, "run_id": run.id})
+        log.info("%s done: new=%d updated=%d alerts queued=%d sent=%d", run.kind, run.listings_new,
+                 run.listings_updated, queued, sent, extra={"source": source.key, "run_id": run.id})
     except Exception as exc:  # noqa: BLE001
         session.rollback()
         run = session.get(CrawlRun, run.id)
         run.status, run.error, run.finished_at = "failed", repr(exc), datetime.now(timezone.utc)
         _health_fail(session.get(Source, run.source_id), repr(exc))
         session.commit()
-        log.exception("sweep failed", extra={"source": source_key, "run_id": run.id})
+        log.exception("%s failed", run.kind, extra={"source": source_key, "run_id": run.id})
     return run
+
+
+def execute_backfill(session: Session, source_key: str, limit: int | None = None) -> CrawlRun:
+    """The one-off historical pass over a catalogue source. Resumable through `crawl_runs.cursor`, and silent:
+    a bulk import of listings already on the market is not news (Roadmap_M1.md section 6, Day 6 gate)."""
+    return execute_sweep(source_key=source_key, session=session, initial=True, limit=limit,
+                         kind="backfill", resume=True)
 
 
 def execute_email_poll(session: Session) -> CrawlRun:

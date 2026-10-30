@@ -14,6 +14,7 @@
     form.inline { display: inline; margin: 0; }
     .errors { color: #c62828; }
     nav form { margin: 0; }
+    article.source-down { border-left: 4px solid #ef6c00; background: #fff8f0; }
   </style>
 </head>
 <body>
@@ -30,6 +31,13 @@
   {% endif %}
 </nav>
 <main class="container">
+  {% for s in health_banner or [] %}
+  <article class="source-down" aria-live="polite">
+    <strong>&#9888; {{ s.name }}</strong> {{ "não está a responder" if s.status == "degraded" else "está bloqueada" }}.
+    As outras fontes continuam a funcionar.
+    <div class="muted">Última recolha correta: {{ s.last_ok_at.strftime("%d/%m/%Y %H:%M") if s.last_ok_at else "nunca" }}{% if s.error %} &middot; {{ s.error[:160] }}{% endif %}</div>
+  </article>
+  {% endfor %}
   {% if msg %}<article aria-live="polite">{{ msg }}</article>{% endif %}
   {% block content %}{% endblock %}
 </main>

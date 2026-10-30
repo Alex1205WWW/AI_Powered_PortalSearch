@@ -135,6 +135,7 @@ class CanonicalListing:
     published_at: datetime | None = None
     published_unknown: bool = False  # the source carried a date field but marked it unknown (Imovirtual: 1999-02-29 00:00:01)
     previous_price: int | None = None
+    price_reduced_at: datetime | None = None  # set only when the source states the previous price was a REDUCTION
     status: str = "active"
     raw: dict = field(default_factory=dict)
 

@@ -29,4 +29,18 @@ User = Annotated[str, Depends(current_user)]
 def render(request: Request, name: str, **context):
     context.setdefault("msg", request.query_params.get("msg"))
     context.setdefault("user", request.session.get("user"))
+    context.setdefault("health_banner", _banner())
     return templates.TemplateResponse(request, name, context)
+
+
+def _banner() -> list[dict]:
+    """Broken sources, shown on every page (deliverable 15). It opens its own short session so no router has
+    to remember to pass one, and a banner that cannot be built never takes the page down with it."""
+    from app.db.session import session_scope
+    from app.services import health
+
+    try:
+        with session_scope() as session:
+            return health.banner(session)
+    except Exception:  # noqa: BLE001
+        return []

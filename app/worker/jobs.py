@@ -44,6 +44,54 @@ def sweep_source(source_key: str) -> None:
         runs.execute_sweep(session, source_key)
 
 
+def backfill_source(source_key: str) -> None:
+    """The one-off historical pass over a catalogue source (RE/MAX). Runs on a timer so that a crash, a
+    deploy or a reboot simply resumes it at the next tick; it returns immediately once the catalogue has
+    been read through once."""
+    from sqlalchemy import select
+
+    from app.db.models import CrawlRun, Source
+    from app.services import runs
+
+    with session_scope() as session, advisory_lock(f"backfill:{source_key}") as ok:
+        if not ok:
+            return
+        source = session.scalar(select(Source).where(Source.key == source_key))
+        if source is None or not source.enabled:
+            return
+        done = session.scalar(select(CrawlRun.id).where(CrawlRun.source_id == source.id,
+                                                        CrawlRun.kind == "backfill", CrawlRun.status == "ok").limit(1))
+        if done:
+            return
+        run = runs.execute_backfill(session, source_key)
+        log.info("backfill tick: status=%s new=%d updated=%d at %s", run.status, run.listings_new,
+                 run.listings_updated, (run.cursor or {}).get("index"), extra={"job": "backfill", "source": source_key})
+
+
+def warm_hashes() -> None:
+    """Keep the dedup photo-hash cache warm in the background, in small bounded bites."""
+    from app.services import properties as prop_svc
+
+    with session_scope() as session, advisory_lock("warm_hashes") as ok:
+        if not ok:
+            return
+        stats = prop_svc.warm_hashes(session, limit=400)
+        if stats["hashed"] or stats["from_cache"]:
+            log.info("photo hashes warmed: %s", stats, extra={"job": "warm_hashes"})
+
+
+def matched_refresh() -> None:
+    """Re-read the detail page of every matched listing: price history, removal, and the extra fields the
+    search results never carry (Roadmap_M1.md section 3 item 7)."""
+    from app.services import refresh
+
+    with session_scope() as session, advisory_lock("matched_refresh") as ok:
+        if not ok:
+            return
+        stats = refresh.refresh_matched(session)
+        log.info("matched refresh: %s", stats, extra={"job": "matched_refresh"})
+
+
 def poll_email() -> None:
     """Read new Idealista alert emails from the dedicated mailbox and ingest their listings."""
     from app.services import runs

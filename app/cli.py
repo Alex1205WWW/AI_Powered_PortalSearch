@@ -146,6 +146,63 @@ def cmd_sweep(args: list[str]) -> None:
         print(f"run {run.id} {run.status}: new={run.listings_new} updated={run.listings_updated} scope-queries={run.pages_fetched} error={run.error}")
 
 
+def cmd_backfill(args: list[str]) -> None:
+    """backfill <source_key> [limit]: the one-off historical pass over a catalogue source (RE/MAX).
+
+    Resumable: run it again after a crash or a restart and it continues from `crawl_runs.cursor`. Silent by
+    design - a bulk import of listings already on the market never alerts. Pass a `limit` to read only that
+    many listings, which is how the pass is measured before the whole catalogue is committed to."""
+    import time
+
+    from app.services import runs
+
+    if not args:
+        sys.exit("usage: backfill <source_key> [limit]")
+    limit = int(args[1]) if len(args) > 1 else None
+    started = time.monotonic()
+    with session_scope() as session:
+        run = runs.execute_backfill(session, args[0], limit=limit)
+        elapsed = time.monotonic() - started
+        position = (run.cursor or {}).get("index") or 0
+        total = (run.cursor or {}).get("total") or 0
+        rate = position / elapsed if elapsed else 0
+        print(f"run {run.id} {run.status}: new={run.listings_new} updated={run.listings_updated} "
+              f"at {position}/{total} in {elapsed:.0f}s ({rate:.2f} listings/s) error={run.error}")
+        if rate and total:
+            remaining = (total - position) / rate
+            print(f"projected for the whole catalogue: {total / rate / 3600:.1f} h total, {remaining / 3600:.1f} h left")
+
+
+def cmd_warm_hashes(args: list[str]) -> None:
+    """warm-hashes [limit]: fill the photo hashes dedup compares, so a catalogue backfill is not paying to
+    hash the other source's photos while it crawls. Idempotent; run it until `remaining` is 0."""
+    from app.services import properties as prop_svc
+
+    limit = int(args[0]) if args else 500
+    with session_scope() as session:
+        print(prop_svc.warm_hashes(session, limit=limit))
+
+
+def cmd_matched_refresh(_: list[str]) -> None:
+    """matched-refresh: re-read the detail page of every matched listing (price history, removals, extra fields)."""
+    from app.services import refresh
+
+    with session_scope() as session:
+        print(refresh.refresh_matched(session))
+
+
+def cmd_export(args: list[str]) -> None:
+    """export [path.xlsx]: the panel's result list as a spreadsheet."""
+    from app.services import export
+
+    target = args[0] if args else export.filename()
+    with session_scope() as session:
+        data = export.workbook(session).getvalue()
+    with open(target, "wb") as handle:
+        handle.write(data)
+    print(f"{target} ({len(data)} bytes)")
+
+
 def cmd_flush_notifications(_: list[str]) -> None:
     from app.services import notifications
 
@@ -195,6 +252,10 @@ COMMANDS = {
     "run-initial": cmd_run_initial,
     "run-queued": cmd_run_queued,
     "sweep": cmd_sweep,
+    "backfill": cmd_backfill,
+    "matched-refresh": cmd_matched_refresh,
+    "warm-hashes": cmd_warm_hashes,
+    "export": cmd_export,
     "flush-notifications": cmd_flush_notifications,
     "rewind-watermarks": cmd_rewind_watermarks,
     "rematch": cmd_rematch,

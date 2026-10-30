@@ -4,11 +4,12 @@ from typing import Annotated
 from urllib.parse import quote, urlencode
 
 from fastapi import APIRouter, Form, Request
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, StreamingResponse
 from sqlalchemy import select
 
 from app.db.models import Buyer, Criteria, Geo, Listing, PropertyMatch, Source
 from app.domain.criteria import STATES
+from app.services import export
 from app.services import matches as match_svc
 from app.services import properties as prop_svc
 from app.web.deps import DB, User, render
@@ -52,8 +53,21 @@ async def list_properties(request: Request, db: DB, user: User, buyer: int | Non
         items.append({"match": match, "buyer_label": label, "criteria": criteria, "primary": primary, "listings": listings,
                       "zone": geo_names.get(primary.geo_code, primary.geo_code)})
     buyers = list(db.scalars(select(Buyer).order_by(Buyer.label)))
+    filters = {"buyer": buyer, "state": state, "grade": grade}
+    query = urlencode({k: v for k, v in filters.items() if v})
     return render(request, "properties.html", items=items, buyers=buyers, states=STATES, source_names=source_names,
-                  filters={"buyer": buyer, "state": state, "grade": grade}, count=len(items))
+                  filters=filters, count=len(items), export_query=f"?{query}" if query else "")
+
+
+@router.get("/properties/export.xlsx")
+async def export_properties(request: Request, db: DB, user: User, buyer: int | None = None,
+                            state: str | None = None, grade: str | None = None):
+    """The same set the panel is showing, as a spreadsheet (deliverable 2)."""
+    label = db.scalar(select(Buyer.label).where(Buyer.id == buyer)) if buyer else None
+    stream = export.workbook(db, buyer_id=buyer, state=state, grade=grade)
+    headers = {"Content-Disposition": f'attachment; filename="{export.filename(label)}"'}
+    return StreamingResponse(stream, media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                             headers=headers)
 
 
 @router.post("/matches/{match_id}/state")

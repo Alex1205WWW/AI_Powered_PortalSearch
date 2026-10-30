@@ -1,0 +1,2436 @@
+{
+ "mafra_t2_price_rise": {
+  "descriptions": [
+   {
+    "languageCode": "EN",
+    "languageID": 1,
+    "description": "<p style=\"text-align:start;\">Jardins da Galega Condominium&nbsp;</p>\n<p style=\"text-align:start;\">Development consisting of 42 apartments, divided into T1, T2 and T3, inserted in a quiet<br>area, surrounded by green areas and with good access to Lisbon and Mafra, the project combines modernity, well-being and quality of life, providing a safe and harmonious environment. </p>\n<p style=\"text-align:start;\">The completion of the work is scheduled for the first half of 2028.&nbsp;&nbsp;</p>\n"
+   },
+   {
+    "languageCode": "FR",
+    "languageID": 2,
+    "description": "Appartement T1 à vendre"
+   },
+   {
+    "languageCode": "DE",
+    "languageID": 5,
+    "description": "Wohnung T1 für verkauf"
+   },
+   {
+    "languageCode": "PT",
+    "languageID": 9,
+    "description": "<p>Condomínio Jardins da Galega&nbsp;</p>\n<p>Empreendimento composto por 42 apartamentos, divididos em T1, T2 e T3, inserido numa zona tranquila, rodeado de áreas verdes e com bons acessos a Lisboa e Mafra, o projeto alia modernidade, bem-estar e qualidade de vida, proporcionando um ambiente seguro e harmonioso.&nbsp;</p>\n<p>A conclusão da obra está prevista para o primeiro semestre de 2028.&nbsp;&nbsp;</p>\n<p>ABP: 103 m2</p>\n<p>ABD: 68 m2</p>\n<p>--------------------------------</p>\n<p>Jardins da Galega Condominium&nbsp;</p>\n<p>Development consisting of 42 apartments, divided into T1, T2 and T3, inserted in a quiet<br>area, surrounded by green areas and with good access to Lisbon and Mafra, the project combines modernity, well-being and quality of life, providing a safe and harmonious environment.&nbsp;</p>\n<p>The completion of the work is scheduled for the first half of 2028.&nbsp;&nbsp;</p>\n<p style=\"text-align:left;\"></p>\n"
+   },
+   {
+    "languageCode": "ES",
+    "languageID": 12,
+    "description": "Apartamento T1 Para venta"
+   },
+   {
+    "languageCode": "IT",
+    "languageID": 31,
+    "description": "Appartamento T1 per saldi"
+   }
+  ],
+  "country": "Portugal",
+  "listingMapPictureUrl": "listings_map/12061/120612480-104/static_map.png",
+  "listingMapPictureAltUrl": "listings_map/12061/120612480-104/38929374_-9200283_public_static_map.png",
+  "listingRooms": [
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Cozinha",
+    "roomTypeID": 4,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Quarto",
+    "roomTypeID": 6,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Sala de Estar",
+    "roomTypeID": 1,
+    "roomDescription": null
+   }
+  ],
+  "nearRegions": [
+   {
+    "regionID": 138807,
+    "regionName": "Carvoeira",
+    "regionSearch": "mafra/carvoeira"
+   },
+   {
+    "regionID": 138809,
+    "regionName": "Encarnação",
+    "regionSearch": "mafra/encarnacao"
+   },
+   {
+    "regionID": 7881269,
+    "regionName": "Enxara do Bispo, Gradil e Vila Franca do Rosário",
+    "regionSearch": "mafra/enxara-do-bispo-gradil-e-vila-franca-do-rosario"
+   },
+   {
+    "regionID": 7881364,
+    "regionName": "Igreja Nova e Cheleiros",
+    "regionSearch": "mafra/igreja-nova-e-cheleiros"
+   },
+   {
+    "regionID": 7881414,
+    "regionName": "Malveira e São Miguel de Alcainça",
+    "regionSearch": "mafra/malveira-e-sao-miguel-de-alcainca"
+   },
+   {
+    "regionID": 7881799,
+    "regionName": "Venda do Pinheiro e Santo Estêvão das Galés",
+    "regionSearch": "mafra/venda-do-pinheiro-e-santo-estevao-das-gales"
+   }
+  ],
+  "hasVTour": false,
+  "hasVideo": false,
+  "previousListingTitle": null,
+  "legalComponentText": null,
+  "totalAreaDisplay": " 171",
+  "livingAreaDisplay": "93",
+  "lotSizeDisplay": null,
+  "builtAreaDisplay": null,
+  "legalEnergyEstimatedCostText": null,
+  "legalEnergyLevelText": null,
+  "userEmail": null,
+  "userCellPhone": "+351 963 938 226",
+  "userCellPhoneTrimmed": "+351963938226",
+  "userTeamName": null,
+  "userAgencyName": null,
+  "userAgencyAddress": null,
+  "userAgencyZipCode": "1990-211",
+  "userAgencyEnterpriseName": null,
+  "userAgencyLicenseNumber": null,
+  "userAgencyPhoneNumber": "+351 218 540 200",
+  "officeAddress": null,
+  "officePictureURL": "offices/b0fdd3d3-be40-4e43-8503-f6b25766a24f.jpg",
+  "withMaxFinanceConnection": true,
+  "licenseNumberInfo": "",
+  "isExactAddress": true,
+  "floorID": 2,
+  "hasPrivateAddress": false,
+  "rentalPriceGranularityID": null,
+  "energeticSpecification": null,
+  "publishedModifiedOn": null,
+  "isPublished": true,
+  "ownerAvailability": null,
+  "whatsAppChatIntroId": "f040b20c-ddd0-400b-b352-4a0c7a3726b7",
+  "hasWhatsAppChatLink": true,
+  "hasOwnerAvailability": false,
+  "officeID": 31,
+  "officeNumber": "12061",
+  "officeCellPhone": null,
+  "officePhoneNumber": null,
+  "userID": 58074,
+  "agentID": "120612480",
+  "listingStatusID": 1,
+  "isOnline": true,
+  "marketDays": 147,
+  "typologyID": 5,
+  "listingClassID": 1,
+  "businessTypeID": 1,
+  "listingSubTypeID": null,
+  "listingCategoryID": null,
+  "conservationStatusID": null,
+  "contractDate": "2026-02-05T00:00:00",
+  "constructionYear": 2026,
+  "marketStatusID": 1,
+  "garageTypeID": 2,
+  "locationTypeID": null,
+  "isSpecialExclusive": false,
+  "energyEfficiencyLevelID": 8,
+  "emissionEfficiencyLevelID": null,
+  "efficiencyOrder": 1,
+  "publicAddress": true,
+  "privatePrice": false,
+  "publishDate": "2026-02-05T14:58:21.057",
+  "publishingStatus": 2,
+  "soldDate": null,
+  "floorAsNumber": 0,
+  "garageSpots": 1,
+  "hasMultimedia": false,
+  "hasCampaign": false,
+  "isOpportunity": false,
+  "isMultipleProposal": false,
+  "isBankAppraisalIncluded": false,
+  "bankAppraisalDate": null,
+  "dreamHouseProject": false,
+  "ownerPageId": "15273082-a41f-4522-84bb-f4cf8a145807",
+  "isGreatOpportunity": false,
+  "zipCode": "2665-357",
+  "localZone": "Milharado",
+  "address": "Avenida de Portugal",
+  "countryID": 12,
+  "region1ID": 76,
+  "regionSearch2": "mafra",
+  "regionSearch3": "milharado",
+  "regionSearch4": null,
+  "region4ID": null,
+  "regionName4": null,
+  "doorNumber": "74 - Bloco D",
+  "apartmentNumber": "Esq.",
+  "parking": false,
+  "garage": true,
+  "elevator": true,
+  "electricCarsCharging": false,
+  "accessibleLeasing": false,
+  "totalRooms": null,
+  "numberOfBedrooms": 2,
+  "numberOfWC": null,
+  "numberOfBathrooms": 2,
+  "totalArea": 171,
+  "areaAutocomplete": 171,
+  "livingArea": 93,
+  "lotSize": null,
+  "builtArea": null,
+  "exteriorPrivateArea": 0,
+  "listingAttributesIds": [],
+  "listingVideos": [],
+  "vTourLink": "",
+  "buildingDevelopmentID": 8819,
+  "buildingDevelopmentName": "Jardins da Galega",
+  "priceReductionPercentageValue": null,
+  "teamID": null,
+  "whatsAppChatLink": "https://rply.link/l/61ZWMEKcbI",
+  "lastPriceReductionDate": null,
+  "listingPictureUrl": "listings/12061/7108069/932887bc-8cad-4181-bdfe-fb8364e229ea.jpg",
+  "userPictureURL": "users/9d55b1bc-cce5-4fd9-80f8-86f936503281.jpg",
+  "previousPrice": 393000,
+  "userPublicName": "suzaneleite",
+  "userName": "Suzane Leite",
+  "officePublicName": "expo",
+  "isExclusive": false,
+  "officeName": "RE/MAX Expo",
+  "modified": "2026-07-02T10:05:37.6",
+  "isActive": true,
+  "modifiedOnUtc": "0001-01-01T00:00:00",
+  "id": 7108157,
+  "listingTitle": "120612480-104",
+  "autocompleteListingTitle": "120612480-104",
+  "isSold": false,
+  "hasFloorPlan": false,
+  "floorPlanPath": null,
+  "lastPublishingStatus": 2,
+  "coordinates": {
+   "latitude": 38.92937434288862,
+   "longitude": -9.20028383666543
+  },
+  "longitude": -9.20028383666543,
+  "latitude": 38.92937434288862,
+  "listingPrice": 410000,
+  "listingTypeID": 1,
+  "isSpecial": false,
+  "isLifeEstate": false,
+  "listingPictures": [
+   "listings/12061/7108157/1eddf562-a454-4c37-995b-e5777faa5990.jpg",
+   "listings/12061/7108157/fd889338-90a5-487a-9c65-18866f98275e.jpg",
+   "listings/12061/7108157/34712393-82b6-4fa2-85d8-29f24fba1c64.jpg",
+   "listings/12061/7108157/054cfa6a-9496-432b-bc86-bafc70723dac.jpg",
+   "listings/12061/7108157/3263c9f0-f979-44d9-b97b-15c8c8806aaf.jpg"
+  ],
+  "regionName1": "Lisboa",
+  "region2ID": 540,
+  "regionName2": "Mafra",
+  "region3ID": 138816,
+  "regionName3": "Milharado",
+  "descriptionTags": "venda-apartamento-t2-mafra-milharado",
+  "entity": "Listing",
+  "masterID": "1",
+  "languageID": 9,
+  "listingMedia": [
+   {
+    "type": "image",
+    "value": "listings/12061/7108157/1eddf562-a454-4c37-995b-e5777faa5990.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7108157/fd889338-90a5-487a-9c65-18866f98275e.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7108157/34712393-82b6-4fa2-85d8-29f24fba1c64.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7108157/054cfa6a-9496-432b-bc86-bafc70723dac.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7108157/3263c9f0-f979-44d9-b97b-15c8c8806aaf.jpg"
+   }
+  ]
+ },
+ "almada_t3_sold_price_drop": {
+  "descriptions": [
+   {
+    "languageCode": "EN",
+    "languageID": 1,
+    "description": "Condo/Apartment T3 for sale"
+   },
+   {
+    "languageCode": "FR",
+    "languageID": 2,
+    "description": "Appartement T3 à vendre"
+   },
+   {
+    "languageCode": "DE",
+    "languageID": 5,
+    "description": "Wohnung T3 für verkauf"
+   },
+   {
+    "languageCode": "PT",
+    "languageID": 9,
+    "description": "<p><strong>T3 com GARAGEM BOX, elevador e acessibilidade sem degraus na Sobreda</strong></p>\n<p>Se procura um apartamento espaçoso, funcional e verdadeiramente confortável para toda a família, este T3, inserido num prédio com elevador, poderá ser a escolha certa.</p>\n<p>O acesso ao apartamento é feito sem quaisquer degraus, tanto pela entrada principal do edifício como diretamente a partir da garagem (elevador vai à garagem), proporcionando excelentes condições para pessoas com mobilidade condicionada, utilizadores de cadeira de rodas, famílias com crianças ou simplesmente para quem privilegia conforto no dia a dia.</p>\n<p>No interior, encontra um hall de entrada amplo e acolhedor, com um roupeiro adicional que oferece uma solução prática para casacos, calçado e outros objetos de uso diário.</p>\n<p>A zona privada é composta por três quartos, todos com roupeiros embutidos, garantindo uma excelente capacidade de arrumação. O apartamento dispõe ainda de duas casas de banho completas, uma mais-valia para a organização e o conforto de toda a família. Um dos quartos dispõe ainda de uma varanda fechada.</p>\n<p>A cozinha beneficia de uma despensa independente, perfeita para organizar alimentos, pequenos eletrodomésticos e utensílios, mantendo o espaço mais funcional e arrumado e de uma varanda fechada com muita luz.</p>\n<p>A fração inclui também uma box fechada, proporcionando estacionamento seguro, maior privacidade e espaço adicional para arrumação. O acesso entre a garagem e o apartamento é realizado através do elevador, sem qualquer degrau. Ambos os portões são automáticos, garantindo todo o conforto e funcionalidade.</p>\n<p>Localizado numa zona residencial sossegada e bem servida, o apartamento encontra-se próximo de comércio, serviços, escolas e transportes públicos, permitindo ter tudo o que é necessário a curta distância.</p>\n<p>Uma casa espaçosa, com muita arrumação e características de acessibilidade pouco comuns no mercado , ideal para quem procura conforto, segurança e qualidade de vida no Concelho de Almada</p>\n<p>-10 minutos da praia</p>\n<p>-15 minutos de Lisboa</p>\n<p>-5 minutos da Faculdade</p>\n<p>Marque a sua visita e venha conhecer uma casa preparada para acompanhar todas as fases da vida.</p>\n"
+   },
+   {
+    "languageCode": "ES",
+    "languageID": 12,
+    "description": "Apartamento T3 Para venta"
+   },
+   {
+    "languageCode": "IT",
+    "languageID": 31,
+    "description": "Appartamento T3 per saldi"
+   }
+  ],
+  "country": "Portugal",
+  "listingMapPictureUrl": "listings_map/12208/122081150-357/static_map.png",
+  "listingMapPictureAltUrl": "listings_map/12208/122081150-357/private_static_map.png",
+  "listingRooms": [
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Casa de Banho",
+    "roomTypeID": 18,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Casa de Banho",
+    "roomTypeID": 18,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Cozinha",
+    "roomTypeID": 4,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Despensa",
+    "roomTypeID": 36,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Garagem",
+    "roomTypeID": 26,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Hall",
+    "roomTypeID": 30,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Quarto",
+    "roomTypeID": 6,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Quarto",
+    "roomTypeID": 6,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Quarto",
+    "roomTypeID": 6,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Sala de Estar",
+    "roomTypeID": 1,
+    "roomDescription": null
+   }
+  ],
+  "nearRegions": [
+   {
+    "regionID": 137025,
+    "regionName": "Costa de Caparica",
+    "regionSearch": "almada/costa-de-caparica"
+   },
+   {
+    "regionID": 7881016,
+    "regionName": "Almada, Cova da Piedade, Pragal e Cacilhas",
+    "regionSearch": "almada/almada-cova-da-piedade-pragal-e-cacilhas"
+   },
+   {
+    "regionID": 7881174,
+    "regionName": "Caparica e Trafaria",
+    "regionSearch": "almada/caparica-e-trafaria"
+   },
+   {
+    "regionID": 7881385,
+    "regionName": "Laranjeiro e Feijó",
+    "regionSearch": "almada/laranjeiro-e-feijo"
+   }
+  ],
+  "hasVTour": false,
+  "hasVideo": true,
+  "previousListingTitle": null,
+  "legalComponentText": null,
+  "totalAreaDisplay": " 107",
+  "livingAreaDisplay": "92",
+  "lotSizeDisplay": null,
+  "builtAreaDisplay": " 138",
+  "legalEnergyEstimatedCostText": null,
+  "legalEnergyLevelText": null,
+  "userEmail": null,
+  "userCellPhone": "+351 934 408 032",
+  "userCellPhoneTrimmed": "+351934408032",
+  "userTeamName": "Equipa Helena Grilo",
+  "userAgencyName": null,
+  "userAgencyAddress": null,
+  "userAgencyZipCode": "2800-299",
+  "userAgencyEnterpriseName": null,
+  "userAgencyLicenseNumber": null,
+  "userAgencyPhoneNumber": "+351 210 539 852",
+  "officeAddress": null,
+  "officePictureURL": "offices/2e802966-8476-4c88-a677-4788f41105f5.jpg",
+  "withMaxFinanceConnection": true,
+  "licenseNumberInfo": "",
+  "isExactAddress": false,
+  "floorID": 4,
+  "hasPrivateAddress": true,
+  "rentalPriceGranularityID": null,
+  "energeticSpecification": null,
+  "publishedModifiedOn": null,
+  "isPublished": true,
+  "ownerAvailability": null,
+  "whatsAppChatIntroId": "d97d94d0-feeb-4379-8cca-64da11723065",
+  "hasWhatsAppChatLink": true,
+  "hasOwnerAvailability": false,
+  "officeID": 151,
+  "officeNumber": "12208",
+  "officeCellPhone": null,
+  "officePhoneNumber": null,
+  "userID": 3060,
+  "agentID": "122081150",
+  "listingStatusID": 4,
+  "isOnline": true,
+  "marketDays": 78,
+  "typologyID": 7,
+  "listingClassID": 1,
+  "businessTypeID": 1,
+  "listingSubTypeID": null,
+  "listingCategoryID": null,
+  "conservationStatusID": 4,
+  "contractDate": "2026-08-11T00:00:00",
+  "constructionYear": 1999,
+  "marketStatusID": 1,
+  "garageTypeID": 2,
+  "locationTypeID": null,
+  "isSpecialExclusive": false,
+  "energyEfficiencyLevelID": 3,
+  "emissionEfficiencyLevelID": null,
+  "efficiencyOrder": 5,
+  "publicAddress": false,
+  "privatePrice": false,
+  "publishDate": "2026-08-11T09:07:00.93",
+  "publishingStatus": 2,
+  "soldDate": "2026-10-28T00:00:00",
+  "floorAsNumber": 2,
+  "garageSpots": 1,
+  "hasMultimedia": true,
+  "hasCampaign": false,
+  "isOpportunity": true,
+  "isMultipleProposal": false,
+  "isBankAppraisalIncluded": false,
+  "bankAppraisalDate": null,
+  "dreamHouseProject": false,
+  "ownerPageId": "7bdfcaa4-7997-40ca-88f6-7e73d4d7096f",
+  "isGreatOpportunity": false,
+  "zipCode": "2815-790",
+  "localZone": "Sobreda",
+  "address": "Rua Petrónio Amor de Barros",
+  "countryID": 12,
+  "region1ID": 80,
+  "regionSearch2": "almada",
+  "regionSearch3": "charneca-de-caparica-e-sobreda",
+  "regionSearch4": null,
+  "region4ID": null,
+  "regionName4": null,
+  "doorNumber": "25",
+  "apartmentNumber": "Esq",
+  "parking": false,
+  "garage": true,
+  "elevator": true,
+  "electricCarsCharging": false,
+  "accessibleLeasing": false,
+  "totalRooms": 4,
+  "numberOfBedrooms": 3,
+  "numberOfWC": null,
+  "numberOfBathrooms": 2,
+  "totalArea": 107,
+  "areaAutocomplete": 107,
+  "livingArea": 92,
+  "lotSize": null,
+  "builtArea": 138.25,
+  "exteriorPrivateArea": null,
+  "listingAttributesIds": [],
+  "listingVideos": [
+   "https://youtu.be/_2oc3bqMm9s"
+  ],
+  "vTourLink": "",
+  "buildingDevelopmentID": null,
+  "buildingDevelopmentName": null,
+  "priceReductionPercentageValue": 2,
+  "teamID": 3770,
+  "whatsAppChatLink": "https://rply.link/l/ilwJgebIQQ",
+  "lastPriceReductionDate": "2026-10-23T08:09:44.283",
+  "listingPictureUrl": "listings/12208/7234496/eda7e8ed-9f35-4cfb-83fd-275b9b66c84f.jpg",
+  "userPictureURL": "users/0db21b92-02d0-4a1f-b635-7ba1fa8f11bd.jpg",
+  "previousPrice": 363000,
+  "userPublicName": "hgrilo",
+  "userName": "Helena Grilo",
+  "officePublicName": "conexao",
+  "isExclusive": false,
+  "officeName": "RE/MAX Conexão",
+  "modified": "2026-10-28T08:58:24.53",
+  "isActive": true,
+  "modifiedOnUtc": "0001-01-01T00:00:00",
+  "id": 7234496,
+  "listingTitle": "122081150-357",
+  "autocompleteListingTitle": "122081150-357",
+  "isSold": true,
+  "hasFloorPlan": true,
+  "floorPlanPath": "/documents/listing/2026/7234496/921e31b93c19411b916487d72c450333.pdf",
+  "lastPublishingStatus": 2,
+  "coordinates": {
+   "latitude": 38.645390963202786,
+   "longitude": -9.18700544427389
+  },
+  "longitude": -9.18700544427389,
+  "latitude": 38.645390963202786,
+  "listingPrice": 355000,
+  "listingTypeID": 1,
+  "isSpecial": false,
+  "isLifeEstate": false,
+  "listingPictures": [
+   "listings/12208/7234496/eda7e8ed-9f35-4cfb-83fd-275b9b66c84f.jpg",
+   "listings/12208/7234496/03101016-f4d1-489d-ba81-eec54d3d8662.jpg",
+   "listings/12208/7234496/cc5dc0d7-317d-48a7-9903-c436b68580c5.jpg",
+   "listings/12208/7234496/f2e9564f-9e73-4327-86de-849f87a5d240.jpg",
+   "listings/12208/7234496/ba4b2779-bc89-4fc4-a0db-e17c4e6e87a0.jpg",
+   "listings/12208/7234496/d60eff47-a3b2-4231-bca6-1d46e91f1e3b.jpg",
+   "listings/12208/7234496/7ed42575-94e8-4350-875a-31d6bf6d2c97.jpg",
+   "listings/12208/7234496/77270511-72c2-4172-8682-2e33d731f4a4.jpg",
+   "listings/12208/7234496/a2cd5729-240f-4668-80e0-0991857ab3be.jpg",
+   "listings/12208/7234496/0fd5cdbf-0127-40a9-8397-f3efb40f5c26.jpg",
+   "listings/12208/7234496/bdc365b0-a5f7-4e3e-a43f-c3310ae92fd2.jpg",
+   "listings/12208/7234496/e6e700bc-034c-4a7e-9d49-9114773b5272.jpg",
+   "listings/12208/7234496/5787b6cd-dd53-4795-b509-ff6e5e38dab3.jpg",
+   "listings/12208/7234496/222bc66c-a49c-466a-93c6-91046242ff82.jpg",
+   "listings/12208/7234496/99939f58-8bd3-4397-a965-f2e7366b5584.jpg",
+   "listings/12208/7234496/1a124e47-96a5-4f35-a2d8-4c90596617cb.jpg",
+   "listings/12208/7234496/cd77aac6-f064-46d3-a7b4-052d118ef4cd.jpg",
+   "listings/12208/7234496/09bba7ec-a9a6-4cb2-b4a3-c04b007b74ee.jpg",
+   "listings/12208/7234496/1e7e7303-d5f9-4a14-a20a-84f9101648a9.jpg",
+   "listings/12208/7234496/4bc68ac2-8b82-487f-b6ec-c85792084976.jpg",
+   "listings/12208/7234496/426e92f6-9ae3-442d-98d7-6549c2c9bf0a.jpg",
+   "listings/12208/7234496/571fae49-c0e3-43c8-9f61-6b4de28a026b.jpg",
+   "listings/12208/7234496/11277a90-f66f-47b4-8cf6-543b937eccf5.jpg",
+   "listings/12208/7234496/c66bdcbc-bb63-474e-9b76-079894bfe579.jpg",
+   "listings/12208/7234496/a4528e0a-649c-4f29-b67b-71fbbab3b09a.jpg",
+   "listings/12208/7234496/9681f128-5dff-4444-991d-832ed5ef6bee.jpg",
+   "listings/12208/7234496/5d34a68f-96f5-4d20-871f-0a4df112e421.jpg",
+   "listings/12208/7234496/a29ee524-d5e0-4e10-b3ae-fe23be7153be.jpg",
+   "listings/12208/7234496/053055ff-c972-4694-ac2f-a6f13e460239.jpg",
+   "listings/12208/7234496/6cb3ef78-be7b-42e7-98c0-807eb72bb8db.jpg",
+   "listings/12208/7234496/650deb8f-05d4-4d1b-a8d9-dcaaf8187034.jpg",
+   "listings/12208/7234496/1f1f8673-e638-46b9-a8ad-e86b8f527be5.jpg",
+   "listings/12208/7234496/660881d9-5fb1-41e4-93a8-7826497a6b8e.jpg",
+   "listings/12208/7234496/6c079f0d-f231-475e-bc43-dfcf55d35438.jpg",
+   "listings/12208/7234496/66924894-c568-46d8-ad2b-59c0b41dc93a.jpg",
+   "listings/12208/7234496/7dfa2b30-ccc2-40ec-a84e-b1571516bd85.jpg",
+   "listings/12208/7234496/efadc08c-a4e2-4c42-b761-bbe68fd77ad0.jpg",
+   "listings/12208/7234496/6e8d0ea6-fe3b-458b-8dcc-bf4e89991dc4.jpg",
+   "listings/12208/7234496/12c8ac72-d68c-49b9-bf34-3114440223a9.jpg",
+   "listings/12208/7234496/1b07d78e-5cbb-4e2a-b6ca-ba247f1f278e.jpg"
+  ],
+  "regionName1": "Setúbal",
+  "region2ID": 601,
+  "regionName2": "Almada",
+  "region3ID": 7881222,
+  "regionName3": "Charneca de Caparica e Sobreda",
+  "descriptionTags": "venda-apartamento-t3-almada-charneca-de-caparica-e-sobreda",
+  "entity": "Listing",
+  "masterID": "1",
+  "languageID": 9,
+  "listingMedia": [
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/eda7e8ed-9f35-4cfb-83fd-275b9b66c84f.jpg"
+   },
+   {
+    "type": "video",
+    "value": "https://youtu.be/_2oc3bqMm9s"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/03101016-f4d1-489d-ba81-eec54d3d8662.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/cc5dc0d7-317d-48a7-9903-c436b68580c5.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/f2e9564f-9e73-4327-86de-849f87a5d240.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/ba4b2779-bc89-4fc4-a0db-e17c4e6e87a0.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/d60eff47-a3b2-4231-bca6-1d46e91f1e3b.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/7ed42575-94e8-4350-875a-31d6bf6d2c97.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/77270511-72c2-4172-8682-2e33d731f4a4.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/a2cd5729-240f-4668-80e0-0991857ab3be.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/0fd5cdbf-0127-40a9-8397-f3efb40f5c26.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/bdc365b0-a5f7-4e3e-a43f-c3310ae92fd2.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/e6e700bc-034c-4a7e-9d49-9114773b5272.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/5787b6cd-dd53-4795-b509-ff6e5e38dab3.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/222bc66c-a49c-466a-93c6-91046242ff82.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/99939f58-8bd3-4397-a965-f2e7366b5584.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/1a124e47-96a5-4f35-a2d8-4c90596617cb.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/cd77aac6-f064-46d3-a7b4-052d118ef4cd.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/09bba7ec-a9a6-4cb2-b4a3-c04b007b74ee.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/1e7e7303-d5f9-4a14-a20a-84f9101648a9.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/4bc68ac2-8b82-487f-b6ec-c85792084976.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/426e92f6-9ae3-442d-98d7-6549c2c9bf0a.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/571fae49-c0e3-43c8-9f61-6b4de28a026b.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/11277a90-f66f-47b4-8cf6-543b937eccf5.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/c66bdcbc-bb63-474e-9b76-079894bfe579.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/a4528e0a-649c-4f29-b67b-71fbbab3b09a.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/9681f128-5dff-4444-991d-832ed5ef6bee.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/5d34a68f-96f5-4d20-871f-0a4df112e421.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/a29ee524-d5e0-4e10-b3ae-fe23be7153be.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/053055ff-c972-4694-ac2f-a6f13e460239.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/6cb3ef78-be7b-42e7-98c0-807eb72bb8db.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/650deb8f-05d4-4d1b-a8d9-dcaaf8187034.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/1f1f8673-e638-46b9-a8ad-e86b8f527be5.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/660881d9-5fb1-41e4-93a8-7826497a6b8e.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/6c079f0d-f231-475e-bc43-dfcf55d35438.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/66924894-c568-46d8-ad2b-59c0b41dc93a.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/7dfa2b30-ccc2-40ec-a84e-b1571516bd85.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/efadc08c-a4e2-4c42-b761-bbe68fd77ad0.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/6e8d0ea6-fe3b-458b-8dcc-bf4e89991dc4.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/12c8ac72-d68c-49b9-bf34-3114440223a9.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12208/7234496/1b07d78e-5cbb-4e2a-b6ca-ba247f1f278e.jpg"
+   }
+  ]
+ },
+ "lourinha_t3_lot": {
+  "descriptions": [
+   {
+    "languageCode": "EN",
+    "languageID": 1,
+    "description": "House T3 for sale"
+   },
+   {
+    "languageCode": "FR",
+    "languageID": 2,
+    "description": "Logement T3 à vendre"
+   },
+   {
+    "languageCode": "DE",
+    "languageID": 5,
+    "description": "Gehäuse T3 für verkauf"
+   },
+   {
+    "languageCode": "PT",
+    "languageID": 9,
+    "description": "<p>Apresentamos-lhe o exclusivo empreendimento Horizon, onde o luxo contemporâneo se funde com a serenidade do mar, criando um estilo de vida verdadeiramente único e inspirador.</p>\n<p>Situado na encantadora vila da Lourinhã, o Horizon beneficia de uma localização privilegiada, a apenas 500 metros da Praia da Peralta, permitindo-lhe desfrutar do mar a poucos minutos de casa. Com excelentes acessos, encontra-se convenientemente ligado a Lisboa, ao Aeroporto de Lisboa e à reconhecida Escola Internacional de Torres Vedras, tornando este empreendimento ideal tanto para residência permanente como para casa de férias.</p>\n<p>Inserido num condomínio privado de excelência, este empreendimento turístico oferece um conjunto de comodidades exclusivas que elevam a experiência de viver ao mais alto nível, incluindo ginásio totalmente equipado, restaurante, courts de padel e pickleball, proporcionando momentos de lazer, bem-estar e convívio sem sair de casa.</p>\n<p>Composto por apenas 15 moradias de tipologia T3 e T4, o Horizon foi cuidadosamente desenhado para oferecer o máximo de conforto, privacidade e sofisticação. Aqui, cada amanhecer é brindado com a imensidão do oceano e cada pôr do sol transforma-se num espetáculo inesquecível.</p>\n<p>A arquitetura contemporânea e elegante destaca-se pelas suas linhas modernas e pelos amplos vãos envidraçados do chão ao teto, que permitem uma ligação contínua entre os espaços interiores e o exterior, enquadrando vistas panorâmicas deslumbrantes sobre o mar e a paisagem envolvente.</p>\n<p>Cada moradia foi meticulosamente concebida, com uma atenção rigorosa ao detalhe e à qualidade dos acabamentos, proporcionando um ambiente de vida urbano, prático e sofisticado, sem abdicar da tranquilidade e da harmonia proporcionadas pelo contacto com a natureza e a proximidade da praia.</p>\n<p>No exterior, cada propriedade dispõe de jardim privativo, piscina e jacuzzi, criando o cenário perfeito para momentos de lazer, relaxamento e convívio, num ambiente exclusivo e reservado.</p>\n<p>Acresce ainda a possibilidade de adquirir um pack de mobiliário, ideal para quem procura uma solução chave na mão: para as moradias T3, o valor é de €60.000 + IVA, e para as moradias T4, o valor é de €70.000 + IVA.</p>\n<p>O Horizon representa mais do que um empreendimento — é um refúgio onde o conforto, a elegância e a natureza coexistem em perfeita sintonia, ideal para quem procura um estilo de vida distinto junto ao mar.</p>\n<p>Para mais informações ou para agendar uma visita a este imóvel exclusivo, entre em contacto connosco!</p>\n<p>---</p>\n<p>We proudly present the exclusive Horizon development, where contemporary luxury blends seamlessly with the serenity of the sea, creating a truly unique and inspiring lifestyle.</p>\n<p>Located in the charming town of Lourinhã, Horizon enjoys a privileged setting just 500 metres from Peralta Beach, allowing you to enjoy the ocean only moments from your doorstep. With excellent access routes, it is conveniently connected to Lisbon, Lisbon Airport, and the renowned Torres Vedras International School, making it ideal for both permanent living and holiday homes.</p>\n<p>Set within an exclusive private condominium, this touristic development offers a range of premium amenities designed to elevate everyday living, including a fully equipped gym, restaurant, and padel and pickleball courts — providing leisure, wellbeing and social moments without leaving home.</p>\n<p>Comprising only 15 villas, with three- and four-bedroom layouts, Horizon has been thoughtfully designed to offer maximum comfort, privacy and sophistication. Here, each sunrise is accompanied by the vastness of the ocean, and every sunset becomes an unforgettable spectacle.</p>\n<p>The contemporary and elegant architecture stands out for its clean lines and expansive floor-to-ceiling glazing, creating a seamless connection between indoor and outdoor spaces, while framing breathtaking panoramic views over the sea and surrounding landscape.</p>\n<p>Each villa has been meticulously designed with exceptional attention to detail and high-quality finishes, offering a practical, sophisticated and modern living environment without compromising the tranquillity and harmony provided by nature and the proximity to the beach.</p>\n<p>Outdoors, each property features a private garden, swimming pool and jacuzzi, creating the perfect setting for leisure, relaxation and entertaining in an exclusive and private environment.</p>\n<p>There is also the option to acquire a furniture package, ideal for those seeking a turnkey solution: for three-bedroom villas, the cost is €60,000 + VAT, and for four-bedroom villas, €70,000 + VAT.</p>\n<p>Horizon represents more than just a development — it is a sanctuary where comfort, elegance and nature coexist in perfect harmony, ideal for those seeking a distinctive lifestyle by the sea.</p>\n<p>For more information or to schedule a visit to this exclusive property, contact us!</p>\n"
+   },
+   {
+    "languageCode": "ES",
+    "languageID": 12,
+    "description": "Alojamiento T3 Para venta"
+   },
+   {
+    "languageCode": "IT",
+    "languageID": 31,
+    "description": "Alloggiamento T3 per saldi"
+   }
+  ],
+  "country": "Portugal",
+  "listingMapPictureUrl": "listings_map/12375/123751599-37/static_map.png",
+  "listingMapPictureAltUrl": "listings_map/12375/123751599-37/private_static_map.png",
+  "listingRooms": [
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Sala Comum",
+    "roomTypeID": 3,
+    "roomDescription": null
+   }
+  ],
+  "nearRegions": [
+   {
+    "regionID": 138712,
+    "regionName": "Moita dos Ferreiros",
+    "regionSearch": "lourinha/moita-dos-ferreiros"
+   },
+   {
+    "regionID": 138714,
+    "regionName": "Reguengo Grande",
+    "regionSearch": "lourinha/reguengo-grande"
+   },
+   {
+    "regionID": 138715,
+    "regionName": "Ribamar",
+    "regionSearch": "lourinha/ribamar"
+   },
+   {
+    "regionID": 138716,
+    "regionName": "Santa Bárbara",
+    "regionSearch": "lourinha/santa-barbara"
+   },
+   {
+    "regionID": 7881440,
+    "regionName": "Miragaia e Marteleira",
+    "regionSearch": "lourinha/miragaia-e-marteleira"
+   },
+   {
+    "regionID": 7881635,
+    "regionName": "São Bartolomeu dos Galegos e Moledo",
+    "regionSearch": "lourinha/sao-bartolomeu-dos-galegos-e-moledo"
+   }
+  ],
+  "hasVTour": false,
+  "hasVideo": false,
+  "previousListingTitle": null,
+  "legalComponentText": null,
+  "totalAreaDisplay": " 393",
+  "livingAreaDisplay": " 393",
+  "lotSizeDisplay": " 471",
+  "builtAreaDisplay": " 653",
+  "legalEnergyEstimatedCostText": null,
+  "legalEnergyLevelText": null,
+  "userEmail": null,
+  "userCellPhone": "+351 960 177 550",
+  "userCellPhoneTrimmed": "+351960177550",
+  "userTeamName": "Equipa Conim&Sattar",
+  "userAgencyName": null,
+  "userAgencyAddress": null,
+  "userAgencyZipCode": "1700-348",
+  "userAgencyEnterpriseName": null,
+  "userAgencyLicenseNumber": null,
+  "userAgencyPhoneNumber": "+351 218 800 800",
+  "officeAddress": null,
+  "officePictureURL": "offices/aff0d5be-29ac-4894-a23a-54a693ef0b3d.jpg",
+  "withMaxFinanceConnection": true,
+  "licenseNumberInfo": "",
+  "isExactAddress": false,
+  "floorID": null,
+  "hasPrivateAddress": true,
+  "rentalPriceGranularityID": null,
+  "energeticSpecification": null,
+  "publishedModifiedOn": null,
+  "isPublished": true,
+  "ownerAvailability": null,
+  "whatsAppChatIntroId": "b82a4a1e-0e90-47dc-8d8a-beaca210c26e",
+  "hasWhatsAppChatLink": true,
+  "hasOwnerAvailability": false,
+  "officeID": 312,
+  "officeNumber": "12375",
+  "officeCellPhone": null,
+  "officePhoneNumber": null,
+  "userID": 63426,
+  "agentID": "123751599",
+  "listingStatusID": 1,
+  "isOnline": true,
+  "marketDays": 144,
+  "typologyID": 7,
+  "listingClassID": 1,
+  "businessTypeID": 1,
+  "listingSubTypeID": null,
+  "listingCategoryID": null,
+  "conservationStatusID": null,
+  "contractDate": "2026-04-06T00:00:00",
+  "constructionYear": 2026,
+  "marketStatusID": 1,
+  "garageTypeID": 4,
+  "locationTypeID": null,
+  "isSpecialExclusive": false,
+  "energyEfficiencyLevelID": 1,
+  "emissionEfficiencyLevelID": null,
+  "efficiencyOrder": 2,
+  "publicAddress": false,
+  "privatePrice": false,
+  "publishDate": "2026-04-06T16:24:58.61",
+  "publishingStatus": 2,
+  "soldDate": null,
+  "floorAsNumber": null,
+  "garageSpots": 3,
+  "hasMultimedia": false,
+  "hasCampaign": false,
+  "isOpportunity": false,
+  "isMultipleProposal": false,
+  "isBankAppraisalIncluded": false,
+  "bankAppraisalDate": null,
+  "dreamHouseProject": false,
+  "ownerPageId": "6e316d4a-3f07-4a4b-9069-cd2e91dc1d67",
+  "isGreatOpportunity": false,
+  "zipCode": "2530-074",
+  "localZone": "Lourinhã",
+  "address": "ESTRADA DA PERALTA - Montoito\r\n",
+  "countryID": 12,
+  "region1ID": 76,
+  "regionSearch2": "lourinha",
+  "regionSearch3": "lourinha-e-atalaia",
+  "regionSearch4": null,
+  "region4ID": null,
+  "regionName4": null,
+  "doorNumber": null,
+  "apartmentNumber": null,
+  "parking": true,
+  "garage": false,
+  "elevator": true,
+  "electricCarsCharging": false,
+  "accessibleLeasing": false,
+  "totalRooms": 4,
+  "numberOfBedrooms": 3,
+  "numberOfWC": null,
+  "numberOfBathrooms": 6,
+  "totalArea": 393,
+  "areaAutocomplete": 393,
+  "livingArea": 393,
+  "lotSize": 471,
+  "builtArea": 653,
+  "exteriorPrivateArea": 410.5,
+  "listingAttributesIds": [],
+  "listingVideos": [],
+  "vTourLink": "",
+  "buildingDevelopmentID": 8861,
+  "buildingDevelopmentName": "Horizon",
+  "priceReductionPercentageValue": null,
+  "teamID": 1336,
+  "whatsAppChatLink": "https://rply.link/l/YGIbq7ZLFh",
+  "lastPriceReductionDate": null,
+  "listingPictureUrl": "listings/12375/7123098/2dcd12c3-2395-473e-a7e4-14102e4edc2d.jpg",
+  "userPictureURL": "users/7c562d9a-68b4-4d4c-89a5-d05c91607731.jpg",
+  "previousPrice": null,
+  "userPublicName": "sophiamcdonald",
+  "userName": "Sophia McDonald",
+  "officePublicName": "prestige",
+  "isExclusive": false,
+  "officeName": "RE/MAX Prestige",
+  "modified": "2026-08-28T08:53:04.02",
+  "isActive": true,
+  "modifiedOnUtc": "0001-01-01T00:00:00",
+  "id": 7123098,
+  "listingTitle": "123751599-37",
+  "autocompleteListingTitle": "123751599-37",
+  "isSold": false,
+  "hasFloorPlan": false,
+  "floorPlanPath": null,
+  "lastPublishingStatus": 2,
+  "coordinates": {
+   "latitude": 39.239000711908346,
+   "longitude": -9.28730470775043
+  },
+  "longitude": -9.28730470775043,
+  "latitude": 39.239000711908346,
+  "listingPrice": 1900000,
+  "listingTypeID": 11,
+  "isSpecial": false,
+  "isLifeEstate": false,
+  "listingPictures": [
+   "listings/12375/7123098/2dcd12c3-2395-473e-a7e4-14102e4edc2d.jpg",
+   "listings/12375/7123098/b4735425-a52e-4197-9b44-65e85c2ef2ad.jpg",
+   "listings/12375/7123098/399aaf2a-46da-44a1-8bd1-a03cac60d51d.jpg",
+   "listings/12375/7123098/63b1aeca-731b-4460-8a82-0aba3dba2274.jpg",
+   "listings/12375/7123098/7495edf3-f15c-4ca8-bebc-1b8db2448166.jpg",
+   "listings/12375/7123098/28c88d22-a94a-4051-b097-e1344e96861a.jpg",
+   "listings/12375/7123098/f52ab31f-bb72-4ca3-bdd7-1621596a4978.jpg",
+   "listings/12375/7123098/53ec891c-5c47-4b9d-bd08-5b97e4394c3f.jpg",
+   "listings/12375/7123098/efad5b64-b129-4479-b583-747297414aba.jpg",
+   "listings/12375/7123098/7f258b9b-4d1e-4053-ae83-5b896e64ee8c.jpg",
+   "listings/12375/7123098/e634accc-680f-4207-81e7-b86c5121d6ca.jpg",
+   "listings/12375/7123098/0c1db6ee-46d8-4146-884d-00118e896cd2.jpg",
+   "listings/12375/7123098/26da17b6-548d-43a8-8edb-c65b5b0c7e00.jpg",
+   "listings/12375/7123098/0c353314-d03b-4a2c-9fd5-449877c7f053.jpg",
+   "listings/12375/7123098/f49c8ac4-eef3-47cd-bc79-3fce5041b26e.jpg",
+   "listings/12375/7123098/20bf8af0-e012-4f90-9c25-33b54c577415.jpg",
+   "listings/12375/7123098/4f39b572-b191-404f-b6f1-3321e24d7af9.jpg",
+   "listings/12375/7123098/f30766cc-da32-43f6-8b52-da783fa99c83.jpg",
+   "listings/12375/7123098/799f80a3-14bc-4dd0-b5e2-a25484840c24.jpg",
+   "listings/12375/7123098/1691e32c-69ca-42a0-983d-85289dea6941.jpg",
+   "listings/12375/7123098/ec5e0526-0dd3-4c08-9b90-cb9f0bad7c10.jpg",
+   "listings/12375/7123098/1e7e77ee-d57d-4010-b9fe-363594afedfe.jpg",
+   "listings/12375/7123098/539f020a-f4cb-4760-b485-f9725ba246ba.jpg",
+   "listings/12375/7123098/4f7ecbc2-ab9c-41d4-8b88-d23a576b725c.jpg",
+   "listings/12375/7123098/890a48a4-2f2b-4380-9938-21cd11384448.jpg",
+   "listings/12375/7123098/f6459746-06c4-428a-b517-257679a9dc63.jpg",
+   "listings/12375/7123098/0fa83a95-ef54-4191-915b-d62101ab884e.jpg",
+   "listings/12375/7123098/1d87dcbd-d13e-43d5-b219-1c9e62e50c32.jpg",
+   "listings/12375/7123098/6f2df7d2-5c67-4ef5-992f-e85e44ce8b0c.jpg",
+   "listings/12375/7123098/795bbd14-80dc-4d11-b2c1-3f4adf384c08.jpg",
+   "listings/12375/7123098/11641b88-c7f3-4e4e-94a6-b29f94837449.jpg",
+   "listings/12375/7123098/642b5d3a-72b0-460c-ad83-d744cd53025a.jpg",
+   "listings/12375/7123098/f041d368-0b9e-493d-96b0-3f2021fab3d2.jpg",
+   "listings/12375/7123098/f1c5d04a-433d-478a-814e-6f44c9e571fa.jpg",
+   "listings/12375/7123098/18ac943f-e1f1-4b53-82fe-5de71f9d060f.jpg",
+   "listings/12375/7123098/d7105247-15be-47de-881c-01435e9d8a7f.jpg",
+   "listings/12375/7123098/581b793c-e35f-4ed3-96ac-55e90c00184c.jpg",
+   "listings/12375/7123098/9fabad2e-e7ef-47ba-882f-b76527b5cff6.jpg",
+   "listings/12375/7123098/fa528fc2-15dd-41e4-9c1d-3f58aabd0e3c.jpg",
+   "listings/12375/7123098/cbb27005-391c-4a05-8841-014b75a080f1.jpg",
+   "listings/12375/7123098/b4f9318c-f3a6-4b75-ba3e-cad7968f6389.jpg",
+   "listings/12375/7123098/03875bd5-dd22-4e5c-ba17-f941a685b49e.jpg",
+   "listings/12375/7123098/9e4dc2d2-7d53-4e59-b57f-cc1b1ae16e95.jpg",
+   "listings/12375/7123098/2e969eab-0997-4cec-8a39-6c4b7950ea00.jpg",
+   "listings/12375/7123098/657cf6d5-0cfb-4b9d-83f7-17525b4b9131.jpg",
+   "listings/12375/7123098/ce089fb2-771b-4dc1-944d-9d16e80cd8b6.jpg"
+  ],
+  "regionName1": "Lisboa",
+  "region2ID": 539,
+  "regionName2": "Lourinhã",
+  "region3ID": 7881401,
+  "regionName3": "Lourinhã e Atalaia",
+  "descriptionTags": "venda-moradia-t3-lourinha-lourinha-e-atalaia",
+  "entity": "Listing",
+  "masterID": "1",
+  "languageID": 9,
+  "listingMedia": [
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/2dcd12c3-2395-473e-a7e4-14102e4edc2d.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/b4735425-a52e-4197-9b44-65e85c2ef2ad.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/399aaf2a-46da-44a1-8bd1-a03cac60d51d.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/63b1aeca-731b-4460-8a82-0aba3dba2274.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/7495edf3-f15c-4ca8-bebc-1b8db2448166.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/28c88d22-a94a-4051-b097-e1344e96861a.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/f52ab31f-bb72-4ca3-bdd7-1621596a4978.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/53ec891c-5c47-4b9d-bd08-5b97e4394c3f.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/efad5b64-b129-4479-b583-747297414aba.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/7f258b9b-4d1e-4053-ae83-5b896e64ee8c.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/e634accc-680f-4207-81e7-b86c5121d6ca.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/0c1db6ee-46d8-4146-884d-00118e896cd2.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/26da17b6-548d-43a8-8edb-c65b5b0c7e00.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/0c353314-d03b-4a2c-9fd5-449877c7f053.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/f49c8ac4-eef3-47cd-bc79-3fce5041b26e.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/20bf8af0-e012-4f90-9c25-33b54c577415.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/4f39b572-b191-404f-b6f1-3321e24d7af9.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/f30766cc-da32-43f6-8b52-da783fa99c83.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/799f80a3-14bc-4dd0-b5e2-a25484840c24.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/1691e32c-69ca-42a0-983d-85289dea6941.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/ec5e0526-0dd3-4c08-9b90-cb9f0bad7c10.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/1e7e77ee-d57d-4010-b9fe-363594afedfe.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/539f020a-f4cb-4760-b485-f9725ba246ba.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/4f7ecbc2-ab9c-41d4-8b88-d23a576b725c.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/890a48a4-2f2b-4380-9938-21cd11384448.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/f6459746-06c4-428a-b517-257679a9dc63.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/0fa83a95-ef54-4191-915b-d62101ab884e.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/1d87dcbd-d13e-43d5-b219-1c9e62e50c32.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/6f2df7d2-5c67-4ef5-992f-e85e44ce8b0c.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/795bbd14-80dc-4d11-b2c1-3f4adf384c08.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/11641b88-c7f3-4e4e-94a6-b29f94837449.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/642b5d3a-72b0-460c-ad83-d744cd53025a.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/f041d368-0b9e-493d-96b0-3f2021fab3d2.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/f1c5d04a-433d-478a-814e-6f44c9e571fa.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/18ac943f-e1f1-4b53-82fe-5de71f9d060f.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/d7105247-15be-47de-881c-01435e9d8a7f.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/581b793c-e35f-4ed3-96ac-55e90c00184c.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/9fabad2e-e7ef-47ba-882f-b76527b5cff6.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/fa528fc2-15dd-41e4-9c1d-3f58aabd0e3c.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/cbb27005-391c-4a05-8841-014b75a080f1.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/b4f9318c-f3a6-4b75-ba3e-cad7968f6389.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/03875bd5-dd22-4e5c-ba17-f941a685b49e.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/9e4dc2d2-7d53-4e59-b57f-cc1b1ae16e95.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/2e969eab-0997-4cec-8a39-6c4b7950ea00.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/657cf6d5-0cfb-4b9d-83f7-17525b4b9131.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12375/7123098/ce089fb2-771b-4dc1-944d-9d16e80cd8b6.jpg"
+   }
+  ]
+ },
+ "campolide_t4_price_drop": {
+  "descriptions": [
+   {
+    "languageCode": "EN",
+    "languageID": 1,
+    "description": "Condo/Apartment T4 for sale"
+   },
+   {
+    "languageCode": "FR",
+    "languageID": 2,
+    "description": "Appartement T4 à vendre"
+   },
+   {
+    "languageCode": "DE",
+    "languageID": 5,
+    "description": "Wohnung T4 für verkauf"
+   },
+   {
+    "languageCode": "PT",
+    "languageID": 9,
+    "description": "<p><strong><ins>T4 com dois terraços, estacionamento e vista Monsanto, em Campolide </ins></strong><br></p>\n<p><em>\"As fotografias são do imóvel, mas as imagens foram melhoradas por inteligência artificial para fins ilustrativos. O imóvel é vendido vazio.\"</em></p>\n<p><br>Em Campolide, a poucos minutos das Amoreiras e do Liceu Francês, encontra este apartamento T4 com <strong>163 m² de área e dois terraços com cerca de 40 m² cada</strong>, uma combinação pouco comum para quem procura espaço, luz natural e uma forte relação com o exterior no centro de Lisboa.</p>\n<p>Inserido num prédio de 2002, servido por <strong>dois elevadores</strong>, o apartamento beneficia de <strong>exposição solar nascente/poente</strong> e de uma vista desafogada sobre Monsanto. Dispõe ainda de <strong>um lugar de estacionamento</strong>.</p>\n<p>A distribuição interior é particularmente funcional, com todas as divisões a terem acesso direto aos dois terraços.</p>\n<p>Do lado nascente encontram-se a <strong>cozinha, um quarto e a suite</strong>, bem como uma das casas de banho. A poente ficam os <strong>outros dois quartos e a sala</strong>, beneficiando esta última de uma agradável luz ao final do dia e da vista sobre Monsanto.</p>\n<p>A zona privada é composta por <strong>quatro quartos, um deles em suite</strong>, duas casas de banho completas e uma casa de banho social. A cozinha conta ainda com uma <strong>generosa despensa</strong>, proporcionando espaço adicional de arrumação.</p>\n<p>O apartamento necessita de uma <strong>atualização profunda</strong>, nomeadamente ao nível da cozinha, casas de banho, pavimentos, portas e caixilharias. Uma característica que representa, simultaneamente, a oportunidade de criar uma casa contemporânea e personalizada, tirando partido de uma área generosa, de uma excelente distribuição e de dois espaços exteriores verdadeiramente diferenciadores.</p>\n<p>Uma casa com enorme potencial para quem valoriza <strong>áreas amplas, dois grandes terraços, luz ao longo de todo o dia e uma localização central</strong>, com as Amoreiras a poucos minutos.</p>\n<p><strong>Principais características:</strong></p>\n<ul>\n<li>T4</li>\n<li>163 m²</li>\n<li>2 terraços com cerca de 40 m² cada</li>\n<li>Exposição solar nascente/poente</li>\n<li>Vista desafogada para Monsanto</li>\n<li>Sala com acesso ao terraço</li>\n<li>4 quartos (1 deles Suite), todos com acesso aos terraços</li>\n<li>2 casas de banho completas</li>\n<li>1 casa de banho social</li>\n<li>Cozinha com despensa</li>\n<li>1 lugar de estacionamento</li>\n<li>Prédio de 2002</li>\n<li>2 elevadores</li>\n<li>Imóvel a necessitar de atualização</li>\n<li>Campolide, a poucos minutos das Amoreiras<br></li>\n</ul>\n<p><strong><ins>Fotos geradas por IA, não correspondendo ao atual estado do imóvel.</ins></strong> <br></p>\n<p><strong>Uma oportunidade para transformar um apartamento de áreas generosas numa casa à medida,  com uma localização privilegiada em Lisboa.</strong>&nbsp;</p>\n"
+   },
+   {
+    "languageCode": "ES",
+    "languageID": 12,
+    "description": "Apartamento T4 Para venta"
+   },
+   {
+    "languageCode": "IT",
+    "languageID": 31,
+    "description": "Appartamento T4 per saldi"
+   }
+  ],
+  "country": "Portugal",
+  "listingMapPictureUrl": "listings_map/12061/120612091-202/static_map.png",
+  "listingMapPictureAltUrl": "listings_map/12061/120612091-202/38725077_-9164070_public_static_map.png",
+  "listingRooms": [
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Cozinha",
+    "roomTypeID": 4,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Quarto",
+    "roomTypeID": 6,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Quarto",
+    "roomTypeID": 6,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Quarto",
+    "roomTypeID": 6,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Quarto",
+    "roomTypeID": 6,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Sala de Estar",
+    "roomTypeID": 1,
+    "roomDescription": null
+   }
+  ],
+  "nearRegions": [
+   {
+    "regionID": 138627,
+    "regionName": "Alcântara",
+    "regionSearch": "lisboa/alcantara"
+   },
+   {
+    "regionID": 138629,
+    "regionName": "Alvalade",
+    "regionSearch": "lisboa/alvalade"
+   },
+   {
+    "regionID": 138632,
+    "regionName": "Beato",
+    "regionSearch": "lisboa/beato"
+   },
+   {
+    "regionID": 138636,
+    "regionName": "Carnide",
+    "regionSearch": "lisboa/carnide"
+   },
+   {
+    "regionID": 138650,
+    "regionName": "Penha de França",
+    "regionSearch": "lisboa/penha-de-franca"
+   },
+   {
+    "regionID": 7881288,
+    "regionName": "Estrela",
+    "regionSearch": "lisboa/estrela"
+   }
+  ],
+  "hasVTour": false,
+  "hasVideo": false,
+  "previousListingTitle": null,
+  "legalComponentText": null,
+  "totalAreaDisplay": " 163",
+  "livingAreaDisplay": " 146",
+  "lotSizeDisplay": null,
+  "builtAreaDisplay": null,
+  "legalEnergyEstimatedCostText": null,
+  "legalEnergyLevelText": null,
+  "userEmail": null,
+  "userCellPhone": "+351 967 635 312",
+  "userCellPhoneTrimmed": "+351967635312",
+  "userTeamName": null,
+  "userAgencyName": null,
+  "userAgencyAddress": null,
+  "userAgencyZipCode": "1990-211",
+  "userAgencyEnterpriseName": null,
+  "userAgencyLicenseNumber": null,
+  "userAgencyPhoneNumber": "+351 218 540 200",
+  "officeAddress": null,
+  "officePictureURL": "offices/b0fdd3d3-be40-4e43-8503-f6b25766a24f.jpg",
+  "withMaxFinanceConnection": true,
+  "licenseNumberInfo": "",
+  "isExactAddress": true,
+  "floorID": 8,
+  "hasPrivateAddress": false,
+  "rentalPriceGranularityID": null,
+  "energeticSpecification": null,
+  "publishedModifiedOn": null,
+  "isPublished": true,
+  "ownerAvailability": null,
+  "whatsAppChatIntroId": "f9203ceb-7ec4-494a-9287-8d0862e41051",
+  "hasWhatsAppChatLink": true,
+  "hasOwnerAvailability": false,
+  "officeID": 31,
+  "officeNumber": "12061",
+  "officeCellPhone": null,
+  "officePhoneNumber": null,
+  "userID": 2121,
+  "agentID": "120612091",
+  "listingStatusID": 1,
+  "isOnline": true,
+  "marketDays": 72,
+  "typologyID": 9,
+  "listingClassID": 1,
+  "businessTypeID": 1,
+  "listingSubTypeID": null,
+  "listingCategoryID": null,
+  "conservationStatusID": null,
+  "contractDate": "2026-08-18T00:00:00",
+  "constructionYear": 2002,
+  "marketStatusID": 1,
+  "garageTypeID": 2,
+  "locationTypeID": null,
+  "isSpecialExclusive": false,
+  "energyEfficiencyLevelID": 6,
+  "emissionEfficiencyLevelID": null,
+  "efficiencyOrder": 8,
+  "publicAddress": true,
+  "privatePrice": false,
+  "publishDate": "2026-08-18T14:04:59.527",
+  "publishingStatus": 2,
+  "soldDate": null,
+  "floorAsNumber": 6,
+  "garageSpots": 1,
+  "hasMultimedia": false,
+  "hasCampaign": false,
+  "isOpportunity": true,
+  "isMultipleProposal": false,
+  "isBankAppraisalIncluded": false,
+  "bankAppraisalDate": null,
+  "dreamHouseProject": false,
+  "ownerPageId": "114c1614-25ea-4a4d-874e-a1551f776099",
+  "isGreatOpportunity": true,
+  "zipCode": "1070-008",
+  "localZone": "Lisboa",
+  "address": "Rua Arco do Carvalhão ",
+  "countryID": 12,
+  "region1ID": 76,
+  "regionSearch2": "lisboa",
+  "regionSearch3": "campolide",
+  "regionSearch4": null,
+  "region4ID": null,
+  "regionName4": null,
+  "doorNumber": "47",
+  "apartmentNumber": "B",
+  "parking": true,
+  "garage": false,
+  "elevator": true,
+  "electricCarsCharging": false,
+  "accessibleLeasing": false,
+  "totalRooms": 5,
+  "numberOfBedrooms": 4,
+  "numberOfWC": 1,
+  "numberOfBathrooms": 3,
+  "totalArea": 163,
+  "areaAutocomplete": 163,
+  "livingArea": 146,
+  "lotSize": null,
+  "builtArea": null,
+  "exteriorPrivateArea": null,
+  "listingAttributesIds": [],
+  "listingVideos": [],
+  "vTourLink": "",
+  "buildingDevelopmentID": null,
+  "buildingDevelopmentName": null,
+  "priceReductionPercentageValue": 8,
+  "teamID": null,
+  "whatsAppChatLink": "https://rply.link/l/8eNVo1xcay",
+  "lastPriceReductionDate": "2026-09-28T16:43:43.903",
+  "listingPictureUrl": "listings/12061/7236898/851b5137-9001-41be-a198-223e7e62fda2.jpg",
+  "userPictureURL": "users/3bd5478c-c8a3-456d-977a-1c97035a251e.jpg",
+  "previousPrice": 1300000,
+  "userPublicName": "margarida_lopes",
+  "userName": "Margarida Lopes",
+  "officePublicName": "expo",
+  "isExclusive": false,
+  "officeName": "RE/MAX Expo",
+  "modified": "2026-10-29T00:24:12.483",
+  "isActive": true,
+  "modifiedOnUtc": "0001-01-01T00:00:00",
+  "id": 7236898,
+  "listingTitle": "120612091-202",
+  "autocompleteListingTitle": "120612091-202",
+  "isSold": false,
+  "hasFloorPlan": false,
+  "floorPlanPath": null,
+  "lastPublishingStatus": 2,
+  "coordinates": {
+   "latitude": 38.72507771287462,
+   "longitude": -9.164070184558597
+  },
+  "longitude": -9.164070184558597,
+  "latitude": 38.72507771287462,
+  "listingPrice": 1200000,
+  "listingTypeID": 1,
+  "isSpecial": false,
+  "isLifeEstate": false,
+  "listingPictures": [
+   "listings/12061/7236898/851b5137-9001-41be-a198-223e7e62fda2.jpg",
+   "listings/12061/7236898/7082ea5b-8a61-4aef-a77c-18383ca4c415.jpg",
+   "listings/12061/7236898/abd1d208-c5e1-4b88-bf85-1bf60480cb28.jpg",
+   "listings/12061/7236898/4b3759a1-7483-4f1b-958d-19f605e8241a.jpg",
+   "listings/12061/7236898/4b723f3b-eef8-4973-9a76-7763a94a96f7.jpg",
+   "listings/12061/7236898/9dfdce4c-50bb-4996-a688-633d11099ed4.jpg",
+   "listings/12061/7236898/f4b8a140-4786-4029-bcca-347d747f424a.jpg",
+   "listings/12061/7236898/9adaa412-1365-43e8-8192-e6d2a106ce03.jpg",
+   "listings/12061/7236898/bda21535-2403-4841-8902-b44981a04d2d.jpg",
+   "listings/12061/7236898/c1c9eb0f-67af-4439-a76f-68a71a8d3532.jpg",
+   "listings/12061/7236898/d971e38a-db38-4b98-a3df-83036fae0b7a.jpg",
+   "listings/12061/7236898/a30ce4f2-27ca-45ee-90a5-2e8ecea000db.jpg",
+   "listings/12061/7236898/30efdc66-9e21-41d0-9969-eb5f3eee65bf.jpg",
+   "listings/12061/7236898/de5f8aec-4964-4f74-8f11-d72ee6319fe0.jpg",
+   "listings/12061/7236898/9bfc8130-6346-4054-af08-994f88dd4ac9.jpg",
+   "listings/12061/7236898/05774732-8d46-4f3c-b6f2-07d1d2665c81.jpg",
+   "listings/12061/7236898/1cb99cff-1b9e-4ff1-98ef-58bad6f89cd2.jpg",
+   "listings/12061/7236898/88f9583b-277a-41de-a204-d13801234fca.jpg",
+   "listings/12061/7236898/58e48e27-3724-472d-a22a-40c330ace056.jpg"
+  ],
+  "regionName1": "Lisboa",
+  "region2ID": 537,
+  "regionName2": "Lisboa",
+  "region3ID": 138635,
+  "regionName3": "Campolide",
+  "descriptionTags": "venda-apartamento-t4-lisboa-campolide",
+  "entity": "Listing",
+  "masterID": "1",
+  "languageID": 9,
+  "listingMedia": [
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/851b5137-9001-41be-a198-223e7e62fda2.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/7082ea5b-8a61-4aef-a77c-18383ca4c415.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/abd1d208-c5e1-4b88-bf85-1bf60480cb28.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/4b3759a1-7483-4f1b-958d-19f605e8241a.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/4b723f3b-eef8-4973-9a76-7763a94a96f7.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/9dfdce4c-50bb-4996-a688-633d11099ed4.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/f4b8a140-4786-4029-bcca-347d747f424a.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/9adaa412-1365-43e8-8192-e6d2a106ce03.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/bda21535-2403-4841-8902-b44981a04d2d.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/c1c9eb0f-67af-4439-a76f-68a71a8d3532.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/d971e38a-db38-4b98-a3df-83036fae0b7a.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/a30ce4f2-27ca-45ee-90a5-2e8ecea000db.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/30efdc66-9e21-41d0-9969-eb5f3eee65bf.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/de5f8aec-4964-4f74-8f11-d72ee6319fe0.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/9bfc8130-6346-4054-af08-994f88dd4ac9.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/05774732-8d46-4f3c-b6f2-07d1d2665c81.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/1cb99cff-1b9e-4ff1-98ef-58bad6f89cd2.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/88f9583b-277a-41de-a204-d13801234fca.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12061/7236898/58e48e27-3724-472d-a22a-40c330ace056.jpg"
+   }
+  ]
+ },
+ "palmela_t5_moradia": {
+  "descriptions": [
+   {
+    "languageCode": "EN",
+    "languageID": 1,
+    "description": "House T3 for sale"
+   },
+   {
+    "languageCode": "FR",
+    "languageID": 2,
+    "description": "Logement T3 à vendre"
+   },
+   {
+    "languageCode": "DE",
+    "languageID": 5,
+    "description": "Gehäuse T3 für verkauf"
+   },
+   {
+    "languageCode": "PT",
+    "languageID": 9,
+    "description": "<p style=\"text-align:center;\">Moradia T5 com varanda, espaço exterior, lareira e estacionamento para 2 carros | Quinta do Anjo</p>\n<p><br>Procura uma moradia espaçosa, confortável e numa zona tranquila? Esta pode ser a casa ideal para si e para a sua família!</p>\n<p><br>Apresentamos esta moradia geminada T5, distribuída por dois pisos, situada na Quinta do Anjo, na Aldeia do Meio, numa zona residencial calma e com proximidade a serviços essenciais.<br>Com divisões amplas, excelente luminosidade natural e duas frentes, esta moradia de 250 m2, num terreno de 355 m2 oferece o espaço e o conforto ideais para acompanhar as necessidades da sua família.</p>\n<p><br>No piso térreo, encontra:<br>-Sala de estar e jantar com 43 m², lareira e portas-janelas que proporcionam uma excelente entrada de luz natural.<br>-Cozinha semiequipada, com acesso direto ao exterior.<br>-Despensa para maior organização e arrumação.<br>-Escritório ou quarto, ideal para teletrabalho ou para receber familiares.<br>-Casa de banho com banheira e janela.</p>\n<p><br>No piso superior:<br>-Quatro quartos, todos com roupeiros embutidos.<br>-Uma suíte, que proporciona maior privacidade e conforto.<br>-Um dos quartos com acesso a varanda.<br>-Pavimento flutuante.</p>\n<p><br>Conforto e comodidade em cada detalhe:<br>-Ar condicionado em todas as divisões.<br>-Estores elétricos.<br>-Terraço para desfrutar de momentos ao ar livre.<br>-Estacionamento para dois carros.<br>-Portão automático.</p>\n<p><br>Uma localização prática para o dia a dia.<br>Inserida numa zona residencial tranquila, beneficia da proximidade a escolas, transportes públicos, supermercados e centro de saúde, permitindo conciliar a tranquilidade de casa com a conveniência dos serviços do quotidiano.<br>Uma moradia que alia espaço, funcionalidade e conforto, ideal para quem valoriza uma casa com áreas generosas e espaço para toda a família.</p>\n<p><br>Não perca esta oportunidade! Contacte-nos para mais informações ou para agendar a sua visita.</p>\n<p><br>A sua próxima casa pode estar aqui!</p>\n<p style=\"text-align:center;\">______________________________________________<br><br>Maison T5 avec balcon, espace extérieur, cheminée et parking pour 2 voitures | Quinta do Anjo<br></p>\n<br/>\n<p><br>Vous cherchez une maison spacieuse, confortable et située dans un quartier calme ? Celle-ci pourrait être la maison idéale pour vous et votre famille!</p>\n<p><br>Nous vous présentons cette maison mitoyenne T5, répartie sur deux étages, située à Quinta do Anjo, dans le village d’Aldeia do Meio, dans une zone résidentielle tranquille et proche des services essentiels.<br><br>Avec des pièces spacieuses, une excellente luminosité naturelle et deux façades, cette maison de 250 m², sur un terrain de 355 m², offre l’espace et le confort idéals pour répondre aux besoins de votre famille.<br><br>Au rez-de-chaussée, vous trouverez :<br>• Salon et salle à manger de 43 m², avec cheminée et portes-fenêtres offrant une excellente entrée de lumière naturelle.<br>• Cuisine semi-équipée, avec accès direct à l’extérieur.<br>• Garde-manger pour une organisation et un rangement optimaux.<br>• Bureau ou chambre, idéal pour le télétravail ou pour recevoir des proches.<br>• Salle de bains avec baignoire et fenêtre.<br><br>À l'étage supérieur : <br>* Quatre chambres, toutes avec placards intégrés. <br>* Une suite, offrant plus d'intimité et de confort. <br>* Une des chambres avec accès au balcon. <br>* Parquet flottant.<br><br>Confort et commodité dans chaque détail : <br>* Climatisation dans toutes les pièces. <br>* Volets électriques. <br>* Terrasse pour profiter des moments en plein air. <br>* Place de parking pour deux voitures. <br>* Portail automatique.<br><br>Un emplacement pratique pour la vie quotidienne Située dans un quartier résidentiel calme, elle bénéficie de la proximité des écoles, des transports publics, des supermarchés et du centre de santé, permettant de concilier la tranquillité de la maison avec la commodité des services quotidiens. Une maison qui allie espace, fonctionnalité et confort, idéale pour ceux qui apprécient une maison avec de grands espaces et de la place pour toute la famille.</p>\n<p><br>Ne manquez pas cette opportunité !<br><br>Contactez-nous pour plus d'informations ou pour planifier votre visite. Votre prochaine maison pourrait être ici !&nbsp;</p>\n"
+   },
+   {
+    "languageCode": "ES",
+    "languageID": 12,
+    "description": "Alojamiento T3 Para venta"
+   },
+   {
+    "languageCode": "IT",
+    "languageID": 31,
+    "description": "Alloggiamento T3 per saldi"
+   }
+  ],
+  "country": "Portugal",
+  "listingMapPictureUrl": "listings_map/12592/125921140-18/static_map.png",
+  "listingMapPictureAltUrl": "listings_map/12592/125921140-18/38565735_-8941318_public_static_map.png",
+  "listingRooms": [
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Cozinha",
+    "roomTypeID": 4,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Quarto",
+    "roomTypeID": 6,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Quarto",
+    "roomTypeID": 6,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Quarto",
+    "roomTypeID": 6,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Sala de Estar",
+    "roomTypeID": 1,
+    "roomDescription": null
+   }
+  ],
+  "nearRegions": [
+   {
+    "regionID": 139421,
+    "regionName": "Palmela",
+    "regionSearch": "palmela/palmela"
+   },
+   {
+    "regionID": 139422,
+    "regionName": "Pinhal Novo",
+    "regionSearch": "palmela/pinhal-novo"
+   },
+   {
+    "regionID": 7881537,
+    "regionName": "Poceirão e Marateca",
+    "regionSearch": "palmela/poceirao-e-marateca"
+   }
+  ],
+  "hasVTour": false,
+  "hasVideo": false,
+  "previousListingTitle": null,
+  "legalComponentText": null,
+  "totalAreaDisplay": " 240",
+  "livingAreaDisplay": " 205",
+  "lotSizeDisplay": null,
+  "builtAreaDisplay": null,
+  "legalEnergyEstimatedCostText": null,
+  "legalEnergyLevelText": null,
+  "userEmail": null,
+  "userCellPhone": "+351 913 268 494",
+  "userCellPhoneTrimmed": "+351913268494",
+  "userTeamName": null,
+  "userAgencyName": null,
+  "userAgencyAddress": null,
+  "userAgencyZipCode": "2950-701",
+  "userAgencyEnterpriseName": null,
+  "userAgencyLicenseNumber": null,
+  "userAgencyPhoneNumber": "+351 210 518 200",
+  "officeAddress": null,
+  "officePictureURL": "offices/129e0c4c-950a-4bdf-a92f-bdbe985bac7b.jpg",
+  "withMaxFinanceConnection": true,
+  "licenseNumberInfo": "",
+  "isExactAddress": true,
+  "floorID": null,
+  "hasPrivateAddress": false,
+  "rentalPriceGranularityID": null,
+  "energeticSpecification": null,
+  "publishedModifiedOn": null,
+  "isPublished": true,
+  "ownerAvailability": null,
+  "whatsAppChatIntroId": "67dc3854-b88e-4f91-b4c9-2f9cd1cff854",
+  "hasWhatsAppChatLink": true,
+  "hasOwnerAvailability": false,
+  "officeID": 556,
+  "officeNumber": "12592",
+  "officeCellPhone": null,
+  "officePhoneNumber": null,
+  "userID": 67212,
+  "agentID": "125921140",
+  "listingStatusID": 1,
+  "isOnline": true,
+  "marketDays": 0,
+  "typologyID": 11,
+  "listingClassID": 1,
+  "businessTypeID": 1,
+  "listingSubTypeID": null,
+  "listingCategoryID": null,
+  "conservationStatusID": null,
+  "contractDate": "2026-10-26T00:00:00",
+  "constructionYear": 2009,
+  "marketStatusID": 1,
+  "garageTypeID": 3,
+  "locationTypeID": null,
+  "isSpecialExclusive": false,
+  "energyEfficiencyLevelID": 3,
+  "emissionEfficiencyLevelID": null,
+  "efficiencyOrder": 5,
+  "publicAddress": true,
+  "privatePrice": false,
+  "publishDate": "2026-10-26T13:53:38.8",
+  "publishingStatus": 2,
+  "soldDate": null,
+  "floorAsNumber": null,
+  "garageSpots": 2,
+  "hasMultimedia": false,
+  "hasCampaign": false,
+  "isOpportunity": false,
+  "isMultipleProposal": false,
+  "isBankAppraisalIncluded": false,
+  "bankAppraisalDate": null,
+  "dreamHouseProject": false,
+  "ownerPageId": "d4e6581d-bb8b-407f-9756-f273c8200b00",
+  "isGreatOpportunity": false,
+  "zipCode": "2950-734",
+  "localZone": "Quinta Do Anjo",
+  "address": "Rua do Sabugueiro - Aldeia do Meio",
+  "countryID": 12,
+  "region1ID": 80,
+  "regionSearch2": "palmela",
+  "regionSearch3": "quinta-do-anjo",
+  "regionSearch4": null,
+  "region4ID": null,
+  "regionName4": null,
+  "doorNumber": null,
+  "apartmentNumber": null,
+  "parking": false,
+  "garage": true,
+  "elevator": null,
+  "electricCarsCharging": false,
+  "accessibleLeasing": false,
+  "totalRooms": null,
+  "numberOfBedrooms": 5,
+  "numberOfWC": null,
+  "numberOfBathrooms": 3,
+  "totalArea": 240,
+  "areaAutocomplete": 240,
+  "livingArea": 205,
+  "lotSize": null,
+  "builtArea": null,
+  "exteriorPrivateArea": null,
+  "listingAttributesIds": [],
+  "listingVideos": [],
+  "vTourLink": "",
+  "buildingDevelopmentID": null,
+  "buildingDevelopmentName": null,
+  "priceReductionPercentageValue": null,
+  "teamID": null,
+  "whatsAppChatLink": "https://rply.link/l/rgRhc43Esr",
+  "lastPriceReductionDate": null,
+  "listingPictureUrl": "listings/12592/7253253/dc3b871e-09a8-4008-b2e6-89174520f8ab.jpg",
+  "userPictureURL": "users/559025a4-5bb0-4007-a1ac-c6432469c204.jpg",
+  "previousPrice": null,
+  "userPublicName": "rosaliegoncalves",
+  "userName": "Rosalie Gonçalves",
+  "officePublicName": "expogroupvilla",
+  "isExclusive": false,
+  "officeName": "RE/MAX Expogroup Villa",
+  "modified": "2026-10-26T13:53:43.987",
+  "isActive": true,
+  "modifiedOnUtc": "0001-01-01T00:00:00",
+  "id": 7253253,
+  "listingTitle": "125921140-18",
+  "autocompleteListingTitle": "125921140-18",
+  "isSold": false,
+  "hasFloorPlan": false,
+  "floorPlanPath": null,
+  "lastPublishingStatus": 2,
+  "coordinates": {
+   "latitude": 38.56573531272974,
+   "longitude": -8.94131819159869
+  },
+  "longitude": -8.94131819159869,
+  "latitude": 38.56573531272974,
+  "listingPrice": 644400,
+  "listingTypeID": 11,
+  "isSpecial": false,
+  "isLifeEstate": false,
+  "listingPictures": [
+   "listings/12592/7253253/dc3b871e-09a8-4008-b2e6-89174520f8ab.jpg",
+   "listings/12592/7253253/9c69e8ee-28c1-4f72-9fae-1097b97a873b.jpg",
+   "listings/12592/7253253/08d800bb-fbd5-4bac-98b0-24f5af8376f4.jpg",
+   "listings/12592/7253253/3b1906ab-5079-4c42-94b2-fdd166ab37f7.jpg",
+   "listings/12592/7253253/6f7159c7-6def-41a7-b5d8-71e7143e3738.jpg",
+   "listings/12592/7253253/68fbeb90-699b-4ddc-9683-7bfa12040dc9.jpg",
+   "listings/12592/7253253/89cbae21-b0c4-43f8-8d12-7c2d4b62c7be.jpg",
+   "listings/12592/7253253/25daf434-c304-43c0-8164-487183d6305f.jpg",
+   "listings/12592/7253253/3e1e3291-a6be-40e3-876a-73e329c53e50.jpg",
+   "listings/12592/7253253/654cb7fe-be07-44c4-8c54-6c8238b781c2.jpg",
+   "listings/12592/7253253/c0ffc776-d310-4b79-adc4-8311d23cc2cd.jpg",
+   "listings/12592/7253253/f84f69b8-4eba-46a7-b2fc-abc8ea1a53ee.jpg",
+   "listings/12592/7253253/00eaf78f-7b56-42cb-a26c-e2acfacb12cc.jpg",
+   "listings/12592/7253253/3b1220cb-721a-4495-8a47-c67a37e949f2.jpg",
+   "listings/12592/7253253/9613dd58-30e2-4dd2-9d06-5e94d652af45.jpg",
+   "listings/12592/7253253/d15869e3-3dcc-47d7-b876-1fc65cc47ab2.jpg",
+   "listings/12592/7253253/fc85bbbf-9ded-4d09-bab8-043ba1cac703.jpg",
+   "listings/12592/7253253/782628df-49f3-4efc-a668-659a4d8b606a.jpg",
+   "listings/12592/7253253/cfa3c309-01a9-459d-8d60-4670f6700c2d.jpg",
+   "listings/12592/7253253/74d313b9-8ef1-42a7-8dab-95527274d6a4.jpg",
+   "listings/12592/7253253/b18c9b93-9e74-4b91-8521-61d88fd47d3e.jpg",
+   "listings/12592/7253253/ddef4720-a1d9-41ea-a892-2cf5343c8a55.jpg",
+   "listings/12592/7253253/aca56768-c9d4-41e8-85c3-8186d73df0a4.jpg",
+   "listings/12592/7253253/34e367f8-8ae9-4d16-80f7-19ed746ee304.jpg",
+   "listings/12592/7253253/ecf234ef-432e-450b-a7e9-f3d2d1053e0b.jpg",
+   "listings/12592/7253253/37a03c85-678f-462c-b5b5-26df07db857e.jpg",
+   "listings/12592/7253253/f8a3b7fe-fa68-49a7-971c-4c59fcf252cf.jpg",
+   "listings/12592/7253253/00749a17-da67-4cb9-b270-1719bd7fbea6.jpg",
+   "listings/12592/7253253/fe57c162-a887-4267-bcfc-0c108267839c.jpg",
+   "listings/12592/7253253/added8d0-bec8-4408-8b38-e8382befdbd1.jpg",
+   "listings/12592/7253253/a2a06098-382e-489f-9c85-584bad15a976.jpg",
+   "listings/12592/7253253/be1b8053-6dfa-4bdc-9f1c-63d5910c4041.jpg",
+   "listings/12592/7253253/d0993e50-7b2e-45bd-bf14-606f1530e909.jpg",
+   "listings/12592/7253253/f0aba204-f5a5-4e7b-9fbc-3eaecdb0369d.jpg",
+   "listings/12592/7253253/1d0fc2e4-b8a9-41ea-ad2d-33220a921a82.jpg",
+   "listings/12592/7253253/ba1f9565-3c44-4641-a698-8d8b2ca16d6c.jpg",
+   "listings/12592/7253253/a7389e99-22f1-49d0-bf4d-a446e47f1687.jpg",
+   "listings/12592/7253253/3e8c3afb-f081-429a-8d4f-ab47e76c290d.jpg",
+   "listings/12592/7253253/7f8263eb-3288-446d-9c4a-6e7d6574973b.jpg",
+   "listings/12592/7253253/cf0b6b21-bcf8-4978-826e-25d31d23bd60.jpg",
+   "listings/12592/7253253/e815510a-e0e5-4547-a309-0990640cecef.jpg",
+   "listings/12592/7253253/523f8561-6b26-4e6c-abbe-a0a852eb6c61.jpg",
+   "listings/12592/7253253/68ff8497-ebf7-4af7-85de-4cf497af2cd5.jpg",
+   "listings/12592/7253253/682f70d3-9bcf-4565-b2fb-02586a83474e.jpg",
+   "listings/12592/7253253/feb64391-7787-4019-9c3d-5fe7de0b1845.jpg",
+   "listings/12592/7253253/ea0c32dc-17d8-430e-90e6-486a4426a895.jpg",
+   "listings/12592/7253253/d8147406-95eb-4090-973c-9a575d088bbf.jpg",
+   "listings/12592/7253253/183ff2f0-8ce6-4890-bfb8-3040490aa5a8.jpg",
+   "listings/12592/7253253/039f35c7-1fa2-48d5-9665-60e9ad204402.jpg",
+   "listings/12592/7253253/674e4787-aa4c-454b-a065-2080fbc1f325.jpg"
+  ],
+  "regionName1": "Setúbal",
+  "region2ID": 606,
+  "regionName2": "Palmela",
+  "region3ID": 139424,
+  "regionName3": "Quinta do Anjo",
+  "descriptionTags": "venda-moradia-t5-palmela-quinta-do-anjo",
+  "entity": "Listing",
+  "masterID": "1",
+  "languageID": 9,
+  "listingMedia": [
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/dc3b871e-09a8-4008-b2e6-89174520f8ab.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/9c69e8ee-28c1-4f72-9fae-1097b97a873b.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/08d800bb-fbd5-4bac-98b0-24f5af8376f4.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/3b1906ab-5079-4c42-94b2-fdd166ab37f7.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/6f7159c7-6def-41a7-b5d8-71e7143e3738.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/68fbeb90-699b-4ddc-9683-7bfa12040dc9.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/89cbae21-b0c4-43f8-8d12-7c2d4b62c7be.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/25daf434-c304-43c0-8164-487183d6305f.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/3e1e3291-a6be-40e3-876a-73e329c53e50.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/654cb7fe-be07-44c4-8c54-6c8238b781c2.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/c0ffc776-d310-4b79-adc4-8311d23cc2cd.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/f84f69b8-4eba-46a7-b2fc-abc8ea1a53ee.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/00eaf78f-7b56-42cb-a26c-e2acfacb12cc.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/3b1220cb-721a-4495-8a47-c67a37e949f2.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/9613dd58-30e2-4dd2-9d06-5e94d652af45.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/d15869e3-3dcc-47d7-b876-1fc65cc47ab2.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/fc85bbbf-9ded-4d09-bab8-043ba1cac703.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/782628df-49f3-4efc-a668-659a4d8b606a.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/cfa3c309-01a9-459d-8d60-4670f6700c2d.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/74d313b9-8ef1-42a7-8dab-95527274d6a4.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/b18c9b93-9e74-4b91-8521-61d88fd47d3e.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/ddef4720-a1d9-41ea-a892-2cf5343c8a55.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/aca56768-c9d4-41e8-85c3-8186d73df0a4.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/34e367f8-8ae9-4d16-80f7-19ed746ee304.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/ecf234ef-432e-450b-a7e9-f3d2d1053e0b.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/37a03c85-678f-462c-b5b5-26df07db857e.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/f8a3b7fe-fa68-49a7-971c-4c59fcf252cf.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/00749a17-da67-4cb9-b270-1719bd7fbea6.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/fe57c162-a887-4267-bcfc-0c108267839c.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/added8d0-bec8-4408-8b38-e8382befdbd1.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/a2a06098-382e-489f-9c85-584bad15a976.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/be1b8053-6dfa-4bdc-9f1c-63d5910c4041.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/d0993e50-7b2e-45bd-bf14-606f1530e909.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/f0aba204-f5a5-4e7b-9fbc-3eaecdb0369d.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/1d0fc2e4-b8a9-41ea-ad2d-33220a921a82.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/ba1f9565-3c44-4641-a698-8d8b2ca16d6c.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/a7389e99-22f1-49d0-bf4d-a446e47f1687.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/3e8c3afb-f081-429a-8d4f-ab47e76c290d.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/7f8263eb-3288-446d-9c4a-6e7d6574973b.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/cf0b6b21-bcf8-4978-826e-25d31d23bd60.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/e815510a-e0e5-4547-a309-0990640cecef.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/523f8561-6b26-4e6c-abbe-a0a852eb6c61.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/68ff8497-ebf7-4af7-85de-4cf497af2cd5.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/682f70d3-9bcf-4565-b2fb-02586a83474e.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/feb64391-7787-4019-9c3d-5fe7de0b1845.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/ea0c32dc-17d8-430e-90e6-486a4426a895.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/d8147406-95eb-4090-973c-9a575d088bbf.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/183ff2f0-8ce6-4890-bfb8-3040490aa5a8.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/039f35c7-1fa2-48d5-9665-60e9ad204402.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12592/7253253/674e4787-aa4c-454b-a065-2080fbc1f325.jpg"
+   }
+  ]
+ },
+ "grandola_t1_no_lift": {
+  "descriptions": [
+   {
+    "languageCode": "EN",
+    "languageID": 1,
+    "description": "<p>Investing in Grândola means securing a property in one of Portugal’s fastest-growing and most promising real estate destinations. Just minutes from Comporta and surrounded by some of the most exclusive beaches on the Alentejo coast, this development combines a premium location, strong demand, and investment security.</p>\n<p>The apartments are sold fully furnished and equipped, ready to generate income from day one, with a guaranteed 5% annual return. A turnkey solution designed for investors seeking passive income, stability, and long-term asset appreciation.</p>\n<p>The continuous growth of the region, combined with the limited supply of high-quality properties and the international recognition of the Comporta/Grândola area, makes this project a solid opportunity for both national and international investors.</p>\n<p>More than just a property, this is a high-potential asset with guaranteed returns and strong future appreciation prospects.&nbsp;</p>\n<br/>\n<p>Under construction.</p>\n<br/>\n"
+   },
+   {
+    "languageCode": "FR",
+    "languageID": 2,
+    "description": "Appartement T1 à vendre"
+   },
+   {
+    "languageCode": "DE",
+    "languageID": 5,
+    "description": "Wohnung T1 für verkauf"
+   },
+   {
+    "languageCode": "PT",
+    "languageID": 9,
+    "description": "<p style=\"text-align:start;\">LOFT | EMPREENDIMENTO PRIVADO | RENTABILIDADE GARANTIDA<br></p>\n<p>Investir em Grândola é hoje apostar numa das zonas com maior potencial de valorização imobiliária em Portugal. A poucos minutos da Comporta e rodeado pelas praias mais exclusivas da costa alentejana, este empreendimento combina localização premium, elevada procura e segurança no investimento.</p>\n<p>Apartamentos vendidos totalmente mobilados e equipados, prontos a rentabilizar desde o primeiro dia, com rentabilidade garantida de 5% ao ano. Uma solução chave-na-mão para quem procura rendimento passivo, estabilidade e potencial de valorização do ativo a médio e longo prazo.</p>\n<p>O crescimento contínuo da região, aliado à escassez de oferta qualificada e ao reconhecimento internacional da zona da Comporta/Grândola, faz deste projeto uma oportunidade sólida tanto para investidores nacionais como internacionais.</p>\n<p>Mais do que um imóvel, um ativo com rendimento garantido e forte potencial de valorização futura.&nbsp;</p>\n<p>Condições de pagamento faseadas.</p>\n<p>Em construção.&nbsp;</p>\n"
+   },
+   {
+    "languageCode": "ES",
+    "languageID": 12,
+    "description": "Apartamento T1 Para venta"
+   },
+   {
+    "languageCode": "IT",
+    "languageID": 31,
+    "description": "Appartamento T1 per saldi"
+   }
+  ],
+  "country": "Portugal",
+  "listingMapPictureUrl": "listings_map/12402/124021040-324/static_map.png",
+  "listingMapPictureAltUrl": "listings_map/12402/124021040-324/38176770_-8572140_public_static_map.png",
+  "listingRooms": [
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Cozinha",
+    "roomTypeID": 4,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Quarto",
+    "roomTypeID": 6,
+    "roomDescription": null
+   },
+   {
+    "roomDimensions": null,
+    "roomSize": null,
+    "roomType": "Sala de Estar",
+    "roomTypeID": 1,
+    "roomDescription": null
+   }
+  ],
+  "nearRegions": [
+   {
+    "regionID": 138380,
+    "regionName": "Azinheira dos Barros",
+    "regionSearch": "grandola/azinheira-dos-barros"
+   },
+   {
+    "regionID": 138381,
+    "regionName": "Carvalhal",
+    "regionSearch": "grandola/carvalhal"
+   },
+   {
+    "regionID": 138383,
+    "regionName": "Melides",
+    "regionSearch": "grandola/melides"
+   },
+   {
+    "regionID": 7881089,
+    "regionName": "Azinheira dos Barros e São Mamede do Sádão",
+    "regionSearch": "grandola/azinheira-dos-barros-e-sao-mamede-do-sadao"
+   }
+  ],
+  "hasVTour": false,
+  "hasVideo": false,
+  "previousListingTitle": null,
+  "legalComponentText": null,
+  "totalAreaDisplay": "61",
+  "livingAreaDisplay": "60",
+  "lotSizeDisplay": null,
+  "builtAreaDisplay": null,
+  "legalEnergyEstimatedCostText": null,
+  "legalEnergyLevelText": null,
+  "userEmail": null,
+  "userCellPhone": "+351 911 080 146",
+  "userCellPhoneTrimmed": "+351911080146",
+  "userTeamName": "Equipa Tiago Sampaio Soares",
+  "userAgencyName": null,
+  "userAgencyAddress": null,
+  "userAgencyZipCode": "1200-271",
+  "userAgencyEnterpriseName": null,
+  "userAgencyLicenseNumber": null,
+  "userAgencyPhoneNumber": "+351 210 496 700",
+  "officeAddress": null,
+  "officePictureURL": "offices/2f1cd67e-0dc1-4062-89e2-3da5f574d224.jpg",
+  "withMaxFinanceConnection": true,
+  "licenseNumberInfo": "",
+  "isExactAddress": true,
+  "floorID": 2,
+  "hasPrivateAddress": false,
+  "rentalPriceGranularityID": null,
+  "energeticSpecification": null,
+  "publishedModifiedOn": null,
+  "isPublished": true,
+  "ownerAvailability": null,
+  "whatsAppChatIntroId": "3a2f80a9-ae66-4830-9e7b-c94298b21e21",
+  "hasWhatsAppChatLink": true,
+  "hasOwnerAvailability": false,
+  "officeID": 339,
+  "officeNumber": "12402",
+  "officeCellPhone": null,
+  "officePhoneNumber": null,
+  "userID": 31453,
+  "agentID": "124021040",
+  "listingStatusID": 1,
+  "isOnline": true,
+  "marketDays": 17,
+  "typologyID": 3,
+  "listingClassID": 1,
+  "businessTypeID": 1,
+  "listingSubTypeID": null,
+  "listingCategoryID": null,
+  "conservationStatusID": null,
+  "contractDate": "2026-05-21T00:00:00",
+  "constructionYear": 2026,
+  "marketStatusID": 1,
+  "garageTypeID": null,
+  "locationTypeID": null,
+  "isSpecialExclusive": false,
+  "energyEfficiencyLevelID": 11,
+  "emissionEfficiencyLevelID": null,
+  "efficiencyOrder": 10,
+  "publicAddress": true,
+  "privatePrice": false,
+  "publishDate": "2026-06-16T11:38:34.637",
+  "publishingStatus": 2,
+  "soldDate": null,
+  "floorAsNumber": 0,
+  "garageSpots": 0,
+  "hasMultimedia": false,
+  "hasCampaign": false,
+  "isOpportunity": false,
+  "isMultipleProposal": false,
+  "isBankAppraisalIncluded": false,
+  "bankAppraisalDate": null,
+  "dreamHouseProject": false,
+  "ownerPageId": "ba4803e9-f376-4bef-aa44-ec0fc0771719",
+  "isGreatOpportunity": false,
+  "zipCode": "7570-341",
+  "localZone": "Grândola",
+  "address": "Estrada da Aldeia do Futuro\r\n",
+  "countryID": 12,
+  "region1ID": 80,
+  "regionSearch2": "grandola",
+  "regionSearch3": "grandola-e-santa-margarida-da-serra",
+  "regionSearch4": null,
+  "region4ID": null,
+  "regionName4": null,
+  "doorNumber": null,
+  "apartmentNumber": null,
+  "parking": false,
+  "garage": false,
+  "elevator": false,
+  "electricCarsCharging": false,
+  "accessibleLeasing": false,
+  "totalRooms": 1,
+  "numberOfBedrooms": 1,
+  "numberOfWC": null,
+  "numberOfBathrooms": 1,
+  "totalArea": 61,
+  "areaAutocomplete": 61,
+  "livingArea": 60,
+  "lotSize": null,
+  "builtArea": null,
+  "exteriorPrivateArea": null,
+  "listingAttributesIds": [
+   1,
+   5,
+   6,
+   7,
+   9,
+   8,
+   10,
+   13,
+   14,
+   27,
+   51,
+   235,
+   219,
+   250,
+   12,
+   29,
+   79,
+   64,
+   93,
+   105,
+   19,
+   258,
+   28,
+   53,
+   87,
+   203,
+   205,
+   170,
+   180,
+   215,
+   172,
+   181,
+   174,
+   182,
+   183,
+   67,
+   146,
+   166,
+   178,
+   176,
+   186,
+   185,
+   188
+  ],
+  "listingVideos": [],
+  "vTourLink": "",
+  "buildingDevelopmentID": null,
+  "buildingDevelopmentName": null,
+  "priceReductionPercentageValue": null,
+  "teamID": 4882,
+  "whatsAppChatLink": "https://rply.link/l/ra7yKtFfQQ",
+  "lastPriceReductionDate": null,
+  "listingPictureUrl": "listings/12402/7154047/fcc52859-f9c4-44a8-8b16-ccc91deb4375.jpg",
+  "userPictureURL": "users/6104a96e-4f8b-4f2d-a4f3-b9f368f68c42.jpg",
+  "previousPrice": null,
+  "userPublicName": "tssoares",
+  "userName": "Tiago Sampaio Soares",
+  "officePublicName": "collectionsiimgroup",
+  "isExclusive": false,
+  "officeName": "RE/MAX Collection Siimgroup",
+  "modified": "2026-06-16T11:38:37.097",
+  "isActive": true,
+  "modifiedOnUtc": "0001-01-01T00:00:00",
+  "id": 7154939,
+  "listingTitle": "124021040-324",
+  "autocompleteListingTitle": "124021040-324",
+  "isSold": false,
+  "hasFloorPlan": false,
+  "floorPlanPath": null,
+  "lastPublishingStatus": 2,
+  "coordinates": {
+   "latitude": 38.17677,
+   "longitude": -8.57214
+  },
+  "longitude": -8.57214,
+  "latitude": 38.17677,
+  "listingPrice": 335000,
+  "listingTypeID": 1,
+  "isSpecial": false,
+  "isLifeEstate": false,
+  "listingPictures": [
+   "listings/12402/7154939/b7e91790-ebd8-4f75-8640-9155c7586da2.jpg",
+   "listings/12402/7154939/4d7ec16f-9d1e-4546-a41e-e8ce369817f1.jpg",
+   "listings/12402/7154939/5c296ef8-fa98-475c-b236-3858c4b0c2ad.jpg",
+   "listings/12402/7154939/fb074cb5-d118-4187-8ee4-533acb1f6982.jpg",
+   "listings/12402/7154939/3e479879-0373-4346-a28f-72dd80f44670.jpg",
+   "listings/12402/7154939/0611bccb-ca29-4697-a39b-3a61266a84cd.jpg",
+   "listings/12402/7154939/fe564c94-21d8-472a-8a3b-5fb590fde7a5.jpg",
+   "listings/12402/7154939/2938a66e-a48f-4b14-a698-fa432a620e96.jpg",
+   "listings/12402/7154939/b18ffd1e-a492-4fca-98c6-aaec96f65a7a.jpg",
+   "listings/12402/7154939/998c9880-3c83-4802-96d7-e6b6c690b71d.jpg",
+   "listings/12402/7154939/502c72f5-89ed-45c7-9448-d615af5d721f.jpg",
+   "listings/12402/7154939/e6daf5cd-dbc0-4b24-a6b1-2b219d942cda.jpg",
+   "listings/12402/7154939/b86aea83-7620-4786-9b24-6f84cf8258a5.jpg",
+   "listings/12402/7154939/f2a78765-4a1d-4903-818f-82e7628d0203.jpg",
+   "listings/12402/7154939/c565b422-be51-4d28-8d5d-008819dbd452.jpg",
+   "listings/12402/7154939/7e5694af-9643-4a72-9dac-ccbbddc7b12b.jpg",
+   "listings/12402/7154939/c1856177-c769-4e21-b560-5b80ed3c7302.jpg"
+  ],
+  "regionName1": "Setúbal",
+  "region2ID": 603,
+  "regionName2": "Grândola",
+  "region3ID": 7881353,
+  "regionName3": "Grândola e Santa Margarida da Serra",
+  "descriptionTags": "venda-apartamento-t1-grandola-grandola-e-santa-margarida-da-serra",
+  "entity": "Listing",
+  "masterID": "1",
+  "languageID": 9,
+  "listingMedia": [
+   {
+    "type": "image",
+    "value": "listings/12402/7154939/b7e91790-ebd8-4f75-8640-9155c7586da2.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12402/7154939/4d7ec16f-9d1e-4546-a41e-e8ce369817f1.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12402/7154939/5c296ef8-fa98-475c-b236-3858c4b0c2ad.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12402/7154939/fb074cb5-d118-4187-8ee4-533acb1f6982.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12402/7154939/3e479879-0373-4346-a28f-72dd80f44670.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12402/7154939/0611bccb-ca29-4697-a39b-3a61266a84cd.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12402/7154939/fe564c94-21d8-472a-8a3b-5fb590fde7a5.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12402/7154939/2938a66e-a48f-4b14-a698-fa432a620e96.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12402/7154939/b18ffd1e-a492-4fca-98c6-aaec96f65a7a.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12402/7154939/998c9880-3c83-4802-96d7-e6b6c690b71d.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12402/7154939/502c72f5-89ed-45c7-9448-d615af5d721f.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12402/7154939/e6daf5cd-dbc0-4b24-a6b1-2b219d942cda.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12402/7154939/b86aea83-7620-4786-9b24-6f84cf8258a5.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12402/7154939/f2a78765-4a1d-4903-818f-82e7628d0203.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12402/7154939/c565b422-be51-4d28-8d5d-008819dbd452.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12402/7154939/7e5694af-9643-4a72-9dac-ccbbddc7b12b.jpg"
+   },
+   {
+    "type": "image",
+    "value": "listings/12402/7154939/c1856177-c769-4e21-b560-5b80ed3c7302.jpg"
+   }
+  ]
+ }
+}

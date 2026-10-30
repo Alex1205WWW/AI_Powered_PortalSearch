@@ -269,6 +269,7 @@ def paginate_newest(fetch_page: Callable[[int], tuple[list[CanonicalListing], di
 @register("imovirtual")
 class ImovirtualAdapter:
     key = "imovirtual"
+    scope_mode = "query"  # one search per (estate x concelho); see sources/base.py
 
     def __init__(self, source) -> None:
         self.source = source
@@ -298,6 +299,18 @@ class ImovirtualAdapter:
 
     def iter_initial(self, estate: str, district: str, council: str, price_min: int | None, price_max: int | None) -> Iterator[CanonicalListing]:
         return paginate_newest(lambda page: self.fetch_search_page(estate, district, council, page, price_min, price_max), since=None, max_pages=60)
+
+    def refresh_listing(self, session, listing) -> CanonicalListing | None:
+        """Re-read one stored listing from its detail page (used by the daily matched refresh).
+        None means the ad is gone. The stored search payload is the base, so nothing already known is lost
+        when the detail page omits a field."""
+        detail = self.fetch_detail(listing.url)
+        if detail is None or detail.get("status") == "removed":
+            return None
+        base = normalise_item(listing.raw) if listing.raw else None
+        if base is None:
+            return None
+        return apply_detail(base, detail)
 
     def fetch_detail(self, slug_or_url: str) -> dict | None:
         url = slug_or_url if slug_or_url.startswith("http") else detail_url(slug_or_url)

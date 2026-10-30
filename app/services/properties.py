@@ -110,6 +110,39 @@ def side_of(listing: Listing, hashes: list[int] | None = None) -> dedup.Side:
     )
 
 
+def warm_hashes(session: Session, limit: int = 500) -> dict:
+    """Hash up to `limit` not-yet-hashed photos, newest listings first.
+
+    Dedup only ever compares the first `dedup.MAX_IMAGES` photos, so only those are warmed. Idempotent and
+    resumable: it simply looks for `phash IS NULL`. Run it before a catalogue backfill, or let the worker
+    nibble at it on a timer - either way the backfill then finds its candidates already hashed."""
+    stmt = (select(ListingImage)
+            .join(Listing, Listing.id == ListingImage.listing_id)
+            .where(ListingImage.phash.is_(None), ListingImage.position < dedup.MAX_IMAGES,
+                   Listing.status == "active")
+            .order_by(ListingImage.listing_id.desc(), ListingImage.position)
+            .limit(limit))
+    done = failed = cached = 0
+    for image in session.scalars(stmt):
+        hit = session.scalar(select(ListingImage.phash).where(ListingImage.url == image.url,
+                                                              ListingImage.phash.is_not(None)).limit(1))
+        if hit is not None:
+            image.phash, cached = hit, cached + 1
+            continue
+        value = _fetch_hash(image.url)
+        if value is None:
+            failed += 1
+            continue
+        image.phash, done = dedup.to_signed(value), done + 1
+        if done % 50 == 0:
+            session.commit()
+    session.commit()
+    remaining = session.scalar(
+        select(func.count()).select_from(ListingImage).join(Listing, Listing.id == ListingImage.listing_id)
+        .where(ListingImage.phash.is_(None), ListingImage.position < dedup.MAX_IMAGES, Listing.status == "active"))
+    return {"hashed": done, "from_cache": cached, "failed": failed, "remaining": remaining}
+
+
 # --- assign / split -----------------------------------------------------------------------------
 
 def assign(session: Session, listing: Listing) -> dedup.Decision:

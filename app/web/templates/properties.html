@@ -18,6 +18,8 @@
   </select>
   <button type="submit" class="secondary">Filtrar</button>
 </form>
+<p><a role="button" class="secondary outline" href="/properties/export.xlsx{{ export_query }}">Exportar para Excel</a></p>
+
 {% set back = '/properties' ~ ('?buyer=' ~ filters.buyer if filters.buyer else '') %}
 <table>
   <thead><tr><th>Comprador</th><th>Imóvel</th><th>Preço</th><th>Zona</th><th>Requisitos</th><th>Mediadora</th><th>Fontes</th><th>Estado</th></tr></thead>
