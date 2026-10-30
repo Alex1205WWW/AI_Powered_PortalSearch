@@ -13,10 +13,10 @@
   <tbody>
   {% for s in sources %}
     <tr>
-      <td>{{ s.name }}</td>
-      <td><span class="tag {{ 'ok' if s.status == 'ok' else ('warn' if s.status == 'degraded' else 'bad') }}">{{ s.status }}</span></td>
-      <td>{% if s.robots_status is none %}<span class="muted">por verificar</span>{% else %}HTTP {{ s.robots_status }} · {{ 'permite' if s.robots_allowed else 'bloqueia' }}{% if s.content_signal %} · {{ s.content_signal }}{% endif %}{% endif %}</td>
-      <td>{{ s.last_ok_at.strftime('%Y-%m-%d %H:%M') if s.last_ok_at else '—' }}</td>
+      <td data-label="Fonte">{{ s.name }}</td>
+      <td data-label="Estado"><span class="tag {{ 'ok' if s.status == 'ok' else ('warn' if s.status == 'degraded' else 'bad') }}">{{ s.status }}</span></td>
+      <td data-label="robots.txt">{% if s.robots_status is none %}<span class="muted">por verificar</span>{% else %}HTTP {{ s.robots_status }} · {{ 'permite' if s.robots_allowed else 'bloqueia' }}{% if s.content_signal %} · {{ s.content_signal }}{% endif %}{% endif %}</td>
+      <td data-label="Último sucesso">{{ s.last_ok_at.strftime('%Y-%m-%d %H:%M') if s.last_ok_at else '—' }}</td>
     </tr>
   {% endfor %}
   </tbody>

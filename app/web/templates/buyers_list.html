@@ -12,10 +12,10 @@
   <tbody>
   {% for b in buyers %}
     <tr>
-      <td><a href="/buyers/{{ b.id }}">{{ b.label }}</a></td>
-      <td>{% if b.active %}<span class="tag ok">ativo</span>{% else %}<span class="tag off">em pausa</span>{% endif %}</td>
-      <td>{{ b.criteria | selectattr('active') | list | length }} ativas / {{ b.criteria | length }}</td>
-      <td>{{ b.created_at.strftime('%Y-%m-%d') }}</td>
+      <td data-label="Comprador"><a href="/buyers/{{ b.id }}">{{ b.label }}</a></td>
+      <td data-label="Estado">{% if b.active %}<span class="tag ok">ativo</span>{% else %}<span class="tag off">em pausa</span>{% endif %}</td>
+      <td data-label="Pesquisas">{{ b.criteria | selectattr('active') | list | length }} ativas / {{ b.criteria | length }}</td>
+      <td data-label="Criado">{{ b.created_at.strftime('%Y-%m-%d') }}</td>
     </tr>
   {% else %}
     <tr><td colspan="4" class="muted">Ainda não há compradores.</td></tr>

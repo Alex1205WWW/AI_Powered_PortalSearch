@@ -47,8 +47,17 @@
       }
       tbody td:not([data-label]) { display: block; }
       tbody td select, tbody td input { width: 100%; max-width: none !important; margin-bottom: .3rem; }
-      nav ul { flex-wrap: wrap; gap: .15rem .5rem; }
-      nav li { padding: .2rem .1rem; }
+      /* Pico lays the nav out as a flex ROW of two <ul>s (brand, links). Wrapping only the links left the
+         brand stranded in the middle of them. Stack the nav instead: brand on its own line, links below. */
+      nav.container { flex-direction: column; align-items: stretch; gap: .1rem; }
+      nav.container > ul { flex-wrap: wrap; justify-content: flex-start; gap: 0 .9rem; padding: 0; margin: 0; }
+      nav.container > ul:first-child { margin-bottom: .2rem; }
+      nav li { padding: .3rem 0; }
+      nav .brand { font-size: 1.05rem; }
+
+      /* The first cell identifies the card, so it reads as a heading rather than "Comprador: Rosa". */
+      tbody td:first-child { display: block; font-weight: 600; margin-bottom: .35rem; }
+      tbody td:first-child::before { content: none; }
       h2 { font-size: 1.3rem; }
       /* Comfortable touch targets - the state dropdown is tapped constantly. */
       button, [role="button"], select, input { min-height: 2.6rem; }
