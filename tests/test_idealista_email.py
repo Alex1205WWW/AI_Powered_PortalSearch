@@ -140,3 +140,13 @@ def test_real_card_fields():
     assert mail.parse_typology(text) == 3
     assert mail.parse_area(text) == 115.0
     assert mail.parse_estate(text) == "apartamento"
+
+
+def test_subject_shapes_seen_in_real_mail():
+    """A subject can name a concelho with or without a preposition, or several freguesias."""
+    assert mail.subject_zones("Desceu o preço na tua pesquisa: Casas e apartamentos na Amadora!") == ["Amadora"]
+    assert mail.subject_zones("Novo apartamento T3 na tua pesquisa: Odivelas!") == ["Odivelas"]
+    assert mail.subject_zones("Novo apartamento T2 na tua pesquisa: Lumiar - Santa Clara - Carnide - Benfica!") == [
+        "Lumiar", "Santa Clara", "Carnide", "Benfica"]
+    assert mail.subject_zones("Novidades na tua pesquisa: Casas e apartamentos em Lisboa!") == ["Lisboa"]
+    assert mail.subject_zones(None) == []

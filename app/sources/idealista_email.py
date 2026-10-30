@@ -235,15 +235,32 @@ def zone_tokens(title: str | None) -> list[str]:
     return [t.strip(" .") for t in tail.split(",") if t.strip(" .")]
 
 
-def subject_zone(subject: str | None) -> str | None:
-    """The município from the alert subject: "Casas e apartamentos na Amadora!" -> "Amadora".
+def subject_zones(subject: str | None) -> list[str]:
+    """Place names from the alert subject, in the order the subject gives them.
 
-    This is the dependable locality in an alert email - each of her saved searches covers one concelho and
-    Idealista names it in the subject - whereas the card title names a street and a freguesia."""
+    The subject is the dependable locality in an alert email: each saved search covers one area and
+    Idealista names it after the colon, while the card title only gives a street and a freguesia.
+    Three real shapes (2026-10-30):
+        "Desceu o preco na tua pesquisa: Casas e apartamentos na Amadora!"  -> ["Amadora"]
+        "Novo apartamento T3 na tua pesquisa: Odivelas!"                    -> ["Odivelas"]
+        "Novo apartamento T2 na tua pesquisa: Lumiar - Santa Clara - Carnide - Benfica!"
+                                       -> ["Lumiar", "Santa Clara", "Carnide", "Benfica"]
+    The second shape is why this cannot require a preposition, and the third is her own multi-freguesia
+    search, where the subject names several zones and none of them a concelho. Every candidate is
+    returned; the resolver takes the first that exists."""
     if not subject:
-        return None
-    match = re.search(r"\b(?:em|na|no|nas|nos|de|do|da)\s+([^!.:;\n]+)", unescape(subject).split(":")[-1], re.I)
-    return match.group(1).strip(" .!") if match else None
+        return []
+    tail = re.sub(r"\s+", " ", unescape(subject)).split(":")[-1]
+    tail = re.sub(r"^.*?\b(?:em|na|no|nas|nos)\s+", "", tail, flags=re.I)  # drop "Casas e apartamentos na "
+    parts = [part.strip(" .!") for part in re.split(r"\s+-\s+|,", tail)]
+    return [part for part in parts
+            if part and not re.search(r"\b(pesquisa|apartamentos?|casas?|moradias?|im[oó]ve)", part, re.I)]
+
+
+def subject_zone(subject: str | None) -> str | None:
+    """The first place the subject names."""
+    zones = subject_zones(subject)
+    return zones[0] if zones else None
 
 
 def resolve_zone(session: Session, tokens: list[str]) -> tuple[str | None, list[tuple[str, str, str]]]:
@@ -260,6 +277,24 @@ def resolve_zone(session: Session, tokens: list[str]) -> tuple[str | None, list[
             hits = geo.find(session, token, level="district")
             if hits:
                 return hits[0].code, [(hits[0].code, "district", hits[0].name)]
+        # Her custom saved search is named after freguesias ("Lumiar - Santa Clara - Carnide - Benfica"),
+        # so a subject can name a parish and nothing above it. Accept one only when the name is unique in
+        # the three districts: "São Vicente" exists in several councils and guessing would put a listing
+        # in the wrong zone, which is worse than leaving it unresolved.
+        for token in reversed(tokens):
+            hits = geo.find(session, token, level="parish")
+            if len(hits) == 1:
+                parish = hits[0]
+                council_row = session.get(geo.Geo, parish.parent_code) if parish.parent_code else None
+                district_row = (session.get(geo.Geo, council_row.parent_code)
+                                if council_row and council_row.parent_code else None)
+                path = []
+                if district_row:
+                    path.append((district_row.code, "district", district_row.name))
+                if council_row:
+                    path.append((council_row.code, "council", council_row.name))
+                path.append((parish.code, "parish", parish.name))
+                return parish.code, path
         return None, []
     district_code = council.parent_code
     district = session.get(geo.Geo, district_code) if district_code else None
@@ -277,10 +312,11 @@ def to_canonical(card: Card, received_at: datetime | None,
     text = f"{card.title or ''} {card.text}"
     geo_code, geo_path = resolve(zone_tokens(card.title))
     if geo_code is None:
-        # The card named a street and a freguesia we do not know yet; the subject names the concelho.
-        from_subject = subject_zone(subject)
-        if from_subject:
-            geo_code, geo_path = resolve([from_subject])
+        # The card named a street and a freguesia we do not know yet; the subject names the search area.
+        for candidate in subject_zones(subject):
+            geo_code, geo_path = resolve([candidate])
+            if geo_code:
+                break
     typed: dict[str, bool | None] = {"elevador": parse_elevator(text)}
     previous_price = parse_previous_price(text)
     return CanonicalListing(
