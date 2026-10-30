@@ -1,4 +1,16 @@
+# TLS is automatic: Caddy asks Let's Encrypt for a certificate for $PANEL_HOST the first time it starts,
+# and renews it on its own. Two things have to be true, or issuance fails:
+#   1. $PANEL_HOST must resolve (A record) to this server's public IP.
+#   2. Port 80 must be reachable from the internet - that is where the HTTP-01 challenge lands.
+# Hetzner's automatic name (static.<ip>.clients.your-server.de) cannot be used: `your-server.de` is not on
+# the Public Suffix List, so every Hetzner customer shares one Let's Encrypt rate-limit budget and issuance
+# always fails. Use her own domain, or a name on the PSL (duckdns.org, dynv6.net, no-ip.org).
+{
+	# Expiry warnings go here. Optional: with no address, Caddy registers anonymously and still works.
+	email {$ACME_EMAIL:}
+}
+
 {$PANEL_HOST:localhost} {
-    encode gzip
-    reverse_proxy web:8000
+	encode gzip
+	reverse_proxy web:8000
 }

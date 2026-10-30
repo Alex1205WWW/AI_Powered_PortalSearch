@@ -53,6 +53,57 @@ docker compose exec worker python -c "from app.worker.jobs import backup; print(
 Depois de uma correção de dados (como a migração `0003`, que corrige as tipologias do Imovirtual):
 `docker compose exec worker python -m app.cli rematch` (silencioso, sem alertas).
 
+### Ligar o HTTPS (nome próprio da cliente, ou DuckDNS)
+
+O painel só fica acessível de fora depois de existir um nome DNS a apontar para o servidor. Enquanto
+não existir, as portas 80/443 ficam fechadas no `ufw` de propósito: um painel com palavra-passe
+servido em HTTP simples é pior do que um painel inacessível. Até lá, use um túnel SSH:
+
+```sh
+ssh -L 8000:localhost:8000 root@<IP>      # depois abra http://localhost:8000 no seu browser
+```
+
+**Opção recomendada: um subdomínio do domínio dela.** Fica profissional nas ligações que o Telegram
+lhe envia, é dela para sempre e evita mudar de endereço mais tarde. Ela só precisa de criar **um
+registo A** no painel de DNS de quem lhe aloja o domínio:
+
+| Campo | Valor |
+|---|---|
+| Tipo | **A** (não CNAME, não "redirecionamento"/"URL forwarding") |
+| Nome / Host | `imoveis` (fica `imoveis.odominio-dela.pt`) |
+| Valor / Aponta para | o IP do servidor |
+| TTL | o mais baixo que o painel permitir (300 s), pode subir depois |
+
+Usar um **subdomínio** não mexe no site nem no email dela: os registos MX e o `www` ficam intactos.
+Se o domínio estiver atrás da Cloudflare, ponha a nuvem **cinzenta** (DNS only) neste registo.
+
+**Alternativa gratuita:** um nome em `duckdns.org` (ou `dynv6.net`, `no-ip.org`). Precisa de conta.
+
+**Não serve:** o nome automático da Hetzner `static.<ip>.clients.your-server.de`, nem `sslip.io` /
+`nip.io`. Resolvem bem, mas o domínio-pai não está na Public Suffix List, por isso o Let's Encrypt
+conta todos os clientes no mesmo limite e o certificado nunca é emitido (verificado a 2026-10-30:
+zero certificados em todo o Certificate Transparency para `*.clients.your-server.de`).
+
+Quando o nome existir, no servidor:
+
+```sh
+cd /srv/imoveis
+./scripts/enable_tls.sh imoveis.odominio-dela.pt andreia@odominio-dela.pt
+```
+
+O script confirma o DNS antes de mexer em nada, escreve `PANEL_HOST` / `PANEL_BASE_URL` no `.env`,
+abre as portas 80 e 443, arranca o Caddy e espera pelo certificado. Se falhar, diz porquê. A causa
+mais comum não é o ufw: é a **Cloud Firewall da Hetzner**, que se configura na consola web deles e
+é independente do ufw.
+
+Verificação final:
+
+```sh
+curl -sS https://imoveis.odominio-dela.pt/healthz     # {"ok":true}
+```
+
+O certificado renova-se sozinho. Para mudar de nome mais tarde, basta correr o script outra vez.
+
 ### Primeiro arranque: aquecer os hashes antes do backfill
 
 O backfill da RE/MAX compara fotografias com as outras fontes. Cada fotografia é descarregada **uma
