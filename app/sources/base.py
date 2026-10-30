@@ -51,12 +51,29 @@ class CatalogueAdapter(SourceAdapter, Protocol):
     """One global catalogue with its own change timestamps."""
 
     def iter_changed(self, since: datetime | None, *, limit: int | None = None,
-                     cursor: dict | None = None) -> Iterator[CanonicalListing]:
+                     cursor: dict | None = None, session: Session | None = None) -> Iterator[CanonicalListing]:
         """Listings whose catalogue entry changed after `since`, in catalogue order.
 
         `cursor` resumes an interrupted pass; the adapter updates it in place so the caller can persist it on
-        `crawl_runs.cursor` after every commit. `limit` bounds one slice (used by the measured backfill)."""
+        `crawl_runs.cursor` after every commit. `limit` bounds one slice (used by the measured backfill).
+        `session` is needed because the slug pre-filter is resolved against the `geo` table."""
+
+
+@runtime_checkable
+class RefreshableAdapter(Protocol):
+    """An adapter whose listings have a page worth re-reading daily (`services.refresh`).
+
+    Both portals implement it; the email source does not, because an alert email is a one-shot message and
+    there is nothing to go back to. `services.refresh` checks for the method rather than the protocol, so a
+    future source can opt out simply by not having it."""
+
+    def refresh_listing(self, session: Session, listing) -> CanonicalListing | None:
+        """The listing re-read from its own page, or None when it is gone (404 / withdrawn)."""
 
 
 def is_catalogue(adapter: object) -> bool:
     return getattr(adapter, "scope_mode", "query") == "catalogue"
+
+
+def can_refresh(adapter: object) -> bool:
+    return callable(getattr(adapter, "refresh_listing", None))

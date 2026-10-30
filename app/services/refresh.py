@@ -19,6 +19,7 @@ from sqlalchemy.orm import Session
 from app.db.models import Criteria, Listing, PropertyMatch, Source
 from app.services import listings as listing_svc
 from app.services import runs as run_svc
+from app.sources.base import can_refresh
 from app.sources.registry import ADAPTERS
 
 log = logging.getLogger(__name__)
@@ -66,7 +67,7 @@ def refresh_matched(session: Session, limit: int = MAX_PER_RUN) -> dict:
             continue
         adapter = adapters.get(source.id) or ADAPTERS[source.key](source)
         adapters[source.id] = adapter
-        if not hasattr(adapter, "refresh_listing"):
+        if not can_refresh(adapter):
             continue  # e.g. the email source: there is no page to go back to
         stats.checked += 1
         try:
