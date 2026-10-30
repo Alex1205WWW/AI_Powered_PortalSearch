@@ -34,7 +34,7 @@
     <td>{% if p.hide_price or p.price is none %}sob consulta{% else %}{{ '{:,.0f}'.format(p.price).replace(',', '.') }} €{% endif %}</td>
     <td>{{ it.zone or '—' }}{% if p.street %}<br><small class="muted">{{ p.street }}</small>{% endif %}</td>
     <td><small>
-      {% for k in it.criteria.must_have %}{{ FEATURES.get(k, k) }}: <b>{{ 'confirmado' if p.features and p.features.get(k) and p.features[k].tier == 'confirmed' else ('mencionado' if p.features and p.features.get(k) and p.features[k].tier == 'mentioned' else ('não tem' if p.features and p.features.get(k) and p.features[k].tier == 'absent' else 'não indicado')) }}</b><br>{% endfor %}
+      {% for k in it.criteria.must_have %}{% set f = it.features and it.features.get(k) %}{{ FEATURES.get(k, k) }}: <b>{{ 'confirmado' if f and f.tier == 'confirmed' else ('mencionado' if f and f.tier == 'mentioned' else ('não tem' if f and f.tier == 'absent' else 'não indicado')) }}</b><br>{% endfor %}
       {% for k in it.criteria.nice_to_have %}<span class="muted">{{ FEATURES.get(k, k) }}: {{ 'sim' if p.features and p.features.get(k) and p.features[k].value else 'n/d' }}</span><br>{% endfor %}
       {% if it.match.unknown %}<span class="muted">em falta: {{ it.match.unknown | join(', ') }}</span>{% endif %}
     </small></td>

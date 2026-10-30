@@ -42,7 +42,8 @@ async def list_properties(request: Request, db: DB, user: User, buyer: int | Non
             listings_by_property.setdefault(listing.property_id, []).append(listing)
     geo_codes = {l.geo_code for ls in listings_by_property.values() for l in ls if l.geo_code}
     geo_names = {g.code: g.name for g in db.scalars(select(Geo).where(Geo.code.in_(geo_codes)))} if geo_codes else {}
-    source_names = {s.id: s.name for s in db.scalars(select(Source))}
+    sources_by_id = {s.id: s for s in db.scalars(select(Source))}
+    source_names = {sid: s.name for sid, s in sources_by_id.items()}
 
     items = []
     for match, label, criteria in rows:
@@ -50,7 +51,14 @@ async def list_properties(request: Request, db: DB, user: User, buyer: int | Non
         primary = next((l for l in listings if l.status == "active"), listings[0] if listings else None)
         if primary is None:
             continue
-        items.append({"match": match, "buyer_label": label, "criteria": criteria, "primary": primary, "listings": listings,
+        # The requirements column must read the MERGED view, not the primary listing. Matching grades a
+        # property on everything known about it across its sources, so when Imovirtual is silent about the
+        # terrace and RE/MAX confirms it, the grade is `confirmada` - and showing the primary listing's
+        # silence made 57 of Rosa's 144 confirmadas read "confirmada ... exterior: nao indicado", which is
+        # exactly the contradiction that destroys trust in the grade. Found 2026-10-31 from a screenshot.
+        view = prop_svc.build_view(match.property_id, listings, sources_by_id)
+        items.append({"match": match, "buyer_label": label, "criteria": criteria, "primary": primary,
+                      "listings": listings, "features": (view.features if view is not None else primary.features),
                       "zone": geo_names.get(primary.geo_code, primary.geo_code)})
     buyers = list(db.scalars(select(Buyer).order_by(Buyer.label)))
     filters = {"buyer": buyer, "state": state, "grade": grade}

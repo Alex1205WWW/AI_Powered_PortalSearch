@@ -19,6 +19,7 @@ from sqlalchemy.orm import Session
 from app.db.models import Buyer, Criteria, Geo, Listing, ListingPriceHistory, PropertyMatch, Source
 from app.domain.criteria import FEATURES
 from app.domain.matching import tier_label
+from app.services import properties as prop_svc
 
 COLUMNS = [
     ("Comprador", 22), ("Estado", 13), ("Grau", 11), ("Tipo", 13), ("Tipologia", 10),
@@ -65,7 +66,8 @@ def rows_for(session: Session, *, buyer_id: int | None = None, state: str | None
     if property_ids:
         for listing in session.scalars(select(Listing).where(Listing.property_id.in_(property_ids)).order_by(Listing.first_seen_at)):
             by_property.setdefault(listing.property_id, []).append(listing)
-    source_names = {s.id: s.name for s in session.scalars(select(Source))}
+    sources_by_id = {s.id: s for s in session.scalars(select(Source))}
+    source_names = {sid: src.name for sid, src in sources_by_id.items()}
     geo_codes = {l.geo_code for ls in by_property.values() for l in ls if l.geo_code}
     geo = {g.code: g for g in session.scalars(select(Geo).where(Geo.code.in_(geo_codes)))} if geo_codes else {}
 
@@ -82,6 +84,11 @@ def rows_for(session: Session, *, buyer_id: int | None = None, state: str | None
         primary = next((l for l in listings if l.status == "active"), listings[0] if listings else None)
         if primary is None:
             continue
+        # Report the MERGED property, which is what matching graded, not whichever listing happens to be
+        # first. On a property seen on two portals the primary can be silent about the terrace, the area or
+        # the typology while the other source states it - and a spreadsheet saying "confirmada" next to
+        # "exterior: nao indicado", or a blank area, is the contradiction that makes her distrust the grade.
+        view = prop_svc.build_view(match.property_id, listings, sources_by_id) or primary
         previous = session.scalar(
             select(ListingPriceHistory.price).where(ListingPriceHistory.listing_id == primary.id)
             .order_by(ListingPriceHistory.observed_at.desc()).offset(1).limit(1))
@@ -90,14 +97,14 @@ def rows_for(session: Session, *, buyer_id: int | None = None, state: str | None
             label,
             match.state,
             GRADE_LABEL.get(match.grade, match.grade or ""),
-            primary.estate_type or "",
-            "" if primary.rooms is None else f"T{primary.rooms}",
-            None if primary.hide_price else primary.price,
-            previous if (previous is not None and previous != primary.price) else None,
-            primary.area_util or primary.area_bruta,
-            zone_name(primary.geo_code),
-            _requirements(criteria, primary.features),
-            primary.agency_name_raw or "",
+            view.estate_type or "",
+            "" if view.rooms is None else f"T{view.rooms}",
+            None if view.hide_price else view.price,
+            previous if (previous is not None and previous != view.price) else None,
+            view.area_util or view.area_bruta,
+            zone_name(view.geo_code),
+            _requirements(criteria, view.features),
+            contact.agency_name_raw or primary.agency_name_raw or "",
             contact.agency_phone_raw or "",
             ", ".join(sorted({source_names.get(l.source_id, "?") for l in listings})),
             _naive(primary.first_seen_at),
