@@ -2,13 +2,18 @@
 # and renews it on its own. Two things have to be true, or issuance fails:
 #   1. $PANEL_HOST must resolve (A record) to this server's public IP.
 #   2. Port 80 must be reachable from the internet - that is where the HTTP-01 challenge lands.
+#
 # Hetzner's automatic name (static.<ip>.clients.your-server.de) cannot be used: `your-server.de` is not on
 # the Public Suffix List, so every Hetzner customer shares one Let's Encrypt rate-limit budget and issuance
 # always fails. Use her own domain, or a name on the PSL (duckdns.org, dynv6.net, no-ip.org).
-{
-	# Expiry warnings go here. Optional: with no address, Caddy registers anonymously and still works.
-	email {$ACME_EMAIL:}
-}
+#
+# No global options block here on purpose. An `email` directive is only valid with an address, so writing
+# `email {$ACME_EMAIL:}` makes Caddy refuse the whole config and restart-loop whenever the variable is
+# unset (seen 2026-10-30). Caddy registers with Let's Encrypt anonymously and renews fine without one.
+# To receive expiry warnings, add a real address by hand:
+#     {
+#         email andreia@exemplo.pt
+#     }
 
 {$PANEL_HOST:localhost} {
 	encode gzip

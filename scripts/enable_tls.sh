@@ -3,6 +3,9 @@
 #
 #   ./scripts/enable_tls.sh imoveis.exemplo.pt [email@dela.pt]
 #
+# The email is optional and only stored in .env; Caddy registers anonymously with Let's Encrypt and
+# renews on its own. To get expiry warnings, add a global `email` block to the Caddyfile by hand.
+#
 # Run it ON THE SERVER, from /srv/imoveis. It checks the DNS before changing anything, because opening the
 # firewall and restarting Caddy against a name that does not resolve just produces a failed certificate
 # request and a panel that is reachable over plain HTTP.
@@ -67,7 +70,12 @@ ufw allow 80/tcp >/dev/null
 ufw allow 443/tcp >/dev/null
 ufw status | sed -n '1,8p'
 
-echo "==> 4/5  starting Caddy and asking for the certificate"
+echo "==> 4/5  checking the Caddy config, then asking for the certificate"
+if ! docker run --rm -e PANEL_HOST="$HOST" -v "$PWD/Caddyfile:/etc/caddy/Caddyfile:ro" caddy:2 caddy validate --config /etc/caddy/Caddyfile >/tmp/caddyval 2>&1; then
+	echo "    the Caddyfile is not valid; nothing was started:" >&2
+	tail -3 /tmp/caddyval >&2
+	exit 1
+fi
 docker compose up -d caddy
 docker compose up -d --force-recreate web >/dev/null  # .env changed; a restart would not re-read it
 

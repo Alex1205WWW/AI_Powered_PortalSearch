@@ -168,9 +168,14 @@ def cmd_backfill(args: list[str]) -> None:
         rate = position / elapsed if elapsed else 0
         print(f"run {run.id} {run.status}: new={run.listings_new} updated={run.listings_updated} "
               f"at {position}/{total} in {elapsed:.0f}s ({rate:.2f} listings/s) error={run.error}")
-        if rate and total:
+        # Only project from a slice big enough to mean anything: a 20-listing run that reused a cached
+        # sitemap reports an absurd rate, and "0.1 h left" is the kind of number someone acts on at 2am.
+        done_here = run.listings_new + run.listings_updated
+        if rate and total and done_here >= 50:
             remaining = (total - position) / rate
             print(f"projected for the whole catalogue: {total / rate / 3600:.1f} h total, {remaining / 3600:.1f} h left")
+        elif total:
+            print(f"slice too small to project from ({done_here} listings); run at least 50 for a useful estimate")
 
 
 def cmd_warm_hashes(args: list[str]) -> None:
