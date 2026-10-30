@@ -1,46 +1,88 @@
 {% extends "base.html" %}
 {% block title %}Imóveis{% endblock %}
 {% block content %}
-<h2>Imóveis correspondentes <small class="muted">({{ count }})</small></h2>
-<form method="get" action="/properties" class="grid">
-  <select name="buyer">
-    <option value="">Todos os compradores</option>
-    {% for b in buyers %}<option value="{{ b.id }}" {{ 'selected' if filters.buyer == b.id }}>{{ b.label }}</option>{% endfor %}
-  </select>
-  <select name="state">
-    <option value="">Todos os estados</option>
-    {% for s in states %}<option value="{{ s }}" {{ 'selected' if filters.state == s }}>{{ s }}</option>{% endfor %}
-  </select>
-  <select name="grade">
-    <option value="">Confirmadas e possíveis</option>
-    <option value="confirmada" {{ 'selected' if filters.grade == 'confirmada' }}>Só confirmadas</option>
-    <option value="possivel" {{ 'selected' if filters.grade == 'possivel' }}>Só possíveis</option>
-  </select>
-  <button type="submit" class="secondary">Filtrar</button>
+<h2>Imóveis <small class="muted">{{ count }}{{ ' de ' ~ total if total > count }}</small></h2>
+{% if total > count %}<p><small class="muted">A mostrar os {{ count }} mais recentes de {{ total }}. Use os filtros para reduzir.</small></p>{% endif %}
+<form method="get" action="/properties" class="filters">
+  <div class="grid">
+    <select name="buyer" aria-label="Comprador">
+      <option value="">Todos os compradores</option>
+      {% for b in buyers %}<option value="{{ b.id }}" {{ 'selected' if filters.buyer == b.id }}>{{ b.label }}</option>{% endfor %}
+    </select>
+    <select name="grade" aria-label="Grau">
+      <option value="">Confirmadas e possíveis</option>
+      <option value="confirmada" {{ 'selected' if filters.grade == 'confirmada' }}>Só confirmadas</option>
+      <option value="possivel" {{ 'selected' if filters.grade == 'possivel' }}>Só possíveis</option>
+    </select>
+    <select name="state" aria-label="Estado">
+      <option value="">Todos os estados</option>
+      {% for s in states %}<option value="{{ s }}" {{ 'selected' if filters.state == s }}>{{ s }}</option>{% endfor %}
+    </select>
+  </div>
+
+  <details {{ 'open' if narrowed > (1 if filters.buyer else 0) + (1 if filters.grade else 0) + (1 if filters.state else 0) }}>
+    <summary>Mais filtros</summary>
+    <div class="grid">
+      <label>Zona
+        <select name="zone">
+          <option value="">Todas as zonas</option>
+          {% for code, name in zones %}<option value="{{ code }}" {{ 'selected' if filters.zone == code }}>{{ name }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>Tipo
+        <select name="estate">
+          <option value="">Todos os tipos</option>
+          {% for key, name in estate_types.items() %}<option value="{{ key }}" {{ 'selected' if filters.estate == key }}>{{ name }}</option>{% endfor %}
+        </select>
+      </label>
+    </div>
+    <div class="grid">
+      <label>Preço desde (€)
+        <input type="number" name="price_min" min="0" step="5000" inputmode="numeric" value="{{ filters.price_min or '' }}" placeholder="300000">
+      </label>
+      <label>Preço até (€)
+        <input type="number" name="price_max" min="0" step="5000" inputmode="numeric" value="{{ filters.price_max or '' }}" placeholder="450000">
+      </label>
+      <label>Tipologia mínima
+        <input type="number" name="rooms_min" min="0" max="12" inputmode="numeric" value="{{ filters.rooms_min if filters.rooms_min is not none else '' }}" placeholder="T1">
+      </label>
+      <label>Tipologia máxima
+        <input type="number" name="rooms_max" min="0" max="12" inputmode="numeric" value="{{ filters.rooms_max if filters.rooms_max is not none else '' }}" placeholder="T3">
+      </label>
+    </div>
+    <label>Procurar no título, rua ou mediadora
+      <input type="search" name="q" value="{{ filters.q or '' }}" placeholder="ex. garagem, Alcântara, RE/MAX">
+    </label>
+  </details>
+
+  <div class="filter-actions">
+    <button type="submit">Filtrar</button>
+    {% if narrowed %}<a role="button" class="secondary outline" href="/properties">Limpar filtros</a>{% endif %}
+  </div>
 </form>
 <p><a role="button" class="secondary outline" href="/properties/export.xlsx{{ export_query }}">Exportar para Excel</a></p>
 
-{% set back = '/properties' ~ ('?buyer=' ~ filters.buyer if filters.buyer else '') %}
+{% set back = '/properties' ~ (export_query or '') %}
 <table>
   <thead><tr><th>Comprador</th><th>Imóvel</th><th>Preço</th><th>Zona</th><th>Requisitos</th><th>Mediadora</th><th>Fontes</th><th>Estado</th></tr></thead>
   <tbody>
   {% for it in items %}
   {% set p = it.primary %}
   <tr>
-    <td>{{ it.buyer_label }}<br><span class="tag {{ 'ok' if it.match.grade == 'confirmada' else 'warn' }}">{{ 'confirmada' if it.match.grade == 'confirmada' else 'possível' }}</span></td>
-    <td><a href="{{ p.url }}" target="_blank" rel="noopener">{{ (p.estate_type or 'imóvel') | capitalize }} {{ 'T' ~ p.rooms if p.rooms is not none else 'T?' }}</a>
+    <td data-label="Comprador">{{ it.buyer_label }}<br><span class="tag {{ 'ok' if it.match.grade == 'confirmada' else 'warn' }}">{{ 'confirmada' if it.match.grade == 'confirmada' else 'possível' }}</span></td>
+    <td data-label="Imóvel"><a href="{{ p.url }}" target="_blank" rel="noopener">{{ (p.estate_type or 'imóvel') | capitalize }} {{ 'T' ~ p.rooms if p.rooms is not none else 'T?' }}</a>
         <br><small class="muted">{{ p.title }}</small>
         <br><small class="muted">{{ (p.area_util or p.area_bruta) | round | int ~ ' m²' if (p.area_util or p.area_bruta) else 'área n/d' }}{% if p.land_area %} · terreno {{ p.land_area | round | int }} m²{% endif %}{% if p.is_private_owner %} · <b>particular</b>{% endif %}{% if p.is_new_development %} · empreendimento{% endif %}</small></td>
-    <td>{% if p.hide_price or p.price is none %}sob consulta{% else %}{{ '{:,.0f}'.format(p.price).replace(',', '.') }} €{% endif %}</td>
-    <td>{{ it.zone or '—' }}{% if p.street %}<br><small class="muted">{{ p.street }}</small>{% endif %}</td>
-    <td><small>
+    <td data-label="Preço">{% if p.hide_price or p.price is none %}sob consulta{% else %}{{ '{:,.0f}'.format(p.price).replace(',', '.') }} €{% endif %}</td>
+    <td data-label="Zona">{{ it.zone or '—' }}{% if p.street %}<br><small class="muted">{{ p.street }}</small>{% endif %}</td>
+    <td data-label="Requisitos"><small>
       {% for k in it.criteria.must_have %}{% set f = it.features and it.features.get(k) %}{{ FEATURES.get(k, k) }}: <b>{{ 'confirmado' if f and f.tier == 'confirmed' else ('mencionado' if f and f.tier == 'mentioned' else ('não tem' if f and f.tier == 'absent' else 'não indicado')) }}</b><br>{% endfor %}
-      {% for k in it.criteria.nice_to_have %}<span class="muted">{{ FEATURES.get(k, k) }}: {{ 'sim' if p.features and p.features.get(k) and p.features[k].value else 'n/d' }}</span><br>{% endfor %}
+      {% for k in it.criteria.nice_to_have %}{% set g = it.features and it.features.get(k) %}<span class="muted">{{ FEATURES.get(k, k) }}: {{ 'sim' if g and g.value else 'n/d' }}</span><br>{% endfor %}
       {% if it.match.unknown %}<span class="muted">em falta: {{ it.match.unknown | join(', ') }}</span>{% endif %}
     </small></td>
-    <td><small>{{ p.agency_name_raw or '—' }}{% if p.agency_phone_raw %}<br>{{ p.agency_phone_raw }}{% endif %}</small></td>
-    <td><small>{% for l in it.listings %}<a href="{{ l.url }}" target="_blank" rel="noopener">{{ source_names.get(l.source_id, 'fonte') }}</a>{% if l.missing_fields %} <span class="tag warn" title="em falta: {{ l.missing_fields | join(', ') }}">dados parciais</span>{% endif %}{% if it.listings | length > 1 %}<form class="inline" method="post" action="/listings/{{ l.id }}/split"><input type="hidden" name="back" value="{{ back }}"><button class="secondary outline" style="padding:0 .4em;font-size:.8em" title="Separar: este anúncio não é o mesmo imóvel">não é o mesmo</button></form>{% endif %}{{ ' · ' if not loop.last }}{% endfor %}<br><span class="muted">visto {{ p.first_seen_at.strftime('%d/%m') }}{% if p.floor is not none %} · {{ 'r/c' if p.floor == 0 else ('cave' if p.floor < 0 else (p.floor ~ '.º andar' if p.floor <= 10 else '>10.º andar')) }}{% endif %}</span></small></td>
-    <td>
+    <td data-label="Mediadora"><small>{{ p.agency_name_raw or '—' }}{% if p.agency_phone_raw %}<br>{{ p.agency_phone_raw }}{% endif %}</small></td>
+    <td data-label="Fontes"><small>{% for l in it.listings %}<a href="{{ l.url }}" target="_blank" rel="noopener">{{ source_names.get(l.source_id, 'fonte') }}</a>{% if l.missing_fields %} <span class="tag warn" title="em falta: {{ l.missing_fields | join(', ') }}">dados parciais</span>{% endif %}{% if it.listings | length > 1 %}<form class="inline" method="post" action="/listings/{{ l.id }}/split"><input type="hidden" name="back" value="{{ back }}"><button class="secondary outline" style="padding:0 .4em;font-size:.8em" title="Separar: este anúncio não é o mesmo imóvel">não é o mesmo</button></form>{% endif %}{{ ' · ' if not loop.last }}{% endfor %}<br><span class="muted">visto {{ p.first_seen_at.strftime('%d/%m') }}{% if p.floor is not none %} · {{ 'r/c' if p.floor == 0 else ('cave' if p.floor < 0 else (p.floor ~ '.º andar' if p.floor <= 10 else '>10.º andar')) }}{% endif %}</span></small></td>
+    <td data-label="Estado">
       <form method="post" action="/matches/{{ it.match.id }}/state">
         <input type="hidden" name="back" value="{{ back }}">
         <select name="state" onchange="this.form.submit()">

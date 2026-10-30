@@ -38,24 +38,24 @@
   <tbody>
   {% for agency, source in rows %}
   <tr>
-    <td>{{ agency.name }}{% if agency.phone %}<br><small class="muted">{{ agency.phone }}</small>{% endif %}</td>
-    <td>{% if agency.website_url %}<a href="{{ agency.website_url }}" rel="noopener">{{ agency.website_url|replace('https://','')|replace('http://','') }}</a>
+    <td data-label="Mediadora">{{ agency.name }}{% if agency.phone %}<br><small class="muted">{{ agency.phone }}</small>{% endif %}</td>
+    <td data-label="Site">{% if agency.website_url %}<a href="{{ agency.website_url }}" rel="noopener">{{ agency.website_url|replace('https://','')|replace('http://','') }}</a>
         <br><small class="muted">{{ agency.website_resolution }}</small>
         {% else %}<span class="muted">—</span>{% endif %}</td>
-    <td>{% if source and source.confidence %}
+    <td data-label="Confiança">{% if source and source.confidence %}
           <span class="tag {{ 'ok' if source.confidence == 'full' else ('warn' if source.confidence == 'partial' else 'bad') }}">{{ source.confidence }}</span>
         {% else %}<span class="muted">por analisar</span>{% endif %}</td>
-    <td><small>{{ (source.profile or {}).get('platform', '—') if source else '—' }}</small></td>
-    <td>{{ agency.active_ads_count if agency.active_ads_count is not none else '—' }}
+    <td data-label="Plataforma"><small>{{ (source.profile or {}).get('platform', '—') if source else '—' }}</small></td>
+    <td data-label="Anúncios">{{ agency.active_ads_count if agency.active_ads_count is not none else '—' }}
         {% if agency.active_ads_rent_count %}<br><small class="muted">{{ agency.active_ads_rent_count }} arrend.</small>{% endif %}</td>
-    <td>{% if agency.offportal_ratio is not none %}<strong>{{ (agency.offportal_ratio * 100)|round|int }}%</strong>
+    <td data-label="Fora dos portais">{% if agency.offportal_ratio is not none %}<strong>{{ (agency.offportal_ratio * 100)|round|int }}%</strong>
           <br><small class="muted">de {{ agency.listings_seen }}</small>
         {% else %}<span class="muted">—</span>{% endif %}</td>
-    <td><small>{{ source.last_ok_at.strftime('%d/%m %H:%M') if source and source.last_ok_at else '—' }}</small></td>
-    <td>{% if source %}<span class="tag {{ 'ok' if source.status == 'ok' else ('warn' if source.status == 'degraded' else 'bad') }}">{{ source.status }}</span>
+    <td data-label="Última leitura"><small>{{ source.last_ok_at.strftime('%d/%m %H:%M') if source and source.last_ok_at else '—' }}</small></td>
+    <td data-label="Estado">{% if source %}<span class="tag {{ 'ok' if source.status == 'ok' else ('warn' if source.status == 'degraded' else 'bad') }}">{{ source.status }}</span>
           {% if source.last_error %}<br><small class="muted">{{ source.last_error[:90] }}</small>{% endif %}
         {% else %}<span class="muted">—</span>{% endif %}</td>
-    <td>{% if source %}<form class="inline" method="post" action="/agencies/{{ source.id }}/toggle">
+    <td data-label="">{% if source %}<form class="inline" method="post" action="/agencies/{{ source.id }}/toggle">
           <input type="hidden" name="enabled" value="{{ '0' if source.enabled else '1' }}">
           <button class="{{ 'secondary' if source.enabled else '' }} outline">{{ 'Desativar' if source.enabled else 'Ativar' }}</button>
         </form>{% endif %}</td>

@@ -22,6 +22,41 @@
     .brand img { border-radius: 5px; display: block; }
     .danger-zone { margin-top: 2rem; border-left: 4px solid #c62828; padding-left: .8rem; }
     .danger-zone summary { color: #c62828; cursor: pointer; }
+    .filters { margin-bottom: .5rem; }
+    .filters details { margin: .5rem 0; }
+    .filters summary { cursor: pointer; font-size: .9em; }
+    .filter-actions { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; }
+    .filter-actions > * { margin: 0; }
+    td, th { overflow-wrap: anywhere; }
+
+    /* Phone layout. She reads this on a phone between viewings, and an eight-column table there is a
+       pinch-and-scroll puzzle. Below 860px every table becomes a stack of cards: the header row is taken
+       out of the flow and each cell prints its own label from `data-label`. No JavaScript, so it also
+       survives with scripts blocked. */
+    @media (max-width: 860px) {
+      table, thead, tbody, tr, td { display: block; width: 100%; }
+      thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+      tbody tr {
+        border: 1px solid var(--pico-muted-border-color);
+        border-radius: .6rem; padding: .7rem .9rem; margin-bottom: .9rem;
+      }
+      tbody td { border: none; padding: .3rem 0; display: grid; grid-template-columns: 6.5rem 1fr; gap: .6rem; align-items: start; }
+      tbody td::before {
+        content: attr(data-label); font-size: .78em; font-weight: 600;
+        color: var(--pico-muted-color); text-transform: uppercase; letter-spacing: .02em;
+      }
+      tbody td:not([data-label]) { display: block; }
+      tbody td select, tbody td input { width: 100%; max-width: none !important; margin-bottom: .3rem; }
+      nav ul { flex-wrap: wrap; gap: .15rem .5rem; }
+      nav li { padding: .2rem .1rem; }
+      h2 { font-size: 1.3rem; }
+      /* Comfortable touch targets - the state dropdown is tapped constantly. */
+      button, [role="button"], select, input { min-height: 2.6rem; }
+    }
+    @media (max-width: 480px) {
+      tbody td { grid-template-columns: 1fr; gap: .1rem; }
+      body > .container, main.container { padding-left: .7rem; padding-right: .7rem; }
+    }
     article.source-down { border-left: 4px solid #ef6c00; background: #fff8f0; }
   </style>
 </head>

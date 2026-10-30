@@ -8,14 +8,14 @@
   <tbody>
   {% for s in sources %}
   <tr>
-    <td>{{ s.name }}<br><small class="muted">{{ s.base_url }}</small></td>
-    <td>{{ s.kind }}</td>
-    <td><form class="inline" method="post" action="/sources/{{ s.id }}/toggle"><input type="hidden" name="enabled" value="{{ '0' if s.enabled else '1' }}"><button class="{{ 'secondary' if s.enabled else '' }} outline">{{ 'Desativar' if s.enabled else 'Ativar' }}</button></form></td>
-    <td><span class="tag {{ 'ok' if s.status == 'ok' else ('warn' if s.status == 'degraded' else 'bad') }}">{{ s.status }}</span></td>
-    <td>{% if s.robots_status is none %}<span class="muted">por verificar</span>{% else %}HTTP {{ s.robots_status }} · {{ 'permite' if s.robots_allowed else 'bloqueia' }}<br><small class="muted">{{ s.robots_fetched_at.strftime('%Y-%m-%d %H:%M') }}</small>{% endif %}</td>
-    <td>{{ s.content_signal or '—' }}</td>
-    <td>{{ (s.schedule_minutes ~ ' min') if s.schedule_minutes else '—' }}</td>
-    <td><small>{{ s.notes }}</small></td>
+    <td data-label="Fonte">{{ s.name }}<br><small class="muted">{{ s.base_url }}</small></td>
+    <td data-label="Tipo">{{ s.kind }}</td>
+    <td data-label="Ativa"><form class="inline" method="post" action="/sources/{{ s.id }}/toggle"><input type="hidden" name="enabled" value="{{ '0' if s.enabled else '1' }}"><button class="{{ 'secondary' if s.enabled else '' }} outline">{{ 'Desativar' if s.enabled else 'Ativar' }}</button></form></td>
+    <td data-label="Estado"><span class="tag {{ 'ok' if s.status == 'ok' else ('warn' if s.status == 'degraded' else 'bad') }}">{{ s.status }}</span></td>
+    <td data-label="robots.txt">{% if s.robots_status is none %}<span class="muted">por verificar</span>{% else %}HTTP {{ s.robots_status }} · {{ 'permite' if s.robots_allowed else 'bloqueia' }}<br><small class="muted">{{ s.robots_fetched_at.strftime('%Y-%m-%d %H:%M') }}</small>{% endif %}</td>
+    <td data-label="Content-Signal">{{ s.content_signal or '—' }}</td>
+    <td data-label="Intervalo">{{ (s.schedule_minutes ~ ' min') if s.schedule_minutes else '—' }}</td>
+    <td data-label="Notas"><small>{{ s.notes }}</small></td>
   </tr>
   {% endfor %}
   </tbody>

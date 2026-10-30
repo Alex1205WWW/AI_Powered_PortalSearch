@@ -5,10 +5,10 @@ from urllib.parse import quote, urlencode
 
 from fastapi import APIRouter, Form, Request
 from fastapi.responses import RedirectResponse, StreamingResponse
-from sqlalchemy import select
+from sqlalchemy import func, or_, select
 
 from app.db.models import Buyer, Criteria, Geo, Listing, PropertyMatch, Source
-from app.domain.criteria import STATES
+from app.domain.criteria import ESTATE_TYPES, STATES
 from app.services import export
 from app.services import matches as match_svc
 from app.services import properties as prop_svc
@@ -17,9 +17,49 @@ from app.web.deps import DB, User, render
 router = APIRouter()
 
 
+def _listing_filters(stmt, *, zone, price_min, price_max, rooms_min, rooms_max, estate, q):
+    """Narrow a `PropertyMatch` query by what its listings say.
+
+    A property can have several listings and they do not always agree, so every condition means "**some**
+    listing of this property satisfies it" - the same best-known-value logic matching uses. A property whose
+    Imovirtual copy omits the price but whose RE/MAX copy has it must not vanish from a price filter."""
+    if not any([zone, price_min, price_max, rooms_min, rooms_max, estate, q]):
+        return stmt
+    inner = select(Listing.property_id).where(Listing.property_id.is_not(None), Listing.status == "active")
+    if zone:
+        inner = inner.where(or_(Listing.geo_code == zone, Listing.geo_code.like(f"{zone}/%")))
+    if price_min is not None:
+        inner = inner.where(Listing.price >= price_min)
+    if price_max is not None:
+        inner = inner.where(Listing.price <= price_max)
+    if rooms_min is not None:
+        inner = inner.where(Listing.rooms >= rooms_min)
+    if rooms_max is not None:
+        inner = inner.where(Listing.rooms <= rooms_max)
+    if estate:
+        inner = inner.where(Listing.estate_type == estate)
+    if q and q.strip():
+        needle = f"%{q.strip()}%"
+        inner = inner.where(or_(Listing.title.ilike(needle), Listing.street.ilike(needle),
+                                Listing.agency_name_raw.ilike(needle)))
+    return stmt.where(PropertyMatch.property_id.in_(inner))
+
+
+def _zone_choices(db):
+    """Councils that actually hold matched listings - offering all 50 would be mostly dead options."""
+    codes = db.scalars(select(func.distinct(Listing.geo_code))
+                       .where(Listing.geo_code.is_not(None), Listing.property_id.is_not(None)))
+    councils = {"/".join(c.split("/")[:2]) for c in codes if c and "/" in c}
+    if not councils:
+        return []
+    return [(g.code, g.name) for g in db.scalars(select(Geo).where(Geo.code.in_(councils)).order_by(Geo.name))]
+
+
 @router.get("/properties")
 async def list_properties(request: Request, db: DB, user: User, buyer: int | None = None, state: str | None = None,
-                          grade: str | None = None, limit: int = 200):
+                          grade: str | None = None, zone: str | None = None, price_min: int | None = None,
+                          price_max: int | None = None, rooms_min: int | None = None, rooms_max: int | None = None,
+                          estate: str | None = None, q: str | None = None, limit: int = 200):
     stmt = (
         select(PropertyMatch, Buyer.label, Criteria)
         .join(Buyer, Buyer.id == PropertyMatch.buyer_id)
@@ -33,6 +73,9 @@ async def list_properties(request: Request, db: DB, user: User, buyer: int | Non
         stmt = stmt.where(PropertyMatch.state == state)
     if grade:
         stmt = stmt.where(PropertyMatch.grade == grade)
+    stmt = _listing_filters(stmt, zone=zone, price_min=price_min, price_max=price_max, rooms_min=rooms_min,
+                            rooms_max=rooms_max, estate=estate, q=q)
+    total = db.scalar(select(func.count()).select_from(stmt.subquery())) or 0
     rows = db.execute(stmt.limit(limit)).all()
 
     property_ids = {m.property_id for m, _, _ in rows}
@@ -61,10 +104,14 @@ async def list_properties(request: Request, db: DB, user: User, buyer: int | Non
                       "listings": listings, "features": (view.features if view is not None else primary.features),
                       "zone": geo_names.get(primary.geo_code, primary.geo_code)})
     buyers = list(db.scalars(select(Buyer).order_by(Buyer.label)))
-    filters = {"buyer": buyer, "state": state, "grade": grade}
-    query = urlencode({k: v for k, v in filters.items() if v})
+    filters = {"buyer": buyer, "state": state, "grade": grade, "zone": zone, "price_min": price_min,
+               "price_max": price_max, "rooms_min": rooms_min, "rooms_max": rooms_max, "estate": estate, "q": q}
+    active = {k: v for k, v in filters.items() if v not in (None, "")}
+    query = urlencode(active)
     return render(request, "properties.html", items=items, buyers=buyers, states=STATES, source_names=source_names,
-                  filters=filters, count=len(items), export_query=f"?{query}" if query else "")
+                  filters=filters, count=len(items), total=total, zones=_zone_choices(db),
+                  estate_types=ESTATE_TYPES, narrowed=len(active),
+                  export_query=f"?{query}" if query else "")
 
 
 @router.get("/properties/export.xlsx")
