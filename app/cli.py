@@ -220,11 +220,15 @@ def cmd_rematch(_: list[str]) -> None:
             print(f"criteria {criteria_id}: {count} matching properties")
 
 
-def cmd_poll_email(_: list[str]) -> None:
+def cmd_poll_email(args: list[str]) -> None:
+    """poll-email [--rescan] [--silent]: read the alert mailbox.
+
+    `--rescan` rewinds the UID watermark and reads every message again, which is what you want after fixing
+    the parser; `--silent` suppresses alerts, which is what you want when that backlog is months old."""
     from app.services import runs
 
     with session_scope() as session:
-        run = runs.execute_email_poll(session)
+        run = runs.execute_email_poll(session, rescan="--rescan" in args, initial="--silent" in args)
         print(f"run {run.id} {run.status}: messages={run.pages_fetched} new={run.listings_new} updated={run.listings_updated} error={run.error}")
 
 

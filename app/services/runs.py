@@ -384,8 +384,11 @@ def execute_backfill(session: Session, source_key: str, limit: int | None = None
                          kind="backfill", resume=True)
 
 
-def execute_email_poll(session: Session) -> CrawlRun:
-    """Read new Idealista alert emails, ingest their listings through the same path, alert on genuinely new ones."""
+def execute_email_poll(session: Session, *, initial: bool = False, rescan: bool = False) -> CrawlRun:
+    """Read new Idealista alert emails, ingest their listings through the same path, alert on genuinely new ones.
+
+    `rescan` rewinds the UID watermark so the whole mailbox is read again (after a parser fix, say); pair it
+    with `initial=True` so re-reading a backlog of old alerts stays silent."""
     from app.config import settings
     from app.services.criteria import list_active
     from app.sources import idealista_email as mail
@@ -402,7 +405,7 @@ def execute_email_poll(session: Session) -> CrawlRun:
     criteria_list = list_active(session)
     queued = 0
     try:
-        last_uid = int(get_setting(session, f"imap:last_uid:{mailbox_key}") or 0)
+        last_uid = 0 if rescan else int(get_setting(session, f"imap:last_uid:{mailbox_key}") or 0)
         known_validity = get_setting(session, f"imap:uidvalidity:{mailbox_key}")
         with mail.connect(settings) as box:
             validity = mail.uidvalidity(box, settings.imap_folder)
@@ -415,13 +418,15 @@ def execute_email_poll(session: Session) -> CrawlRun:
                 cards = mail.cards_from_message(message)
                 found = 0
                 for card in cards:
-                    canonical = mail.to_canonical(card, received_at=message.date, resolve=lambda tokens: mail.resolve_zone(session, tokens))
+                    canonical = mail.to_canonical(card, received_at=message.date,
+                                                  resolve=lambda tokens: mail.resolve_zone(session, tokens),
+                                                  subject=message.subject)
                     result = ingest(session, source, canonical)
                     run.listings_new += result.is_new
                     run.listings_updated += not result.is_new
                     found += 1
                     if result.is_new or result.price_changed:
-                        queued += match_and_notify(session, result, criteria_list, initial=False)
+                        queued += match_and_notify(session, result, criteria_list, initial=initial)
                 session.merge(EmailMessage(mailbox=mailbox_key[:120], uid=uid, received_at=message.date, parsed_ok=True, listing_urls_found=found))
                 last_uid = max(last_uid, uid)
                 set_setting(session, f"imap:last_uid:{mailbox_key}", last_uid)

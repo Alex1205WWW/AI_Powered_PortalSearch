@@ -32,7 +32,11 @@ log = logging.getLogger(__name__)
 
 SOURCE_KEY = "idealista_email"
 ID_RE = re.compile(r"idealista\.(?:pt|com)/(?:[a-z]{2}/)?imovel/(\d{5,12})\b", re.I)
-PRICE_RE = re.compile(r"(\d{1,3}(?:[.\s]\d{3})+|\d{4,7})\s*€")
+_AMOUNT = r"\d{1,3}(?:[.\s\u00a0]\d{3})+|\d{4,7}"
+# A price, but never the EUR/m2 figure that sits next to it in every card.
+PRICE_RE = re.compile(rf"({_AMOUNT})\s*€(?!\s*/\s*m)")
+# "O preço deste anúncio baixou de 735.000€ a 715.000€" -> (previous, current)
+PRICE_DROP_RE = re.compile(rf"baixou\s+de\s*({_AMOUNT})\s*€\s*(?:a|para)\s*({_AMOUNT})\s*€", re.I)
 TYPOLOGY_RE = re.compile(r"\bT(\d{1,2})\b")
 AREA_RE = re.compile(r"(\d{2,5}(?:[.,]\d+)?)\s*m(?:²|2)\b")
 FLOOR_RE = re.compile(r"(\d{1,2})\s*[.ºo°]*\s*andar", re.I)
@@ -41,6 +45,7 @@ ESTATE_WORDS = {"apartamento": "apartamento", "moradia": "moradia", "casa": "mor
                 "duplex": "apartamento", "penthouse": "apartamento", "quinta": "moradia", "vivenda": "moradia"}
 TRACKING_HINTS = ("pixel", "track", "open", "beacon", "spacer", "blank")
 BLOCK_TAGS = {"table", "tr", "li", "article", "section"}
+MAX_CARD_DEPTH = 20  # MJML nests deeply; the real boundary is "how many listings does this node cover"
 
 
 @dataclass
@@ -84,18 +89,35 @@ def _is_tracking_pixel(img: Node) -> bool:
     return False
 
 
+def _ids_in(node: Node) -> set[str]:
+    """Every distinct listing id linked from inside this node."""
+    found = set()
+    for link in node.css("a[href]"):
+        listing_id = listing_id_from_url(link.attributes.get("href"))
+        if listing_id:
+            found.add(listing_id)
+    return found
+
+
 def _card_root(anchor: Node) -> Node:
-    """Climb from the link to the smallest ancestor that reads like a card (contains a price), stopping at table rows
-    and similar blocks. Falls back to the anchor itself."""
-    node, best = anchor, anchor
-    for _ in range(8):
-        if node.parent is None or node.parent.tag in ("body", "html", "[document]"):
+    """Climb from the link to the largest ancestor that still describes only this one listing.
+
+    Idealista's emails are MJML: the photo, the title and the price sit in sibling table cells, so the
+    smallest ancestor holding all three is a long way above the anchor (measured on real mail 2026-10-30:
+    further than the eight levels this used to climb, which is why price came back empty on 188 of 192
+    listings). Climbing by "how many listings does this node cover" is the honest boundary - we take the
+    highest node that still covers exactly one, and prefer the first such node that also shows a price."""
+    node, best, priced = anchor, anchor, None
+    for _ in range(MAX_CARD_DEPTH):
+        parent = node.parent
+        if parent is None or parent.tag in ("body", "html", "[document]"):
             break
-        node = node.parent
-        best = node
-        if PRICE_RE.search(node.text(separator=" ", strip=True) or "") and node.tag in BLOCK_TAGS | {"td", "div"}:
-            break
-    return best
+        if len(_ids_in(parent)) > 1:
+            break  # one more step would merge this card with the next listing
+        node = best = parent
+        if priced is None and PRICE_RE.search(node.text(separator=" ", strip=True) or ""):
+            priced = node
+    return priced or best
 
 
 def cards_from_html(html: str) -> list[Card]:
@@ -146,9 +168,23 @@ def cards_from_message(message) -> list[Card]:
 
 # --- field parsing -------------------------------------------------------------------------------
 
+def _amount(raw: str) -> int:
+    return int(re.sub(r"[.\s\u00a0]", "", raw))
+
+
 def parse_price(text: str) -> int | None:
+    """The price the listing is on the market for *now*."""
+    drop = PRICE_DROP_RE.search(text)
+    if drop:
+        return _amount(drop.group(2))
     match = PRICE_RE.search(text)
-    return int(re.sub(r"[.\s]", "", match.group(1))) if match else None
+    return _amount(match.group(1)) if match else None
+
+
+def parse_previous_price(text: str) -> int | None:
+    """Only when the email states a reduction outright; never guessed from two prices being present."""
+    drop = PRICE_DROP_RE.search(text)
+    return _amount(drop.group(1)) if drop else None
 
 
 def parse_typology(text: str) -> int | None:
@@ -186,12 +222,28 @@ def parse_elevator(text: str) -> bool | None:
 
 
 def zone_tokens(title: str | None) -> list[str]:
-    """"Apartamento T2 em Rua X, Alfama, Lisboa" -> ["Rua X", "Alfama", "Lisboa"] (right-most is the município)."""
+    """"Apartamento T3 na Alameda dos Pinheiros, Serra de Carnaxide, Venteira"
+    -> ["Alameda dos Pinheiros", "Serra de Carnaxide", "Venteira"].
+
+    Real titles use "na" / "no" far more often than "em" (the original pattern only knew "em", which left
+    the property type glued to the street and no token that could resolve). The right-most token is the
+    narrowest zone Idealista states, which is usually a freguesia, not the município."""
     if not title:
         return []
-    match = re.search(r"\bem\s+(.+)$", unescape(title), re.I)
+    match = re.search(r"\b(?:em|na|no|nas|nos)\s+(.+)$", unescape(title), re.I)
     tail = match.group(1) if match else title
     return [t.strip(" .") for t in tail.split(",") if t.strip(" .")]
+
+
+def subject_zone(subject: str | None) -> str | None:
+    """The município from the alert subject: "Casas e apartamentos na Amadora!" -> "Amadora".
+
+    This is the dependable locality in an alert email - each of her saved searches covers one concelho and
+    Idealista names it in the subject - whereas the card title names a street and a freguesia."""
+    if not subject:
+        return None
+    match = re.search(r"\b(?:em|na|no|nas|nos|de|do|da)\s+([^!.:;\n]+)", unescape(subject).split(":")[-1], re.I)
+    return match.group(1).strip(" .!") if match else None
 
 
 def resolve_zone(session: Session, tokens: list[str]) -> tuple[str | None, list[tuple[str, str, str]]]:
@@ -220,16 +272,25 @@ def resolve_zone(session: Session, tokens: list[str]) -> tuple[str | None, list[
 
 
 def to_canonical(card: Card, received_at: datetime | None,
-                 resolve: Callable[[list[str]], tuple[str | None, list[tuple[str, str, str]]]]) -> CanonicalListing:
+                 resolve: Callable[[list[str]], tuple[str | None, list[tuple[str, str, str]]]],
+                 subject: str | None = None) -> CanonicalListing:
     text = f"{card.title or ''} {card.text}"
     geo_code, geo_path = resolve(zone_tokens(card.title))
+    if geo_code is None:
+        # The card named a street and a freguesia we do not know yet; the subject names the concelho.
+        from_subject = subject_zone(subject)
+        if from_subject:
+            geo_code, geo_path = resolve([from_subject])
     typed: dict[str, bool | None] = {"elevador": parse_elevator(text)}
+    previous_price = parse_previous_price(text)
     return CanonicalListing(
         source_key=SOURCE_KEY,
         external_id=card.idealista_id,
         url=card.url,
         title=card.title,
-        price=parse_price(card.text),
+        price=parse_price(text),
+        previous_price=previous_price,
+        price_reduced_at=received_at if previous_price else None,
         area_util=parse_area(card.text),
         rooms=parse_typology(text),
         floor=parse_floor(card.text),
@@ -240,7 +301,7 @@ def to_canonical(card: Card, received_at: datetime | None,
         images=card.images[:3],
         description=card.text[:2000] or None,
         published_at=received_at,
-        raw={"title": card.title, "text": card.text[:4000], "images": card.images},
+        raw={"title": card.title, "text": card.text[:4000], "images": card.images, "subject": subject},
     )
 
 

@@ -78,3 +78,65 @@ def test_zone_tokens():
     assert mail.zone_tokens("Apartamento T2 em Rua dos Remédios, Alfama, Lisboa") == ["Rua dos Remédios", "Alfama", "Lisboa"]
     assert mail.zone_tokens("Moradia T3 em Colares, Sintra") == ["Colares", "Sintra"]
     assert mail.zone_tokens(None) == []
+
+
+# --- real alert mail (captured 2026-10-30, recipient and tracking tokens scrubbed) ---------------
+# The synthetic fixture above never showed the MJML layout Idealista actually sends. On the first real
+# poll the parser recovered typology on 178 of 192 listings but price on 4 and the zone on 11. These
+# tests pin the three causes so the regression cannot come back silently.
+
+REAL_HTML = (FIX.parent / "idealista_alert_real.html").read_text(encoding="utf-8")
+REAL_SUBJECT = (FIX.parent / "idealista_alert_real.subject.txt").read_text(encoding="utf-8").strip()
+
+
+def _real_card():
+    cards = mail.cards_from_html(REAL_HTML)
+    assert len(cards) == 1, "this alert is about a single listing"
+    return cards[0]
+
+
+def test_real_card_reaches_the_price_in_a_sibling_column():
+    """The photo link and the price sit in different table cells; the old 8-level climb never met them."""
+    card = _real_card()
+    text = f"{card.title or ''} {card.text}"
+    assert mail.PRICE_RE.search(text), "the card root must cover the price block"
+    assert card.images, "and the photos, which feed the dedup photo rule"
+
+
+def test_real_card_takes_the_new_price_not_the_struck_one():
+    """"O preço deste anúncio baixou de 735.000€ a 715.000€" - the first price in the card is the old one."""
+    card = _real_card()
+    text = f"{card.title or ''} {card.text}"
+    assert mail.parse_price(text) == 715000
+    assert mail.parse_previous_price(text) == 735000
+
+
+def test_price_per_square_metre_is_never_read_as_the_price():
+    assert mail.parse_price("715.000 € 6.391 €/m²") == 715000
+    assert mail.parse_price("6.391 €/m²") is None
+
+
+def test_previous_price_is_only_set_when_the_email_says_so():
+    assert mail.parse_previous_price("715.000 € 6.391 €/m²") is None
+
+
+def test_real_title_uses_na_not_em():
+    card = _real_card()
+    assert card.title == "Apartamento T3 na Alameda dos Pinheiros, Serra de Carnaxide, Venteira"
+    assert mail.zone_tokens(card.title) == ["Alameda dos Pinheiros", "Serra de Carnaxide", "Venteira"]
+
+
+def test_subject_carries_the_council():
+    """Her saved searches are one per concelho and Idealista names it in the subject; the card names a
+    street and a freguesia, which the static seed does not hold."""
+    assert mail.subject_zone(REAL_SUBJECT) == "Amadora"
+    assert mail.subject_zone("Novidades na tua pesquisa: Casas e apartamentos em Lisboa!") == "Lisboa"
+    assert mail.subject_zone(None) is None
+
+
+def test_real_card_fields():
+    card = _real_card()
+    text = f"{card.title or ''} {card.text}"
+    assert mail.parse_typology(text) == 3
+    assert mail.parse_area(text) == 115.0
+    assert mail.parse_estate(text) == "apartamento"
