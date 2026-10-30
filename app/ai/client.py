@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from app.ai import pricing
 from app.config import settings
 from app.db.models import AiSpend
 
@@ -63,3 +64,82 @@ def record_spend(session: Session, *, provider: str, operation: str, model: str 
     session.add(row)
     session.flush()
     return row
+
+
+# --- the real clients and the spend ledger (Day 6) ---------------------------------------------
+# Every model call in this project goes through `call_llm` or `ai.transcribe`, so the budget guard and the
+# `ai_spend` ledger cannot be bypassed by a new caller forgetting to record anything.
+
+def anthropic_client():
+    """Lazy, so importing this module never requires a key (the test suite imports it constantly)."""
+    import anthropic
+
+    if not settings.anthropic_api_key:
+        raise AiUnavailable("ANTHROPIC_API_KEY não está configurada.")
+    return anthropic.Anthropic(api_key=settings.anthropic_api_key)
+
+
+def openai_client():
+    import openai
+
+    if not settings.openai_api_key:
+        raise AiUnavailable("OPENAI_API_KEY não está configurada.")
+    return openai.OpenAI(api_key=settings.openai_api_key)
+
+
+class AiUnavailable(RuntimeError):
+    """No key configured. The structured form in the panel still works, so this is never fatal."""
+
+
+def usage_of(response) -> dict:
+    """`response.usage` -> the four counters the ledger stores. Tolerant of fields a model may not send."""
+    usage = getattr(response, "usage", None)
+    return {
+        "tokens_in": int(getattr(usage, "input_tokens", 0) or 0),
+        "tokens_out": int(getattr(usage, "output_tokens", 0) or 0),
+        "cache_write": int(getattr(usage, "cache_creation_input_tokens", 0) or 0),
+        "cache_read": int(getattr(usage, "cache_read_input_tokens", 0) or 0),
+    }
+
+
+def record_llm_spend(session: Session, *, operation: str, model: str, response) -> AiSpend:
+    counts = usage_of(response)
+    return record_spend(session, provider="anthropic", operation=operation, model=model,
+                        tokens_in=counts["tokens_in"], tokens_out=counts["tokens_out"],
+                        cost_cents=pricing.llm_cost_cents(model, **counts))
+
+
+def parse_structured(session: Session, *, operation: str, system: str, user: str, output_format,
+                     source_key: str | None = None, model: str | None = None, effort: str = "low",
+                     max_tokens: int = 2000):
+    """One structured LLM call: schema in, validated object out, spend recorded, budget respected.
+
+    `messages.parse` validates the response against the Pydantic model, so a malformed answer raises here
+    instead of becoming half-filled criteria downstream.
+
+    `effort="low"` is deliberate. Opus 5 thinks adaptively by default and this is a short extraction from a
+    few sentences of Portuguese; low effort keeps a single parse at well under a cent, which is what keeps
+    the quoted 9-15 USD/month honest. Do not pass `thinking.budget_tokens` - Opus 5 rejects it with a 400.
+    """
+    assert_llm_allowed(source_key, purpose=operation)
+    budget_guard(session)
+    chosen = model or settings.llm_model
+    response = anthropic_client().messages.parse(
+        model=chosen,
+        max_tokens=max_tokens,
+        system=system,
+        messages=[{"role": "user", "content": user}],
+        output_config={"effort": effort},
+        output_format=output_format,
+    )
+    record_llm_spend(session, operation=operation, model=chosen, response=response)
+    if getattr(response, "stop_reason", None) == "refusal":
+        raise AiRefused(f"o modelo recusou o pedido ({operation})")
+    parsed = getattr(response, "parsed_output", None)
+    if parsed is None:
+        raise AiRefused(f"resposta sem conteúdo estruturado ({operation})")
+    return parsed
+
+
+class AiRefused(RuntimeError):
+    """The model declined or returned nothing usable. Callers fall back to the structured form."""

@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 
 from app.db.models import Buyer, Criteria, Geo, Listing, Notification, PropertyMatch, Source
 from app.notify import formats, telegram
+from app.services import appsettings
 
 log = logging.getLogger(__name__)
 ALERT_REASONS = ("new", "price_drop", "data_completed", "criteria_changed")
@@ -37,11 +38,18 @@ def pending(session: Session) -> list[Notification]:
     return list(session.scalars(stmt))
 
 
-def flush(session: Session) -> int:
+def flush(session: Session, *, ignore_hours: bool = False) -> int:
     """Send every unsent alert, one Telegram message per (property, reason) with all buyers inside.
-    A Telegram failure leaves the rows unsent; the next run retries."""
+    A Telegram failure leaves the rows unsent; the next run retries.
+
+    Outside her alert hours nothing is sent and nothing is dropped: the rows stay pending and the next
+    flush inside the window delivers them, so a listing found at 02:00 still reaches her at 08:00.
+    `ignore_hours=True` is for the CLI, where she is explicitly asking for a flush now."""
     rows = pending(session)
     if not rows:
+        return 0
+    if not ignore_hours and not appsettings.within_alert_hours(session):
+        log.info("outside alert hours: %d alert(s) held", len(rows))
         return 0
     groups: dict[tuple[int, str], list[Notification]] = defaultdict(list)
     for row in rows:
@@ -72,8 +80,10 @@ def flush(session: Session) -> int:
             zone_name = f"{zone.name}, {parent.name}" if parent else zone.name
         old_price = (group[0].payload or {}).get("old_price") if group[0].payload else None
         text = formats.property_alert(reason, primary, listings, buyers, zone_name, source_keys, old_price=old_price)
+        # One row of state buttons per buyer in this message, so she can mark it without opening the panel.
+        keyboard = formats.state_keyboard([(m.id, label) for label, m, _must in buyers]) if buyers else None
         try:
-            message_id = telegram.send_message(text)
+            message_id = telegram.send_message(text, reply_markup=keyboard)
         except telegram.TelegramError as exc:
             log.error("telegram send failed, will retry: %s", exc)
             break

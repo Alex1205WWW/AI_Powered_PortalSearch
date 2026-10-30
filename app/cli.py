@@ -23,6 +23,10 @@
   agency-add <url> [name]  add one agency site by hand (her list, or anything she pastes later)
   agency-summary           how many agencies found / with a site / readable, and by confidence
   agency-evidence          listings an agency site had that no portal did (the Day 5 proof)
+
+  digest [--force]         send the daily summary now
+  parse-note "<texto>"     parse a note into criteria and print the card (no search is created)
+  ai-spend                 this month's AI spend, by operation
 """
 from __future__ import annotations
 
@@ -360,6 +364,47 @@ def cmd_agency_evidence(_: list[str]) -> None:
             print(f"    {listing.title or ''} | {listing.price} EUR | T{listing.rooms} | {listing.geo_code}")
 
 
+def cmd_digest(args: list[str]) -> None:
+    from app.services import digest
+
+    with session_scope() as session:
+        sent = digest.send(session, force="--force" in args)
+    print("resumo enviado" if sent else "nada enviado (já foi hoje, ou sem chat id)")
+
+
+def cmd_parse_note(args: list[str]) -> None:
+    """Dry run of the voice/text intake: parse, resolve zones, print the card. Creates nothing."""
+    from app.ai import parse_criteria
+    from app.notify import formats
+    from app.services import drafts
+
+    if not args:
+        sys.exit('usage: parse-note "Ana Santos, T2 em Lisboa, 300 a 400 mil, com garagem"')
+    text = " ".join(args)
+    with session_scope() as session:
+        parsed, notes = parse_criteria.parse(session, text)
+        zones, questions = drafts.resolve_zones(session, parsed.zones)
+        card = formats.criteria_card({**parsed.model_dump(), "zone_codes": zones},
+                                     list(parsed.ambiguities) + questions + notes, zones)
+        session.commit()
+    print(card)
+
+
+def cmd_ai_spend(_: list[str]) -> None:
+    from sqlalchemy import func
+    from app.ai.client import month_spend_cents
+    from app.db.models import AiSpend
+
+    with session_scope() as session:
+        total = month_spend_cents(session)
+        rows = session.execute(
+            select(AiSpend.operation, AiSpend.model, func.count(AiSpend.id), func.sum(AiSpend.cost_cents))
+            .group_by(AiSpend.operation, AiSpend.model).order_by(AiSpend.operation)).all()
+    print(f"este mes: {total} centimos (teto {settings.ai_cap_cents_month})")
+    for operation, model, calls, cents in rows:
+        print(f"  {operation:<18} {str(model):<18} {calls:>5} chamada(s)  {cents or 0:>6} centimos")
+
+
 COMMANDS = {
     "run-initial": cmd_run_initial,
     "run-queued": cmd_run_queued,
@@ -387,6 +432,9 @@ COMMANDS = {
     "agency-add": cmd_agency_add,
     "agency-summary": cmd_agency_summary,
     "agency-evidence": cmd_agency_evidence,
+    "digest": cmd_digest,
+    "parse-note": cmd_parse_note,
+    "ai-spend": cmd_ai_spend,
 }
 
 

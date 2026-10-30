@@ -38,6 +38,8 @@ def build_scheduler() -> BackgroundScheduler:
     scheduler.add_job(jobs.agency_websites, "interval", minutes=20, id="agency_websites", jitter=120)
     scheduler.add_job(jobs.agency_profile, "interval", minutes=30, id="agency_profile", jitter=120)
     scheduler.add_job(jobs.agency_watch, "interval", hours=6, id="agency_watch", jitter=300)
+    # Ticks often, sends once a day: a restart across her digest hour must not skip the day.
+    scheduler.add_job(jobs.daily_digest, "interval", minutes=10, id="daily_digest")
     email_minutes = email_schedule()
     if email_minutes:
         scheduler.add_job(jobs.poll_email, "interval", minutes=email_minutes, id="poll_email")

@@ -197,3 +197,17 @@ def agency_watch() -> None:
             agencies.watch(session, source, initial=first_pass)
             agencies.refresh_offportal(session, source)
             session.commit()
+
+
+def daily_digest() -> None:
+    """Her daily summary at her hour. Ticks every 10 minutes and sends once a day, so a restart across the
+    digest hour does not skip the day."""
+    from app.services import digest
+
+    with session_scope() as session, advisory_lock("daily_digest") as ok:
+        if not ok:
+            return
+        if not digest.due_now(session):
+            return
+        if digest.send(session):
+            log.info("daily digest sent", extra={"job": "digest"})

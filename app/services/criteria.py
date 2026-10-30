@@ -68,6 +68,11 @@ def update(session: Session, criteria_id: int, data: CriteriaInput) -> Criteria:
     _check(session, data)
     _apply(criteria, data)
     session.flush()
+    # The fourth "novo" case: she changed the search, so anything already stored that newly qualifies is
+    # news. Re-matching here (rather than waiting for the next sweep) is what makes an edit feel immediate.
+    from app.services import runs
+
+    runs.rematch_criteria(session, criteria, announce=True)
     return criteria
 
 

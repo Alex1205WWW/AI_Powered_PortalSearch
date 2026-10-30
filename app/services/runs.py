@@ -141,10 +141,14 @@ def _zone_filter(zones: list[str]):
     return or_(*([Listing.geo_code == z for z in zones] + [Listing.geo_code.like(f"{z}/%") for z in zones]))
 
 
-def rematch_criteria(session: Session, criteria: Criteria) -> int:
-    """Silently re-evaluate one criteria against every stored property in its zones (any source) plus every property
-    that already has a match row for it, so rows that no longer qualify flip to `fora`. No alerts: used by initial
-    runs and after data corrections or criteria edits."""
+def rematch_criteria(session: Session, criteria: Criteria, *, announce: bool = False) -> int:
+    """Re-evaluate one criteria against every stored property in its zones (any source) plus every property that
+    already has a match row for it, so rows that no longer qualify flip to `fora`.
+
+    Silent by default: that is what initial runs and data corrections need. `announce=True` is the fourth
+    "novo para o comprador" case - she *edited* the search, so a property that newly qualifies is news and
+    gets a `criteria_changed` alert. Without the flag, widening a price range would surface matches in the
+    panel that she is never told about."""
     zones = [z.geo_code for z in criteria.zones]
     if not zones:
         return 0
@@ -156,8 +160,15 @@ def rematch_criteria(session: Session, criteria: Criteria) -> int:
     count = 0
     for property_id in sorted(property_ids):
         subject = prop_svc.view_for(session, property_id)
-        if subject is not None and match_svc.evaluate_and_store(session, subject, criteria).result.ok:
-            count += 1
+        if subject is None:
+            continue
+        stored = match_svc.evaluate_and_store(session, subject, criteria)
+        if not stored.result.ok:
+            continue
+        count += 1
+        if announce and stored.created:
+            notif_svc.enqueue(session, buyer_id=criteria.buyer_id, property_id=property_id,
+                              reason="criteria_changed", price=getattr(subject, "price", None))
     return count
 
 
