@@ -34,4 +34,14 @@
 {% else %}
 <p class="muted">Sem pesquisas. <a href="/criteria/new?buyer={{ buyer.id }}">Criar a primeira</a>.</p>
 {% endfor %}
+
+<details class="danger-zone">
+  <summary>Apagar este comprador</summary>
+  <p><small>Apaga o comprador, as suas pesquisas e todas as correspondências. <strong>Não é reversível.</strong>
+    Se só quer parar os alertas, use <em>Pausar</em> — assim não perde nada.</small></p>
+  <form method="post" action="/buyers/{{ buyer.id }}/delete" class="grid">
+    <input type="text" name="confirm" placeholder="Escreva {{ buyer.label }} para confirmar" required>
+    <button type="submit" class="contrast">Apagar definitivamente</button>
+  </form>
+</details>
 {% endblock %}

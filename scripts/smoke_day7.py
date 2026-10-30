@@ -15,7 +15,7 @@ from __future__ import annotations
 import sys
 from datetime import datetime, timezone
 
-from sqlalchemy import delete, select
+from sqlalchemy import delete, func, select
 
 from app.ai import client as ai
 from app.db.models import AiSpend, Buyer, ManualFinding, PropertyMatch
@@ -140,7 +140,20 @@ def main() -> int:
         session.execute(delete(ManualFinding).where(ManualFinding.url.like("https://x/%")))
         session.commit()
 
-        print("\n5. restoring the database")
+        print("\n5. deleting a buyer cascades safely")
+        probe = Buyer(label="Apagar Smoke")
+        session.add(probe)
+        session.commit()
+        probe_id = probe.id
+        check("a throwaway buyer was created", probe_id is not None)
+        buyer_svc.delete(session, probe_id)
+        session.commit()
+        check("deleted without a foreign-key error",
+              session.scalar(select(Buyer).where(Buyer.label == "Apagar Smoke")) is None)
+        check("the real buyers are untouched",
+              session.scalar(select(func.count()).select_from(Buyer)) >= 1)
+
+        print("\n6. restoring the database")
         session.execute(delete(AiSpend))
         for row in spend_backup:
             session.add(AiSpend(**row))

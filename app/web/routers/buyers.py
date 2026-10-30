@@ -47,3 +47,24 @@ async def resume_buyer(request: Request, db: DB, user: User, buyer_id: int):
     svc.resume(db, buyer_id)
     db.commit()
     return RedirectResponse(f"/buyers/{buyer_id}?msg={quote('Retomado.')}", status_code=303)
+
+
+@router.post("/{buyer_id}/delete")
+async def delete_buyer(request: Request, db: DB, user: User, buyer_id: int,
+                       confirm: Annotated[str, Form()] = ""):
+    """Remove a buyer and everything attached to it.
+
+    Irreversible, so it asks for the buyer's own name to be typed rather than relying on a browser dialog -
+    a mis-click on "Apagar" next to "Pausar" would otherwise destroy a real client's history. The database
+    cascades the searches, matches and notifications; manual findings keep their row with the buyer unset,
+    because they are evidence for the acceptance test and must survive."""
+    buyer = svc.get(db, buyer_id)
+    if buyer is None:
+        return RedirectResponse(f"/buyers?msg={quote('Comprador não encontrado.')}", status_code=303)
+    label = buyer.label
+    if confirm.strip().casefold() != label.strip().casefold():
+        return RedirectResponse(
+            f"/buyers/{buyer_id}?msg={quote(f'Para apagar, escreva exatamente: {label}')}", status_code=303)
+    svc.delete(db, buyer_id)
+    db.commit()
+    return RedirectResponse(f"/buyers?msg={quote(f'{label} apagado.')}", status_code=303)
