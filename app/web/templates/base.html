@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Imóveis{% endblock %}</title>
+  <title>{% block title %}Painel{% endblock %} · Imóveis</title>
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/static/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+  <meta name="theme-color" content="#15514a">
   <link rel="stylesheet" href="/static/pico.min.css">
   <script src="/static/htmx.min.js" defer></script>
   <style>
@@ -14,12 +18,14 @@
     form.inline { display: inline; margin: 0; }
     .errors { color: #c62828; }
     nav form { margin: 0; }
+    .brand { display: inline-flex; align-items: center; gap: .45rem; text-decoration: none; }
+    .brand img { border-radius: 5px; display: block; }
     article.source-down { border-left: 4px solid #ef6c00; background: #fff8f0; }
   </style>
 </head>
 <body>
 <nav class="container">
-  <ul><li><strong><a href="/">Imóveis</a></strong></li></ul>
+  <ul><li><strong><a href="/" class="brand"><img src="/static/favicon.svg" alt="" width="22" height="22">Imóveis</a></strong></li></ul>
   {% if user %}
   <ul>
     <li><a href="/buyers">Compradores</a></li>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Imóveis">
+  <!-- Deliberately a solid silhouette: the tab renders this at 16 px, where outlines and
+       fine detail turn to mush. Roof overhangs the body so the house reads as a house
+       even when it is only a few pixels across. -->
+  <rect width="64" height="64" rx="14" fill="#15514a"/>
+  <path d="M32 11 L58 35 H6 Z" fill="#ffffff"/>
+  <rect x="14" y="34" width="36" height="19" fill="#ffffff"/>
+  <rect x="28" y="41" width="8" height="12" fill="#15514a"/>
+</svg>
