@@ -196,13 +196,18 @@ def _apply_canary(source: Source, run: CrawlRun, stats: FillStats) -> None:
         _health_ok(source)
 
 
+def backfill_done(session: Session, source: Source) -> bool:
+    """A catalogue source has read its whole catalogue once. Only a pass that was allowed to run to the end
+    counts: a measured slice closes as `partial`."""
+    return session.scalar(select(CrawlRun.id).where(CrawlRun.source_id == source.id, CrawlRun.kind == "backfill",
+                                                    CrawlRun.status == "ok").limit(1)) is not None
+
+
 def backfill_pending(session: Session, source: Source) -> bool:
-    """True while a catalogue source has never completed its historical pass."""
-    done = session.scalar(select(CrawlRun.id).where(CrawlRun.source_id == source.id, CrawlRun.kind == "backfill",
-                                                    CrawlRun.status == "ok").limit(1))
+    """True while a catalogue source has started but not finished its historical pass."""
     started = session.scalar(select(CrawlRun.id).where(CrawlRun.source_id == source.id,
                                                        CrawlRun.kind == "backfill").limit(1))
-    return bool(started) and not done
+    return bool(started) and not backfill_done(session, source)
 
 
 def _can_crawl(source: Source) -> str | None:
@@ -318,11 +323,14 @@ def _sweep_catalogue(session: Session, source: Source, adapter, run: CrawlRun, c
     return queued
 
 
+UNFINISHED = ("running", "failed", "queued", "partial")  # `partial` = a deliberate slice, not a finished pass
+
+
 def _resumable_run(session: Session, source: Source, kind: str) -> CrawlRun | None:
-    """The newest unfinished run of this kind for this source, so a killed backfill continues where it
-    stopped instead of reading the catalogue from the beginning."""
+    """The newest unfinished run of this kind for this source, so a killed or deliberately truncated
+    backfill continues where it stopped instead of reading the catalogue from the beginning."""
     return session.scalar(select(CrawlRun).where(CrawlRun.source_id == source.id, CrawlRun.kind == kind,
-                                                 CrawlRun.status.in_(("running", "failed", "queued")))
+                                                 CrawlRun.status.in_(UNFINISHED))
                           .order_by(CrawlRun.id.desc()).limit(1))
 
 
@@ -360,7 +368,10 @@ def execute_sweep(session: Session, source_key: str, *, initial: bool = False, l
                                       initial=initial, limit=limit)
         else:
             queued = _sweep_query(session, source, adapter, run, criteria_list, started, stats)
-        run.status, run.finished_at = "ok", datetime.now(timezone.utc)
+        reached = int((run.cursor or {}).get("index") or 0)
+        catalogue = int((run.cursor or {}).get("total") or 0)
+        truncated = bool(limit) and catalogue and reached < catalogue
+        run.status, run.finished_at = ("partial" if truncated else "ok"), datetime.now(timezone.utc)
         _apply_canary(source, run, stats)
         session.commit()
         sent = notif_svc.flush(session)

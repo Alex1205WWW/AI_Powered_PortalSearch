@@ -50,7 +50,7 @@ def backfill_source(source_key: str) -> None:
     been read through once."""
     from sqlalchemy import select
 
-    from app.db.models import CrawlRun, Source
+    from app.db.models import Source
     from app.services import runs
 
     with session_scope() as session, advisory_lock(f"backfill:{source_key}") as ok:
@@ -59,9 +59,7 @@ def backfill_source(source_key: str) -> None:
         source = session.scalar(select(Source).where(Source.key == source_key))
         if source is None or not source.enabled:
             return
-        done = session.scalar(select(CrawlRun.id).where(CrawlRun.source_id == source.id,
-                                                        CrawlRun.kind == "backfill", CrawlRun.status == "ok").limit(1))
-        if done:
+        if runs.backfill_done(session, source):
             return
         run = runs.execute_backfill(session, source_key)
         log.info("backfill tick: status=%s new=%d updated=%d at %s", run.status, run.listings_new,
