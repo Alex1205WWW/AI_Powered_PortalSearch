@@ -63,7 +63,7 @@
 <p><a role="button" class="secondary outline" href="/properties/export.xlsx{{ export_query }}">Exportar para Excel</a></p>
 
 {% set back = '/properties' ~ (export_query or '') %}
-<table>
+<table class="table-properties">
   <thead><tr><th>Comprador</th><th>Imóvel</th><th>Preço</th><th>Zona</th><th>Requisitos</th><th>Mediadora</th><th>Fontes</th><th>Estado</th></tr></thead>
   <tbody>
   {% for it in items %}
@@ -73,7 +73,7 @@
     <td data-label="Imóvel"><a href="{{ p.url }}" target="_blank" rel="noopener">{{ (p.estate_type or 'imóvel') | capitalize }} {{ 'T' ~ p.rooms if p.rooms is not none else 'T?' }}</a>
         <br><small class="muted">{{ p.title }}</small>
         <br><small class="muted">{{ (p.area_util or p.area_bruta) | round | int ~ ' m²' if (p.area_util or p.area_bruta) else 'área n/d' }}{% if p.land_area %} · terreno {{ p.land_area | round | int }} m²{% endif %}{% if p.is_private_owner %} · <b>particular</b>{% endif %}{% if p.is_new_development %} · empreendimento{% endif %}</small></td>
-    <td data-label="Preço">{% if p.hide_price or p.price is none %}sob consulta{% else %}{{ '{:,.0f}'.format(p.price).replace(',', '.') }} €{% endif %}</td>
+    <td data-label="Preço">{% if p.hide_price or p.price is none %}sob consulta{% else %}{{ '{:,.0f}'.format(p.price).replace(',', '.') }}&nbsp;€{% endif %}</td>
     <td data-label="Zona">{{ it.zone or '—' }}{% if p.street %}<br><small class="muted">{{ p.street }}</small>{% endif %}</td>
     <td data-label="Requisitos"><small>
       {% for k in it.criteria.must_have %}{% set f = it.features and it.features.get(k) %}{{ FEATURES.get(k, k) }}: <b>{{ 'confirmado' if f and f.tier == 'confirmed' else ('mencionado' if f and f.tier == 'mentioned' else ('não tem' if f and f.tier == 'absent' else 'não indicado')) }}</b><br>{% endfor %}

@@ -1,0 +1,186 @@
+/* Imóveis — panel styling on top of Pico.
+   Moved out of base.html once it outgrew a <style> block: the browser caches it, and a stylesheet is
+   easier to reason about than 60 lines wedged in a <head>.
+
+   Two constraints shaped everything here:
+     * she reads this on a phone between viewings, so the phone layout is not an afterthought;
+     * Pico already sets a sane baseline, so this adds a small accent system and gets out of the way
+       rather than restyling every element. */
+
+:root {
+  --brand: #15514a;          /* the house mark */
+  --brand-soft: #1d6a60;
+  --brand-ink: #ffffff;
+  --radius: .6rem;
+  --pico-border-radius: var(--radius);
+}
+
+/* Pico's own accent follows the brand, so links, focus rings and primary buttons all agree. */
+:root:not([data-theme="dark"]) {
+  --pico-primary: var(--brand);
+  --pico-primary-hover: var(--brand-soft);
+  --pico-primary-focus: rgba(21, 81, 74, .2);
+  --surface: #ffffff;
+  --head-bg: #ffffff;
+  --head-border: rgba(0, 0, 0, .09);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --pico-primary: #4fbfae;
+    --pico-primary-hover: #6fd6c5;
+    --pico-primary-focus: rgba(79, 191, 174, .25);
+    --surface: #16191d;
+    --head-bg: #12151a;
+    --head-border: rgba(255, 255, 255, .09);
+  }
+}
+[data-theme="dark"] {
+  --pico-primary: #4fbfae;
+  --pico-primary-hover: #6fd6c5;
+  --surface: #16191d;
+  --head-bg: #12151a;
+  --head-border: rgba(255, 255, 255, .09);
+}
+
+/* --- header ------------------------------------------------------------------------------------ */
+
+.site-head {
+  background: var(--head-bg);
+  border-bottom: 1px solid var(--head-border);
+  position: sticky; top: 0; z-index: 20;
+}
+.head-inner {
+  display: flex; align-items: center; gap: 1rem;
+  padding-top: .55rem; padding-bottom: .55rem;
+}
+.brand {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-weight: 700; font-size: 1.08rem; text-decoration: none;
+  color: var(--pico-contrast); flex: 0 0 auto;
+}
+.brand img { border-radius: 6px; display: block; }
+.mainnav { display: flex; flex-wrap: wrap; gap: .15rem; flex: 1 1 auto; justify-content: flex-end; }
+@media (max-width: 1250px) { .navlink { padding: .4rem .45rem; font-size: .88rem; } }
+.navlink {
+  display: inline-block; padding: .4rem .6rem; border-radius: var(--radius);
+  text-decoration: none; font-size: .93rem; line-height: 1.2;
+  color: var(--pico-contrast); opacity: .75;
+}
+.navlink:hover { background: var(--pico-primary-focus); opacity: 1; }
+/* The current page is filled, not merely underlined: on a phone, in a wrapped two-line menu, a subtle
+   marker is invisible. */
+.navlink.is-active {
+  background: var(--brand); color: var(--brand-ink); opacity: 1; font-weight: 600;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .navlink.is-active { background: var(--pico-primary); color: #06201c; }
+}
+[data-theme="dark"] .navlink.is-active { background: var(--pico-primary); color: #06201c; }
+.logout { margin: 0; flex: 0 0 auto; }
+.logout button { padding: .35rem .8rem; font-size: .85rem; margin: 0; }
+
+/* --- content ----------------------------------------------------------------------------------- */
+
+main.container { padding-top: 1.4rem; padding-bottom: 3rem; }
+h2 { margin-bottom: .2rem; font-size: 1.5rem; }
+h2 + p, h2 + form { margin-top: .8rem; }
+h3 { font-size: 1.1rem; margin-bottom: .4rem; }
+.muted { color: var(--pico-muted-color); }
+.errors { color: #c62828; }
+form.inline { display: inline; margin: 0; }
+
+.tag {
+  display: inline-block; font-size: .72rem; font-weight: 600; letter-spacing: .02em;
+  padding: .15em .55em; border-radius: 999px; background: #6b7280; color: #fff; vertical-align: middle;
+}
+.tag.ok { background: #1b7f4b; }
+.tag.warn { background: #b45309; }
+.tag.bad { background: #b42318; }
+.tag.off { background: #6b7280; }
+
+article { border: 1px solid var(--head-border); border-radius: var(--radius); }
+article.source-down { border-left: 4px solid #b45309; }
+
+table { font-size: .92rem; }
+/* Sentence case, not uppercase: "COMPRADOR" with letter-spacing is wider than its own column and broke
+   as "COMPRADO / R". Small and muted reads as a header perfectly well without shouting. */
+thead th {
+  font-size: .78rem; letter-spacing: .01em;
+  color: var(--pico-muted-color); font-weight: 600;
+}
+tbody tr:hover { background: var(--pico-primary-focus); }
+td, th { overflow-wrap: break-word; vertical-align: top; }
+/* `auto` layout treats the widths below as hints and redistributes by content, which squeezed the state
+   column until its dropdown showed no text at all. `fixed` makes the percentages authoritative. */
+.table-properties { table-layout: fixed; }
+/* Eight columns in one row is tight. Without hints the browser crushed the narrow ones until headings
+   broke mid-word ("COMPRAD OR", "MEDIA DORA"). These are percentages, so the table still adapts. */
+.table-properties th:nth-child(1) { width: 11%; }   /* Comprador  - "Raquel Gonçalves" must not break */
+.table-properties th:nth-child(2) { width: 20%; }   /* Imóvel     */
+.table-properties th:nth-child(3) { width: 10%; }   /* Preço      - fits "sob consulta" on one line */
+.table-properties th:nth-child(4) { width: 10%; }   /* Zona       */
+.table-properties th:nth-child(5) { width: 12%; }   /* Requisitos */
+.table-properties th:nth-child(6) { width: 12%; }   /* Mediadora  - fits a 9-digit phone number */
+.table-properties th:nth-child(7) { width: 11%; }   /* Fontes     */
+.table-properties th:nth-child(8) { width: 14%; }   /* Estado     - a dropdown AND an input */
+/* The state cell was squeezed until its dropdown showed no text and the share field read "part". It holds
+   two controls, so they stack and take the full cell. */
+.table-properties td:nth-child(8) select,
+.table-properties td:nth-child(8) input { width: 100%; max-width: none; margin-bottom: .3rem; font-size: .85rem; }
+
+.filters { margin-bottom: .6rem; }
+.filters details { margin: .5rem 0; }
+.filters summary { cursor: pointer; font-size: .9rem; color: var(--pico-primary); }
+.filter-actions { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; }
+.filter-actions > * { margin: 0; }
+/* Pico sizes every button to 100%. Its `[type=submit]` selector ties with `.filter-actions > *` on
+   specificity, so naming the element is what actually wins (measured: the button computed to 510px until
+   this rule existed). */
+.filter-actions button, .filter-actions [role="button"] { width: auto; }
+
+.danger-zone { margin-top: 2.5rem; border-left: 3px solid #b42318; padding-left: .9rem; }
+.danger-zone summary { color: #b42318; cursor: pointer; }
+
+/* --- phone ------------------------------------------------------------------------------------- */
+/* She reads this on a phone between viewings. Below 860px every table becomes a stack of cards: the
+   header row leaves the flow and each cell prints its own label from `data-label`. No JavaScript, so it
+   survives with scripts blocked. */
+@media (max-width: 860px) {
+  /* Nothing may widen the document past the screen: a horizontal scrollbar on a phone makes every
+     column unreachable, which is how the first attempt failed. */
+  html, body { max-width: 100%; overflow-x: hidden; }
+  .table-properties th { width: auto; }
+  .head-inner { flex-wrap: wrap; gap: .4rem .8rem; padding-top: .5rem; padding-bottom: .5rem; }
+  .brand { order: 1; }
+  .logout { order: 2; margin-left: auto; }
+  .mainnav { order: 3; flex-basis: 100%; gap: .25rem; }
+  .navlink { padding: .45rem .7rem; font-size: .9rem; }
+
+  table, thead, tbody, tr, td { display: block; width: 100%; }
+  thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  tbody tr {
+    border: 1px solid var(--head-border); border-radius: var(--radius);
+    padding: .8rem .9rem; margin-bottom: .85rem; background: var(--surface);
+  }
+  tbody tr:hover { background: var(--surface); }
+  tbody td { border: none; padding: .28rem 0; display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: .6rem; align-items: start; }
+  tbody td::before {
+    content: attr(data-label); font-size: .7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .03em; color: var(--pico-muted-color);
+  }
+  tbody td:not([data-label]) { display: block; }
+  /* The first cell identifies the card, so it reads as a heading rather than "Comprador: Rosa". */
+  tbody td:first-child { display: block; font-weight: 700; font-size: 1.02rem; margin-bottom: .45rem; }
+  tbody td:first-child::before { content: none; }
+  tbody td select, tbody td input { width: 100%; max-width: none !important; margin-bottom: .3rem; }
+
+  h2 { font-size: 1.3rem; }
+  main.container { padding-top: 1rem; }
+  /* Comfortable touch targets - the state dropdown is tapped constantly. */
+  button, [role="button"], select, input { min-height: 2.6rem; }
+}
+@media (max-width: 480px) {
+  tbody td { grid-template-columns: minmax(0, 1fr); gap: .1rem; }
+  tbody td::before { margin-top: .25rem; }
+  main.container, .head-inner { padding-left: .8rem; padding-right: .8rem; }
+}

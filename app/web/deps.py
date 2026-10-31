@@ -30,6 +30,7 @@ User = Annotated[str, Depends(current_user)]
 def render(request: Request, name: str, **context):
     context.setdefault("msg", request.query_params.get("msg"))
     context.setdefault("user", request.session.get("user"))
+    context.setdefault("path", request.url.path)   # so the nav can mark where she is
     context.setdefault("health_banner", _banner())
     return templates.TemplateResponse(request, name, context)
 
