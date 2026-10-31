@@ -93,7 +93,21 @@
     </td>
   </tr>
   {% else %}
-  <tr><td colspan="8" class="muted">Sem correspondências. Crie uma pesquisa; a busca inicial corre no worker em poucos minutos.</td></tr>
+  <tr><td colspan="8" class="muted">
+    {% if narrowed and total_before_filters %}
+      {# 680 matches exist and the filter hid them all - say so, and say which filter. #}
+      Nenhum destes {{ total_before_filters }} imóveis corresponde aos filtros escolhidos.
+      {% if filters.price_min or filters.price_max %}
+        <br>Preço pedido: {{ '{:,.0f}'.format(filters.price_min).replace(',', '.') ~ ' €' if filters.price_min else 'sem mínimo' }}
+        a {{ '{:,.0f}'.format(filters.price_max).replace(',', '.') ~ ' €' if filters.price_max else 'sem máximo' }}.
+      {% endif %}
+      <br><a href="/properties{{ '?buyer=' ~ filters.buyer if filters.buyer }}">Limpar os filtros</a>
+    {% elif total_before_filters %}
+      Nada para mostrar com estes filtros.
+    {% else %}
+      Sem correspondências. Crie uma pesquisa; a busca inicial corre no worker em poucos minutos.
+    {% endif %}
+  </td></tr>
   {% endfor %}
   </tbody>
 </table>

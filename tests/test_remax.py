@@ -235,3 +235,34 @@ def test_resume_prefers_the_recorded_url_over_the_recorded_index():
     assert remax._resume_at(refs[2:], {"index": 4, "last_url": refs[3][0]}) == 2
     # the URL is gone entirely: fall back to the index, clamped
     assert remax._resume_at(refs, {"index": 99, "last_url": "https://remax.pt/pt/imoveis/x/9-9"}) == 10
+
+
+def _priced(value):
+    """A minimal real payload with only the price varied, so nothing else is under test."""
+    return {"listingID": "9", "listingTitle": "9", "listingPrice": value,
+            "businessTypeID": 1, "numberOfBedrooms": 3, "isActive": True,
+            "descriptionTags": "venda-moradia-t3-loures-santo-antao"}
+
+
+def test_a_sentinel_price_is_no_price_at_all(councils):
+    """RE/MAX sends `listingPrice: -1` for "sob consulta". Stored literally it renders as "-1 EUR" and
+    satisfies every "price at most X" filter - 31 live listings were affected (found 2026-10-31)."""
+    payload = _priced(-1)
+    info = remax.parse_slug(payload["descriptionTags"], councils)
+    listing = remax.normalise(payload, "https://remax.pt/pt/imoveis/venda-moradia-t3-loures-santo-antao/123456789-1", info)
+    assert listing.price is None
+    assert listing.hide_price is True
+    assert "preco" in listing.missing_fields()
+
+
+def test_a_zero_price_is_also_no_price(councils):
+    payload = _priced(0)
+    info = remax.parse_slug(payload["descriptionTags"], councils)
+    assert remax.normalise(payload, "https://remax.pt/pt/imoveis/venda-moradia-t3-loures-santo-antao/123456789-1", info).price is None
+
+
+def test_a_real_price_is_untouched(councils):
+    payload = _priced(450000)
+    info = remax.parse_slug(payload["descriptionTags"], councils)
+    listing = remax.normalise(payload, "https://remax.pt/pt/imoveis/venda-moradia-t3-loures-santo-antao/123456789-1", info)
+    assert listing.price == 450000 and listing.hide_price is False

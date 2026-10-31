@@ -277,6 +277,12 @@ def normalise(payload: dict, url: str, info: SlugInfo) -> CanonicalListing:
     external_id = match.group(2)
     description = _pt_description(payload)
     price = payload.get("listingPrice")
+    # RE/MAX uses -1 for "sob consulta", not a price. Stored literally it becomes a real -1 on the listing:
+    # it renders as "-1 €", and it satisfies every "price at most X" filter. 31 live listings were affected
+    # (found 2026-10-31). Anything <= 0 is the absence of a price, which is what `hide_price` means.
+    hidden_price = price is None or int(price) <= 0
+    if hidden_price:
+        price = None
     previous = payload.get("previousPrice")
     reduced_at = _parse_publish(payload.get("lastPriceReductionDate"))
     geo_code, geo_path = _geo(info, payload)
@@ -288,7 +294,7 @@ def normalise(payload: dict, url: str, info: SlugInfo) -> CanonicalListing:
         url=url,
         title=_title(info, payload),
         price=int(price) if price is not None else None,
-        hide_price=False,
+        hide_price=hidden_price,
         area_util=float(payload["livingArea"]) if payload.get("livingArea") is not None else None,
         area_bruta=float(payload["builtArea"]) if payload.get("builtArea") is not None else None,
         land_area=float(payload["lotSize"]) if payload.get("lotSize") is not None else None,

@@ -76,6 +76,14 @@ async def list_properties(request: Request, db: DB, user: User, buyer: OptInt = 
     stmt = _listing_filters(stmt, zone=zone, price_min=price_min, price_max=price_max, rooms_min=rooms_min,
                             rooms_max=rooms_max, estate=estate, q=q)
     total = db.scalar(select(func.count()).select_from(stmt.subquery())) or 0
+    # How many there would be WITHOUT the listing-level filters, so an empty result can say whether the
+    # filter excluded everything or there is genuinely nothing. "Sem correspondências - crie uma pesquisa"
+    # in front of 680 hidden matches is a lie that sends her off to fix the wrong thing.
+    unfiltered = select(func.count()).select_from(
+        select(PropertyMatch.id).join(Buyer, Buyer.id == PropertyMatch.buyer_id)
+        .where(PropertyMatch.grade != "fora", *([PropertyMatch.buyer_id == buyer] if buyer else []))
+        .subquery())
+    total_before_filters = db.scalar(unfiltered) or 0
     rows = db.execute(stmt.limit(limit)).all()
 
     property_ids = {m.property_id for m, _, _ in rows}
@@ -110,6 +118,7 @@ async def list_properties(request: Request, db: DB, user: User, buyer: OptInt = 
     query = urlencode(active)
     return render(request, "properties.html", items=items, buyers=buyers, states=STATES, source_names=source_names,
                   filters=filters, count=len(items), total=total, zones=_zone_choices(db),
+                  total_before_filters=total_before_filters,
                   estate_types=ESTATE_TYPES, narrowed=len(active),
                   export_query=f"?{query}" if query else "")
 
