@@ -19,7 +19,7 @@ router = APIRouter(prefix="/settings")
 
 
 @router.get("")
-async def show(request: Request, db: DB, user: User):
+def show(request: Request, db: DB, user: User):
     start_hour, end_hour = appsettings.alert_hours(db)
     return render(request, "settings.html",
                   alert_from=start_hour, alert_to=end_hour,
@@ -32,11 +32,11 @@ async def show(request: Request, db: DB, user: User):
 
 
 @router.post("")
-async def save(request: Request, db: DB, user: User,
-               alert_from: Annotated[int, Form()] = 8,
-               alert_to: Annotated[int, Form()] = 21,
-               digest_at: Annotated[str, Form()] = "08:30",
-               cap_usd: Annotated[str, Form()] = "5.00"):
+def save(request: Request, db: DB, user: User,
+         alert_from: Annotated[int, Form()] = 8,
+         alert_to: Annotated[int, Form()] = 21,
+         digest_at: Annotated[str, Form()] = "08:30",
+         cap_usd: Annotated[str, Form()] = "5.00"):
     messages = []
     start_hour, end_hour = max(0, min(23, alert_from)), max(1, min(24, alert_to))
     if start_hour >= end_hour:

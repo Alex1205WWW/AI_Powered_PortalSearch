@@ -81,13 +81,13 @@ FormList = Annotated[list[str], Form()]
 
 
 @router.get("/new")
-async def new_form(request: Request, db: DB, user: User, buyer: OptInt = None):
+def new_form(request: Request, db: DB, user: User, buyer: OptInt = None):
     data = CriteriaInput(buyer_id=buyer or 0)
     return render(request, "criteria_form.html", **_form_context(db, data, None, []))
 
 
 @router.post("/new")
-async def create(
+def create(
     request: Request, db: DB, user: User,
     buyer_id: Annotated[int, Form()], transaction: Annotated[str, Form()] = "sale",
     estate_types: FormList = [], typology_min: FormStr = None, typology_max: FormStr = None,
@@ -107,7 +107,7 @@ async def create(
 
 
 @router.get("/{criteria_id}/edit")
-async def edit_form(request: Request, db: DB, user: User, criteria_id: int):
+def edit_form(request: Request, db: DB, user: User, criteria_id: int):
     criteria = svc.get(db, criteria_id)
     if criteria is None:
         return RedirectResponse(f"/buyers?msg={quote('Pesquisa não encontrada.')}", status_code=303)
@@ -115,7 +115,7 @@ async def edit_form(request: Request, db: DB, user: User, criteria_id: int):
 
 
 @router.post("/{criteria_id}/edit")
-async def edit(
+def edit(
     request: Request, db: DB, user: User, criteria_id: int,
     buyer_id: Annotated[int, Form()], transaction: Annotated[str, Form()] = "sale",
     estate_types: FormList = [], typology_min: FormStr = None, typology_max: FormStr = None,
@@ -135,7 +135,7 @@ async def edit(
 
 
 @router.post("/{criteria_id}/toggle")
-async def toggle(request: Request, db: DB, user: User, criteria_id: int, active: Annotated[str, Form()]):
+def toggle(request: Request, db: DB, user: User, criteria_id: int, active: Annotated[str, Form()]):
     criteria = svc.set_active(db, criteria_id, active == "1")
     db.commit()
     return RedirectResponse(f"/buyers/{criteria.buyer_id}", status_code=303)

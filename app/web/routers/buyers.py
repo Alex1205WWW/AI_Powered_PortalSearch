@@ -13,12 +13,12 @@ router = APIRouter(prefix="/buyers")
 
 
 @router.get("")
-async def list_buyers(request: Request, db: DB, user: User):
+def list_buyers(request: Request, db: DB, user: User):
     return render(request, "buyers_list.html", buyers=svc.list_all(db), error=None)
 
 
 @router.post("")
-async def create_buyer(request: Request, db: DB, user: User, label: Annotated[str, Form()]):
+def create_buyer(request: Request, db: DB, user: User, label: Annotated[str, Form()]):
     try:
         buyer = svc.create(db, label)
         db.commit()
@@ -28,7 +28,7 @@ async def create_buyer(request: Request, db: DB, user: User, label: Annotated[st
 
 
 @router.get("/{buyer_id}")
-async def buyer_detail(request: Request, db: DB, user: User, buyer_id: int):
+def buyer_detail(request: Request, db: DB, user: User, buyer_id: int):
     buyer = svc.get(db, buyer_id)
     if buyer is None:
         return RedirectResponse(f"/buyers?msg={quote('Comprador não encontrado.')}", status_code=303)
@@ -36,22 +36,22 @@ async def buyer_detail(request: Request, db: DB, user: User, buyer_id: int):
 
 
 @router.post("/{buyer_id}/pause")
-async def pause_buyer(request: Request, db: DB, user: User, buyer_id: int):
+def pause_buyer(request: Request, db: DB, user: User, buyer_id: int):
     svc.pause(db, buyer_id)
     db.commit()
     return RedirectResponse(f"/buyers/{buyer_id}?msg={quote('Em pausa: continua a ser vigiado, sem alertas.')}", status_code=303)
 
 
 @router.post("/{buyer_id}/resume")
-async def resume_buyer(request: Request, db: DB, user: User, buyer_id: int):
+def resume_buyer(request: Request, db: DB, user: User, buyer_id: int):
     svc.resume(db, buyer_id)
     db.commit()
     return RedirectResponse(f"/buyers/{buyer_id}?msg={quote('Retomado.')}", status_code=303)
 
 
 @router.post("/{buyer_id}/delete")
-async def delete_buyer(request: Request, db: DB, user: User, buyer_id: int,
-                       confirm: Annotated[str, Form()] = ""):
+def delete_buyer(request: Request, db: DB, user: User, buyer_id: int,
+                 confirm: Annotated[str, Form()] = ""):
     """Remove a buyer and everything attached to it.
 
     Irreversible, so it asks for the buyer's own name to be typed rather than relying on a browser dialog -

@@ -35,10 +35,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat = update.effective_chat
     if chat is None:
         return
-    if allowed(update):
+    if await allowed(update):
         await update.message.reply_text("Ligado. Este chat recebe os alertas.\n\n" + HELP, parse_mode="HTML")
         return
-    if adopt_chat_id(chat.id):
+    if await adopt_chat_id(chat.id):
         await update.message.reply_text(
             "Pronto — este chat está agora ligado ao sistema e vai receber os alertas.\n\n" + HELP,
             parse_mode="HTML")
@@ -48,13 +48,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    if not allowed(update):
+    if not await allowed(update):
         return
     await update.message.reply_text(HELP, parse_mode="HTML")
 
 
 async def estado(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    if not allowed(update):
+    if not await allowed(update):
         return
     text = await in_db(_status_text)
     await update.message.reply_text(text, parse_mode="HTML")
@@ -92,7 +92,7 @@ async def retomar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def _set_paused(update: Update, context: ContextTypes.DEFAULT_TYPE, *, paused: bool) -> None:
-    if not allowed(update):
+    if not await allowed(update):
         return
     name = " ".join(context.args or []).strip()
     if not name:

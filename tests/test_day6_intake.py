@@ -215,33 +215,42 @@ def _update(chat_id: int):
     return SimpleNamespace(effective_chat=SimpleNamespace(id=chat_id))
 
 
-def test_only_her_chat_is_acted_on(monkeypatch):
+def test_only_her_chat_is_acted_on():
     from app.bot import common
 
-    monkeypatch.setattr(common, "configured_chat_id", lambda: "7660243159")
-    assert common.allowed(_update(7660243159)) is True
-    assert common.allowed(_update(123456789)) is False
+    assert common.chat_matches(_update(7660243159), "7660243159") is True
+    assert common.chat_matches(_update(123456789), "7660243159") is False
 
 
-def test_nothing_is_acted_on_before_a_chat_is_configured(monkeypatch):
+def test_nothing_is_acted_on_before_a_chat_is_configured():
     """An unconfigured bot must not treat every stranger as the operator."""
     from app.bot import common
 
-    monkeypatch.setattr(common, "configured_chat_id", lambda: None)
-    assert common.allowed(_update(123456789)) is False
+    assert common.chat_matches(_update(123456789), None) is False
+    assert common.chat_matches(_update(123456789), "") is False
 
 
-def test_an_update_with_no_chat_is_ignored(monkeypatch):
+def test_an_update_with_no_chat_is_ignored():
     from app.bot import common
 
-    monkeypatch.setattr(common, "configured_chat_id", lambda: "1")
-    assert common.allowed(SimpleNamespace(effective_chat=None)) is False
+    assert common.chat_matches(SimpleNamespace(effective_chat=None), "1") is False
 
 
 def test_a_chat_id_is_compared_as_a_string_not_an_int():
     """`.env` gives a string, Telegram gives an int; comparing them raw silently locks her out."""
+    from app.bot import common
+
+    assert common.chat_matches(_update(7660243159), "7660243159") is True
+    assert common.chat_matches(SimpleNamespace(effective_chat=SimpleNamespace(id="7660243159")), 7660243159) is True
+
+
+def test_the_allowlist_lookup_never_blocks_the_event_loop():
+    """`allowed` reads the database on every single update. Doing that on the event loop is exactly what
+    `in_db` exists to prevent, and it once made the bot stop answering while a sweep query ran."""
     import inspect
 
     from app.bot import common
 
-    assert "str(" in inspect.getsource(common.allowed)
+    assert inspect.iscoroutinefunction(common.allowed)
+    assert inspect.iscoroutinefunction(common.adopt_chat_id)
+    assert "to_thread" in inspect.getsource(common.allowed)

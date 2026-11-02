@@ -27,7 +27,7 @@ LABELS = {"ja_tinha": "Já tínhamos", "fonte_acordada": "Falha nossa", "fora_do
 
 
 @router.get("")
-async def show(request: Request, db: DB, user: User):
+def show(request: Request, db: DB, user: User):
     rows = []
     for finding in db.scalars(select(ManualFinding).order_by(ManualFinding.reported_at.desc()).limit(300)):
         listing = db.get(Listing, finding.matched_listing_id) if finding.matched_listing_id else None

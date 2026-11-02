@@ -33,7 +33,9 @@
 <table>
   <thead><tr>
     <th>Mediadora</th><th>Site</th><th>Confiança</th><th>Plataforma</th>
-    <th>Anúncios no portal</th><th>Fora dos portais</th><th>Última leitura</th><th>Estado</th><th></th>
+    <th>Anúncios no portal</th>
+    <th>Sem correspondência nos portais<br><small class="muted">novidades nas zonas pesquisadas</small></th>
+    <th>Última leitura</th><th>Estado</th><th></th>
   </tr></thead>
   <tbody>
   {% for agency, source in rows %}
@@ -48,9 +50,11 @@
     <td data-label="Plataforma"><small>{{ (source.profile or {}).get('platform', '—') if source else '—' }}</small></td>
     <td data-label="Anúncios">{{ agency.active_ads_count if agency.active_ads_count is not none else '—' }}
         {% if agency.active_ads_rent_count %}<br><small class="muted">{{ agency.active_ads_rent_count }} arrend.</small>{% endif %}</td>
-    <td data-label="Fora dos portais">{% if agency.offportal_ratio is not none %}<strong>{{ (agency.offportal_ratio * 100)|round|int }}%</strong>
-          <br><small class="muted">de {{ agency.listings_seen }}</small>
-        {% else %}<span class="muted">—</span>{% endif %}</td>
+    <td data-label="Sem correspondência">{% if agency.offportal_ratio is not none %}<strong>{{ (agency.offportal_ratio * 100)|round|int }}%</strong>
+          <br><small class="muted">de {{ agency.listings_seen }} novidades</small>
+        {% elif agency.listings_seen %}<span class="muted">a medir</span>
+          <br><small class="muted">{{ agency.listings_seen }} de {{ offportal_min }} novidades</small>
+        {% else %}<span class="muted">a medir</span>{% endif %}</td>
     <td data-label="Última leitura"><small>{{ source.last_ok_at.strftime('%d/%m %H:%M') if source and source.last_ok_at else '—' }}</small></td>
     <td data-label="Estado">{% if source %}<span class="tag {{ 'ok' if source.status == 'ok' else ('warn' if source.status == 'degraded' else 'bad') }}">{{ source.status }}</span>
           {% if source.last_error %}<br><small class="muted">{{ source.last_error[:90] }}</small>{% endif %}

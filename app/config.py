@@ -14,6 +14,12 @@ class Settings(BaseSettings):
     timezone: str = "Europe/Lisbon"
 
     database_url: str = "postgresql+psycopg://imoveis:imoveis@localhost:5432/imoveis"
+    # Connection ceiling per process. The worker needs the most: APScheduler runs 10 jobs at a time and
+    # every job holds two connections - its session, plus the separate autocommit connection the advisory
+    # lock lives on - so 10 + 10 is what keeps a busy tick from waiting on the pool. Connections are opened
+    # on demand, so the same ceiling costs the panel and the bot nothing.
+    db_pool_size: int = 10
+    db_max_overflow: int = 10
 
     # Panel
     session_secret: str = "change-me-in-.env"

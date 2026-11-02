@@ -42,7 +42,7 @@ def configured_chat_id() -> str | None:
         return appsettings.chat_id(session)
 
 
-def adopt_chat_id(chat_id: int) -> bool:
+def _adopt_chat_id(chat_id: int) -> bool:
     """First /start claims the bot, when no chat is configured yet. -> True if adopted.
 
     Telegram forbids a bot from opening a conversation, so her chat id cannot be known before she writes to
@@ -58,17 +58,36 @@ def adopt_chat_id(chat_id: int) -> bool:
     return True
 
 
-def allowed(update: Update) -> bool:
+async def adopt_chat_id(chat_id: int) -> bool:
+    return await asyncio.to_thread(_adopt_chat_id, chat_id)
+
+
+def chat_matches(update: Update, configured: str | None) -> bool:
+    """The allowlist decision itself, with the stored chat id already in hand.
+
+    Kept pure and separate from the lookup so the rule that protects her clients can be tested directly,
+    with no database and no monkeypatching. `.env` gives a string and Telegram gives an int, so both sides
+    are compared as strings: comparing them raw silently locks her out.
+    """
     chat = update.effective_chat
     if chat is None:
         return False
-    configured = configured_chat_id()
     return bool(configured) and str(chat.id) == str(configured)
+
+
+async def allowed(update: Update) -> bool:
+    """True when this update comes from the one chat the bot serves.
+
+    Every update passes through here and the stored chat id is a database read, so it goes to a thread for
+    the same reason `in_db` does: a synchronous session on the event loop stops the bot answering anything
+    else until it returns.
+    """
+    return chat_matches(update, await asyncio.to_thread(configured_chat_id))
 
 
 async def guard(update: Update) -> bool:
     """True when this update may be acted on. Unknown chats are ignored without a reply."""
-    if allowed(update):
+    if await allowed(update):
         return True
     chat = update.effective_chat
     log.info("ignored update from chat %s", chat.id if chat else "?")

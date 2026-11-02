@@ -17,14 +17,14 @@ from __future__ import annotations
 
 import logging
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from urllib.parse import urlparse
 
-from sqlalchemy import func, select
+from sqlalchemy import and_, func, or_, select
 from sqlalchemy.orm import Session
 
 from app.db.models import Agency, CrawlRun, Geo, Listing, Source
-from app.domain.listing import canary_fields_for, normalize_text, FillStats
+from app.domain.listing import canary_fields_for, canary_thresholds_for, normalize_text, FillStats
 from app.geo import resolve as geo_resolve
 from app.services import health
 from app.sources import agency_generic as reader
@@ -339,7 +339,7 @@ def watch(session: Session, source: Source, *, client: HttpClient | None = None,
         return run
 
     criteria_list = list_active(session)
-    stats = FillStats(canary_fields_for(source.kind, profile))
+    stats = FillStats(canary_fields_for(source.kind, profile), thresholds=canary_thresholds_for(source.kind))
     queued = 0
     try:
         catalogue = _catalogue(source, client)
@@ -453,27 +453,68 @@ def _apply_removals(session: Session, source: Source, catalogue: dict, known: di
 
 # --- step 5: the ranking signal ----------------------------------------------------------------
 
-def refresh_offportal(session: Session, source: Source) -> float | None:
-    """Share of this site's listings that no portal also had: the measured value of watching it.
+OFFPORTAL_MIN_SAMPLE = 10      # below this the share is noise; the panel says "a medir" instead of a number
+OFFPORTAL_SETTLE = timedelta(hours=24)   # a portal twin arrives on the next sweep (<= 6 h); give dedup a day
 
-    A listing counts as off-portal when its property has no listing from a `portal` or `email` source. This
-    is the number that justifies the day, and the ranking signal for the watch budget."""
-    rows = session.execute(
-        select(Listing.property_id).where(Listing.source_id == source.id, Listing.status == "active",
-                                          Listing.property_id.is_not(None))).all()
-    property_ids = {r[0] for r in rows}
-    if not property_ids:
+
+def offportal_share(total: int, offportal: int, minimum: int = OFFPORTAL_MIN_SAMPLE) -> float | None:
+    """The one line of arithmetic, kept pure so the sample rule is testable without a database."""
+    if total < minimum:
         return None
+    return round(offportal / total, 4)
+
+
+def refresh_offportal(session: Session, source: Source) -> float | None:
+    """Share of this site's NEW stock that no portal we read also carried - the measured value of watching it.
+
+    The first version divided every listing on the site by "has no portal listing in our database" and read
+    100 % for almost every agency (measured 2026-11-02: Quintela + Penalva 1 200/1 200). That was not a fact
+    about the market; it was the shape of our own coverage. Imovirtual is held only for the (type x concelho)
+    pairs her buyers generate, and inside those only for ads published since the sweep began plus the buyers'
+    targeted initial runs - so an older Lisbon apartment at 800 000 is on Imovirtual, absent from our tables,
+    and was being counted as off-portal. "We do not have it" is only evidence of "the portals did not have
+    it" where we actually look at everything the portals publish. That is exactly one slice:
+
+      * the swept scope - the (estate type, concelho) pairs of the active criteria, where every new portal
+        ad is ingested regardless of price;
+      * stock that appeared on the agency site AFTER its catalogue was caught up (first `ok` watch run), so
+        a portal twin published at the same time would have been swept within hours;
+      * at least OFFPORTAL_SETTLE old, so the twin had time to arrive and dedup had time to merge.
+
+    Inside that slice the number means what the column says. Known bias, measured on 161 such listings: 7
+    had a single-photo portal twin that rule B refuses to merge on purpose (sibling units share photos), so
+    the share can overstate by a few points; the panel wording says "sem correspondência", not "fora".
+    Pre-existing stock stays unmeasured - honestly - until it turns over."""
+    from app.services import runs
+
+    caught_up = session.scalar(
+        select(func.min(CrawlRun.started_at)).where(CrawlRun.source_id == source.id, CrawlRun.kind == "watch",
+                                                   CrawlRun.status == "ok"))
+    scope = runs.sweep_scope(session)
+    agency = session.scalar(select(Agency).where(Agency.watch_source_id == source.id))
+    if caught_up is None or not scope:
+        if agency is not None:
+            agency.offportal_ratio, agency.listings_seen = None, 0
+            session.commit()
+        return None
+    in_scope = or_(*[and_(Listing.estate_type == estate,
+                          or_(Listing.geo_code == f"{district}/{council}", Listing.geo_code.like(f"{district}/{council}/%")))
+                     for estate, district, council in scope])
+    rows = session.execute(
+        select(Listing.property_id).where(
+            Listing.source_id == source.id, Listing.status == "active", Listing.transaction == "sale",
+            Listing.property_id.is_not(None), Listing.first_seen_at > caught_up,
+            Listing.first_seen_at < datetime.now(timezone.utc) - OFFPORTAL_SETTLE, in_scope)).all()
+    property_ids = {r[0] for r in rows}
     portal_ids = {r[0] for r in session.execute(
         select(Listing.property_id).join(Source, Source.id == Listing.source_id)
-        .where(Listing.property_id.in_(property_ids), Source.kind.in_(("portal", "email")))).all()}
-    ratio = (len(property_ids) - len(portal_ids)) / len(property_ids)
-    agency = session.scalar(select(Agency).where(Agency.watch_source_id == source.id))
+        .where(Listing.property_id.in_(property_ids), Source.kind.in_(("portal", "email")))).all()} if property_ids else set()
+    share = offportal_share(len(property_ids), len(property_ids) - len(portal_ids))
     if agency is not None:
-        agency.offportal_ratio = round(ratio, 4)
+        agency.offportal_ratio = share
         agency.listings_seen = len(property_ids)
         session.commit()
-    return ratio
+    return share
 
 
 def offportal_examples(session: Session, source_id: int | None = None, limit: int = 5) -> list[Listing]:

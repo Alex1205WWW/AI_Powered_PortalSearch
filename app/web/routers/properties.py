@@ -56,10 +56,10 @@ def _zone_choices(db):
 
 
 @router.get("/properties")
-async def list_properties(request: Request, db: DB, user: User, buyer: OptInt = None, state: OptStr = None,
-                          grade: OptStr = None, zone: OptStr = None, price_min: OptInt = None,
-                          price_max: OptInt = None, rooms_min: OptInt = None, rooms_max: OptInt = None,
-                          estate: OptStr = None, q: OptStr = None, limit: int = 200):
+def list_properties(request: Request, db: DB, user: User, buyer: OptInt = None, state: OptStr = None,
+                    grade: OptStr = None, zone: OptStr = None, price_min: OptInt = None,
+                    price_max: OptInt = None, rooms_min: OptInt = None, rooms_max: OptInt = None,
+                    estate: OptStr = None, q: OptStr = None, limit: int = 200):
     stmt = (
         select(PropertyMatch, Buyer.label, Criteria)
         .join(Buyer, Buyer.id == PropertyMatch.buyer_id)
@@ -124,8 +124,8 @@ async def list_properties(request: Request, db: DB, user: User, buyer: OptInt = 
 
 
 @router.get("/properties/export.xlsx")
-async def export_properties(request: Request, db: DB, user: User, buyer: OptInt = None,
-                            state: OptStr = None, grade: OptStr = None):
+def export_properties(request: Request, db: DB, user: User, buyer: OptInt = None,
+                      state: OptStr = None, grade: OptStr = None):
     """The same set the panel is showing, as a spreadsheet (deliverable 2)."""
     label = db.scalar(select(Buyer.label).where(Buyer.id == buyer)) if buyer else None
     stream = export.workbook(db, buyer_id=buyer, state=state, grade=grade)
@@ -135,8 +135,8 @@ async def export_properties(request: Request, db: DB, user: User, buyer: OptInt 
 
 
 @router.post("/matches/{match_id}/state")
-async def set_state(request: Request, db: DB, user: User, match_id: int, state: Annotated[str, Form()],
-                    commission_share_pct: Annotated[str | None, Form()] = None, back: Annotated[str, Form()] = "/properties"):
+def set_state(request: Request, db: DB, user: User, match_id: int, state: Annotated[str, Form()],
+              commission_share_pct: Annotated[str | None, Form()] = None, back: Annotated[str, Form()] = "/properties"):
     share = None
     if commission_share_pct and commission_share_pct.strip():
         try:
@@ -153,7 +153,7 @@ async def set_state(request: Request, db: DB, user: User, match_id: int, state: 
 
 
 @router.post("/listings/{listing_id}/split")
-async def split_listing(request: Request, db: DB, user: User, listing_id: int, back: Annotated[str, Form()] = "/properties"):
+def split_listing(request: Request, db: DB, user: User, listing_id: int, back: Annotated[str, Form()] = "/properties"):
     """Operator override: this listing is not the same property as the others in its cluster."""
     target = back if back.startswith("/") and not back.startswith("//") else "/properties"
     try:

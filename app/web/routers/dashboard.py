@@ -14,14 +14,14 @@ router = APIRouter()
 
 
 @router.get("/login")
-async def login_form(request: Request):
+def login_form(request: Request):
     if request.session.get("user"):
         return RedirectResponse("/", status_code=303)
     return render(request, "login.html", error=None)
 
 
 @router.post("/login")
-async def login_submit(request: Request, username: Annotated[str, Form()], password: Annotated[str, Form()], next: Annotated[str, Form()] = "/"):
+def login_submit(request: Request, username: Annotated[str, Form()], password: Annotated[str, Form()], next: Annotated[str, Form()] = "/"):
     client_ip = request.client.host if request.client else "unknown"
     if auth.rate_limited(client_ip):
         return render(request, "login.html", error="Demasiadas tentativas. Aguarde um minuto.")
@@ -33,13 +33,13 @@ async def login_submit(request: Request, username: Annotated[str, Form()], passw
 
 
 @router.post("/logout")
-async def logout(request: Request):
+def logout(request: Request):
     auth.logout(request)
     return RedirectResponse("/login", status_code=303)
 
 
 @router.get("/")
-async def dashboard(request: Request, db: DB, user: User):
+def dashboard(request: Request, db: DB, user: User):
     counts = {
         "buyers_active": db.scalar(select(func.count()).select_from(Buyer).where(Buyer.active.is_(True))) or 0,
         "buyers_paused": db.scalar(select(func.count()).select_from(Buyer).where(Buyer.active.is_(False))) or 0,

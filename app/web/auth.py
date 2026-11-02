@@ -12,6 +12,7 @@ from app.config import settings
 
 MAX_ATTEMPTS = 5
 WINDOW_S = 60.0
+SWEEP_ABOVE = 1024  # tracked addresses before a sweep is worth its cost
 _attempts: dict[str, deque[float]] = defaultdict(deque)
 _lock = threading.Lock()
 
@@ -39,9 +40,21 @@ def check_credentials(username: str, password: str) -> bool:
     return username == settings.admin_username and verify_password(password, settings.admin_password_hash)
 
 
+def _evict_stale(now: float) -> None:
+    """Forget addresses whose attempts have all aged out of the window.
+
+    A bucket is otherwise only pruned when that same address comes back, so the panel being scanned from
+    rotating addresses would grow this dict for as long as the process lives. Sweeping only once the dict
+    is already large keeps the ordinary login path O(1). Caller holds `_lock`."""
+    for ip in [ip for ip, bucket in _attempts.items() if not bucket or now - bucket[-1] > WINDOW_S]:
+        del _attempts[ip]
+
+
 def rate_limited(client_ip: str) -> bool:
     now = time.monotonic()
     with _lock:
+        if len(_attempts) > SWEEP_ABOVE:
+            _evict_stale(now)
         bucket = _attempts[client_ip]
         while bucket and now - bucket[0] > WINDOW_S:
             bucket.popleft()

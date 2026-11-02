@@ -74,6 +74,13 @@ def feature_tier(features: dict[str, dict] | None, key: str) -> str:
 CANARY_MIN_SAMPLE = 30
 CANARY_THRESHOLDS = {"agency": 0.85, "area": 0.90, "rooms": 0.90, "published": 0.90}  # plan Day 2 said date 100 %; real ads carry occasional impossible dates, so 90 % (live fill 2026-10-28: 100 / 100 / 99.5 / 99.4 %)
 
+# Agency sites are mixed catalogues, not curated portal feeds: houses are often listed without a T-number,
+# land has none at all, and eGO never types an area. Measured on 44 live sites 2026-11-02, healthy readers
+# fill `rooms` anywhere between 44 % and 100 % and `area` between 27 % and 100 %, so the portal thresholds
+# flagged five correctly-working sites and put a false "problemas" banner on every page. A layout change takes
+# a field to ~0 %, which half still catches; the canary stays a smoke detector without becoming a fire alarm.
+AGENCY_CANARY_THRESHOLDS = {"area": 0.50, "rooms": 0.50, "published": 0.50}
+
 # Which canary key each profile field promises. Agency sites publish far less than a portal: eGO types no
 # area at all and carries no publication date, so holding them to the Imovirtual contract would flag every
 # eGO source as `degraded` on its first run (Plan_Day5.md section 5 item 1).
@@ -83,12 +90,12 @@ CANARY_FROM_PROFILE_FIELD = {"area": "area", "typology": "rooms", "published": "
 def canary_fields(fields_present: Iterable[str] | None) -> set[str]:
     """The canary keys a source has actually promised. A field the profile never promised cannot be drift.
 
-    `agency` is always expected on an agency site: the advertiser is the site owner, so a listing without one
-    really is a parsing failure."""
+    `agency` is deliberately NOT among them. On an agency's own site the advertiser is the site itself, and
+    whether a page repeats that name is a schema choice, not a reading result: measured 2026-11-02, all six
+    JSON-LD sites carry no per-advert agent block (0 %) while every eGO site carries one (100 %). Both read
+    correctly. The agency is known from the `sources` row, so a 0 % here is not drift."""
     promised = set(fields_present or ())
-    keys = {"agency"}
-    keys.update(canary for field, canary in CANARY_FROM_PROFILE_FIELD.items() if field in promised)
-    return keys
+    return {canary for field, canary in CANARY_FROM_PROFILE_FIELD.items() if field in promised}
 
 
 def canary_fields_for(source_kind: str | None, profile: dict | None) -> set[str] | None:
@@ -98,22 +105,28 @@ def canary_fields_for(source_kind: str | None, profile: dict | None) -> set[str]
     return canary_fields((profile or {}).get("fields_present"))
 
 
+def canary_thresholds_for(source_kind: str | None) -> dict[str, float]:
+    return AGENCY_CANARY_THRESHOLDS if source_kind == "agency" else CANARY_THRESHOLDS
+
+
 class FillStats:
     """Parser-drift canary: field-fill ratios over the listings one run produced. A source that suddenly returns
     listings without agency, area, typology or date is almost always a changed page layout, not a changed market.
 
     `expect` narrows the check to the fields a source promised; None keeps the full portal contract."""
 
-    def __init__(self, expect: Iterable[str] | None = None) -> None:
+    def __init__(self, expect: Iterable[str] | None = None, thresholds: dict[str, float] | None = None) -> None:
         self.n = 0
-        self.expect = set(CANARY_THRESHOLDS) if expect is None else {k for k in expect if k in CANARY_THRESHOLDS}
+        self.thresholds = CANARY_THRESHOLDS if thresholds is None else thresholds
+        self.expect = set(self.thresholds) if expect is None else {k for k in expect if k in self.thresholds}
         self.hits = {key: 0 for key in CANARY_THRESHOLDS}
 
     def add(self, c: "CanonicalListing") -> None:
         self.n += 1
         self.hits["agency"] += bool(c.agency_name)
-        self.hits["area"] += c.area_util is not None or c.area_bruta is not None
-        self.hits["rooms"] += c.rooms is not None
+        # A plot's size is its land area, and a plot has no typology: neither is a field the page failed to give.
+        self.hits["area"] += c.area_util is not None or c.area_bruta is not None or c.land_area is not None
+        self.hits["rooms"] += c.rooms is not None or c.estate_type == "terreno"
         self.hits["published"] += c.published_at is not None or c.published_unknown  # a placeholder date is a present field, not drift
 
     def ratios(self) -> dict[str, float]:
@@ -122,8 +135,8 @@ class FillStats:
     def breaches(self) -> list[str]:
         if self.n < CANARY_MIN_SAMPLE:
             return []
-        return [f"{key} {ratio:.0%} < {CANARY_THRESHOLDS[key]:.0%}" for key, ratio in self.ratios().items()
-                if key in self.expect and ratio < CANARY_THRESHOLDS[key]]
+        return [f"{key} {ratio:.0%} < {self.thresholds[key]:.0%}" for key, ratio in self.ratios().items()
+                if key in self.expect and ratio < self.thresholds[key]]
 
 
 @dataclass

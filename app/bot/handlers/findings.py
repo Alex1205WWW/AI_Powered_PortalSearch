@@ -32,7 +32,7 @@ VERDICTS = {
 
 
 async def faltou(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    if not allowed(update):
+    if not await allowed(update):
         return
     url = (" ".join(context.args or []).strip() or "").split()[0] if context.args else ""
     if not url.startswith("http"):

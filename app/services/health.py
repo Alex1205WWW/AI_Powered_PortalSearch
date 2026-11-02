@@ -87,12 +87,22 @@ def banner(session: Session) -> list[dict]:
     stopped responding - which is the opposite of what deliverable 15 is for."""
     rows = [{"name": s.name, "status": s.status, "error": s.last_error, "last_ok_at": s.last_ok_at}
             for s in unhealthy(session, ANNOUNCED_KINDS)]
-    agencies = session.scalar(
-        select(func.count(Source.id)).where(Source.enabled.is_(True), Source.kind == "agency",
-                                            Source.status.in_(("degraded", "blocked")))) or 0
-    if agencies:
-        label = "mediadora" if agencies == 1 else "mediadoras"
-        rows.append({"name": f"{agencies} {label} com problemas", "status": "degraded",
-                     "error": "Ver a página de mediadoras para o detalhe.", "last_ok_at": None,
-                     "agency_count": agencies})
+    counts = dict(session.execute(
+        select(Source.status, func.count(Source.id))
+        .where(Source.enabled.is_(True), Source.kind == "agency", Source.status.in_(("degraded", "blocked")))
+        .group_by(Source.status)).all())
+    degraded, blocked = int(counts.get("degraded", 0)), int(counts.get("blocked", 0))
+    if degraded or blocked:
+        # Say what is actually happening. "9 mediadoras com problemas não está a responder" read as nine
+        # outages; a degraded agency site is being read, just with fewer fields than its profile promised,
+        # and a blocked one is refused by the site's own robots.txt. Neither touches the portals.
+        parts = []
+        if degraded:
+            parts.append(f"{degraded} com leitura incompleta" if degraded > 1 else "1 com leitura incompleta")
+        if blocked:
+            parts.append(f"{blocked} bloqueados pelo próprio site" if blocked > 1 else "1 bloqueado pelo próprio site")
+        rows.append({"name": "Sites de mediadoras", "status": "degraded", "last_ok_at": None,
+                     "text": " e ".join(parts) + ". Os anúncios já recolhidos continuam no painel.",
+                     "error": "Ver a página Mediadoras para o detalhe por site.",
+                     "agency_count": degraded + blocked})
     return rows

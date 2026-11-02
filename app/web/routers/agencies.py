@@ -22,7 +22,7 @@ FILTERS = ("legiveis", "com-site", "sem-site", "problemas", "todas")
 
 
 @router.get("")
-async def list_agencies(request: Request, db: DB, user: User, page: OptInt = None, f: OptStr = None, q: OptStr = None):
+def list_agencies(request: Request, db: DB, user: User, page: OptInt = None, f: OptStr = None, q: OptStr = None):
     page = max(1, page or 1)
     f = f or "legiveis"
     q = q or ""
@@ -42,12 +42,13 @@ async def list_agencies(request: Request, db: DB, user: User, page: OptInt = Non
         stmt.order_by(Agency.offportal_ratio.desc().nullslast(), Agency.active_ads_count.desc().nullslast())
         .offset((page - 1) * PAGE_SIZE).limit(PAGE_SIZE)).all()
     return render(request, "agencies.html", rows=rows, total=total, page=page, pages=max(1, -(-total // PAGE_SIZE)),
-                  summary=svc.summary(db), f=f if f in FILTERS else "legiveis", q=q, filters=FILTERS)
+                  summary=svc.summary(db), f=f if f in FILTERS else "legiveis", q=q, filters=FILTERS,
+                  offportal_min=svc.OFFPORTAL_MIN_SAMPLE)
 
 
 @router.post("/add")
-async def add(request: Request, db: DB, user: User, website_url: Annotated[str, Form()] = "",
-              name: Annotated[str, Form()] = ""):
+def add(request: Request, db: DB, user: User, website_url: Annotated[str, Form()] = "",
+        name: Annotated[str, Form()] = ""):
     if not website_url.strip():
         return RedirectResponse(f"/agencies?msg={quote('Indique o endereço do site da mediadora.')}", status_code=303)
     try:
@@ -62,7 +63,7 @@ async def add(request: Request, db: DB, user: User, website_url: Annotated[str, 
 
 
 @router.post("/{source_id}/toggle")
-async def toggle(request: Request, db: DB, user: User, source_id: int, enabled: Annotated[str, Form()]):
+def toggle(request: Request, db: DB, user: User, source_id: int, enabled: Annotated[str, Form()]):
     source = db.get(Source, source_id)
     if source is not None:
         source.enabled = enabled == "1"

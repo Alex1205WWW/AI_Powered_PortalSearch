@@ -10,7 +10,13 @@ from sqlalchemy.orm import Session, sessionmaker
 from app.config import settings
 
 # connect_timeout: a dead Postgres must fail in seconds, not hang a page; pool_pre_ping: reconnect by itself when it is back.
-engine = create_engine(settings.database_url, pool_pre_ping=True, pool_size=5, max_overflow=5, connect_args={"connect_timeout": 5})
+engine = create_engine(
+    settings.database_url,
+    pool_pre_ping=True,
+    pool_size=settings.db_pool_size,
+    max_overflow=settings.db_max_overflow,
+    connect_args={"connect_timeout": 5},
+)
 SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
 
 

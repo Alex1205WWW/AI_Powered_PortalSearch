@@ -10,7 +10,8 @@ from types import SimpleNamespace
 import pytest
 
 from app.ai.client import AiGuardError, assert_llm_allowed, assert_source_allows_llm
-from app.domain.listing import CANARY_MIN_SAMPLE, CanonicalListing, FillStats, canary_fields, canary_fields_for
+from app.domain.listing import (AGENCY_CANARY_THRESHOLDS, CANARY_MIN_SAMPLE, CANARY_THRESHOLDS, CanonicalListing,
+                                FillStats, canary_fields, canary_fields_for, canary_thresholds_for)
 from app.notify.formats import source_label
 from app.services import agencies as agency_svc
 from app.services import health
@@ -43,18 +44,52 @@ def test_a_field_the_profile_did_promise_still_breaches():
     assert any(b.startswith("area") for b in stats.breaches())
 
 
-def test_a_missing_advertiser_is_always_drift_on_an_agency_site():
-    """The advertiser on an agency site is the site owner, so a listing without one is a parse failure."""
-    stats = FillStats(canary_fields(["title", "price", "typology"]))
+def test_a_missing_advertiser_is_not_drift_on_an_agency_site():
+    """The advertiser on an agency site is the site itself. Measured 2026-11-02: all six JSON-LD sites carry no
+    per-advert agent block (comprarcasa.pt 0 % on 702 correctly-read listings) while every eGO site does. The
+    old rule put a false "problemas" banner on every page; the agency is known from the `sources` row."""
+    stats = FillStats(canary_fields(["title", "price", "typology"]), thresholds=canary_thresholds_for("agency"))
+    for _ in range(CANARY_MIN_SAMPLE + 5):
+        stats.add(listing(agency_name=None))
+    assert stats.ratios()["agency"] == 0.0     # still measured and visible
+    assert stats.breaches() == []              # but not called drift
+
+
+def test_portals_still_require_the_advertiser():
+    stats = FillStats()                        # portal contract
     for _ in range(CANARY_MIN_SAMPLE + 5):
         stats.add(listing(agency_name=None))
     assert any(b.startswith("agency") for b in stats.breaches())
 
 
+def test_an_agency_catalogue_is_judged_by_half_not_by_the_portal_bar():
+    """comprarcasa.pt reads correctly and fills `rooms` on 54 % of its mixed catalogue (houses are often
+    listed without a T-number). 90 % is a portal number; a layout change takes a field to ~0 %, which half
+    still catches."""
+    assert canary_thresholds_for("agency") is AGENCY_CANARY_THRESHOLDS
+    assert canary_thresholds_for("portal") is CANARY_THRESHOLDS
+    stats = FillStats(canary_fields(["title", "price", "typology"]), thresholds=canary_thresholds_for("agency"))
+    for i in range(100):
+        stats.add(listing(rooms=2 if i < 54 else None))
+    assert stats.breaches() == []
+    collapsed = FillStats(canary_fields(["title", "price", "typology"]), thresholds=canary_thresholds_for("agency"))
+    for _ in range(100):
+        collapsed.add(listing(rooms=None))
+    assert any(b.startswith("rooms 0%") for b in collapsed.breaches())
+
+
+def test_a_plot_has_no_typology_and_its_size_is_land_area():
+    """easygest.com.pt lists 189 plots: no T-number is the truth about a terreno, not a field the page withheld."""
+    stats = FillStats(canary_fields(["title", "price", "typology", "area"]), thresholds=canary_thresholds_for("agency"))
+    for _ in range(CANARY_MIN_SAMPLE + 5):
+        stats.add(listing(rooms=None, area_util=None, land_area=1200.0, estate_type="terreno"))
+    assert stats.breaches() == []
+
+
 def test_portals_keep_the_full_contract():
     assert canary_fields_for("portal", None) is None
     assert canary_fields_for("email", {"fields_present": ["title"]}) is None
-    assert canary_fields_for("agency", {"fields_present": ["title", "area"]}) == {"agency", "area"}
+    assert canary_fields_for("agency", {"fields_present": ["title", "area"]}) == {"area"}
 
 
 # --- 2. the AI guard (blocker) ------------------------------------------------------------------
@@ -98,6 +133,46 @@ def test_agency_sources_do_not_each_send_a_telegram_message(monkeypatch):
                              last_ok_at=None, last_error=None, consecutive_failures=0)
     health.degrade(portal, "canary: area 10% < 90%")
     assert len(sent) == 1 and "Imovirtual" in sent[0]
+
+
+def test_the_grouped_banner_says_what_is_happening_not_that_sites_are_down(monkeypatch):
+    """Seen 2026-11-02 on production: "9 mediadoras com problemas não está a responder" - nine working
+    sites, read with fewer fields than promised, presented as nine outages. The row carries its own
+    sentence so base.html does not append the portal wording to it."""
+    monkeypatch.setattr(health, "unhealthy", lambda session, kinds=None: [])
+
+    class FakeResult:
+        def __init__(self, rows): self._rows = rows
+        def all(self): return self._rows
+
+    class FakeSession:
+        def execute(self, stmt): return FakeResult([("degraded", 3), ("blocked", 2)])
+
+    rows = health.banner(FakeSession())
+    assert len(rows) == 1
+    row = rows[0]
+    assert row["name"] == "Sites de mediadoras"
+    assert row["text"] == ("3 com leitura incompleta e 2 bloqueados pelo próprio site. "
+                           "Os anúncios já recolhidos continuam no painel.")
+    assert "não está a responder" not in row["text"]
+    assert row["agency_count"] == 5
+
+    class QuietSession:
+        def execute(self, stmt): return FakeResult([])
+
+    assert health.banner(QuietSession()) == []
+
+
+def test_the_offportal_share_refuses_to_speak_on_a_small_sample():
+    """Measured 2026-11-02: dividing a whole catalogue by "no portal listing in our tables" read 100 % for
+    nearly every agency, because our portal coverage is a slice. The share is now taken over new in-scope
+    stock only, and a handful of listings is not a percentage."""
+    assert agency_svc.offportal_share(0, 0) is None
+    assert agency_svc.offportal_share(9, 9) is None
+    assert agency_svc.offportal_share(10, 9) == 0.9
+    assert agency_svc.offportal_share(161, 151) == 0.9379
+    assert agency_svc.offportal_share(36, 0) == 0.0
+    assert agency_svc.OFFPORTAL_MIN_SAMPLE == 10
 
 
 # --- 5. the removal guard -----------------------------------------------------------------------
