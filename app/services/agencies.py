@@ -464,6 +464,20 @@ def offportal_share(total: int, offportal: int, minimum: int = OFFPORTAL_MIN_SAM
     return round(offportal / total, 4)
 
 
+def _store_offportal(session: Session, source: Source, share: float | None, seen: int) -> None:
+    """Write the measurement to EVERY agency that points at this source, not just the first.
+
+    `scalar()` here was a bug with a visible symptom: four sources are the watch target of more than one
+    agency row - the two Quintela spellings and the two Dils rows, plus century21.pt (8 franchise offices)
+    and remax.pt (5). Only one row was ever written, so the other kept whatever the previous formula had
+    left there: on 2026-11-02 the panel still showed "100% de 1050" for Quintela Penalva while the row the
+    code actually updated had been correctly set to "a medir"."""
+    for agency in session.scalars(select(Agency).where(Agency.watch_source_id == source.id)):
+        agency.offportal_ratio = share
+        agency.listings_seen = seen
+    session.commit()
+
+
 def refresh_offportal(session: Session, source: Source) -> float | None:
     """Share of this site's NEW stock that no portal we read also carried - the measured value of watching it.
 
@@ -491,11 +505,8 @@ def refresh_offportal(session: Session, source: Source) -> float | None:
         select(func.min(CrawlRun.started_at)).where(CrawlRun.source_id == source.id, CrawlRun.kind == "watch",
                                                    CrawlRun.status == "ok"))
     scope = runs.sweep_scope(session)
-    agency = session.scalar(select(Agency).where(Agency.watch_source_id == source.id))
     if caught_up is None or not scope:
-        if agency is not None:
-            agency.offportal_ratio, agency.listings_seen = None, 0
-            session.commit()
+        _store_offportal(session, source, None, 0)
         return None
     in_scope = or_(*[and_(Listing.estate_type == estate,
                           or_(Listing.geo_code == f"{district}/{council}", Listing.geo_code.like(f"{district}/{council}/%")))
@@ -510,10 +521,7 @@ def refresh_offportal(session: Session, source: Source) -> float | None:
         select(Listing.property_id).join(Source, Source.id == Listing.source_id)
         .where(Listing.property_id.in_(property_ids), Source.kind.in_(("portal", "email")))).all()} if property_ids else set()
     share = offportal_share(len(property_ids), len(property_ids) - len(portal_ids))
-    if agency is not None:
-        agency.offportal_ratio = share
-        agency.listings_seen = len(property_ids)
-        session.commit()
+    _store_offportal(session, source, share, len(property_ids))
     return share
 
 

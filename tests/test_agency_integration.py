@@ -175,6 +175,27 @@ def test_the_offportal_share_refuses_to_speak_on_a_small_sample():
     assert agency_svc.OFFPORTAL_MIN_SAMPLE == 10
 
 
+def test_every_agency_on_a_shared_source_is_written_not_just_the_first():
+    """Four sources are the watch target of more than one agency row (both Quintela spellings, both Dils
+    rows, century21.pt with 8 franchise offices, remax.pt with 5). `scalar()` wrote one and left the other
+    showing a stale number - on 2026-11-02 the panel still read "100% de 1050" for a row the code believed
+    it had reset."""
+    written = []
+
+    class FakeAgency:
+        def __init__(self, name): self.name, self.offportal_ratio, self.listings_seen = name, 1.0, 1050
+
+    rows = [FakeAgency("Quintela + Penalva | Knight Frank"), FakeAgency("Quintela Penalva")]
+
+    class FakeSession:
+        def scalars(self, stmt): return rows
+        def commit(self): written.append(True)
+
+    agency_svc._store_offportal(FakeSession(), SimpleNamespace(id=7), None, 0)
+    assert [(a.offportal_ratio, a.listings_seen) for a in rows] == [(None, 0), (None, 0)]
+    assert written == [True]
+
+
 # --- 5. the removal guard -----------------------------------------------------------------------
 
 def test_a_short_sitemap_never_retires_a_catalogue():
