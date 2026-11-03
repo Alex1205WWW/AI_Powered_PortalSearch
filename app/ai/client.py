@@ -8,6 +8,7 @@ The Anthropic client itself (criteria parsing, site profiling) arrives with Days
 """
 from __future__ import annotations
 
+import logging
 from datetime import datetime, timezone
 
 from sqlalchemy import func, select
@@ -16,6 +17,8 @@ from sqlalchemy.orm import Session
 from app.ai import pricing
 from app.config import settings
 from app.db.models import AiSpend
+
+log = logging.getLogger(__name__)
 
 FORBIDDEN_SOURCES = {"imovirtual"}
 
@@ -96,7 +99,36 @@ def openai_client():
 
 
 class AiUnavailable(RuntimeError):
-    """No key configured. The structured form in the panel still works, so this is never fatal."""
+    """The model cannot be reached right now: no key, a dead key, no credit, or the provider is down.
+
+    Never fatal, and that is the point - every caller falls back to the structured form in the panel, which
+    needs no model at all. It exists so that a provider failure reaches her as one sentence in Portuguese
+    telling her what to do instead, rather than as silence.
+    """
+
+
+# Provider SDK errors are translated into `AiUnavailable` here, at the boundary, because that is the only
+# exception the bot handlers are written to catch. Letting a raw `openai.RateLimitError` or
+# `anthropic.APIStatusError` escape means the handler dies, `_on_error` logs it, and she gets NO REPLY to
+# her voice note - which is exactly what would have happened on her first attempt: her OpenAI key
+# authenticates but has no credit (429 `insufficient_quota`, measured 2026-11-04).
+def _provider_reason(exc: Exception) -> str:
+    """A short Portuguese reason she can act on, from a provider exception."""
+    text = str(exc)
+    if "insufficient_quota" in text or "no credits remaining" in text or "credit_balance" in text:
+        return "a conta da IA está sem saldo"
+    status = getattr(exc, "status_code", None)
+    if status == 401 or "authentication" in text.lower() or "invalid_api_key" in text:
+        return "a chave da IA foi recusada"
+    if status == 429:
+        return "a IA está a limitar os pedidos; tente dentro de um minuto"
+    if status and 500 <= int(status) < 600:
+        return "o serviço de IA está com problemas"
+    return "o serviço de IA não respondeu"
+
+
+def as_unavailable(exc: Exception) -> AiUnavailable:
+    return AiUnavailable(_provider_reason(exc))
 
 
 def usage_of(response) -> dict:
@@ -117,36 +149,76 @@ def record_llm_spend(session: Session, *, operation: str, model: str, response) 
                         cost_cents=pricing.llm_cost_cents(model, **counts))
 
 
+SCHEMA_TOOL_NAME = "registar_criterios"
+
+
 def parse_structured(session: Session, *, operation: str, system: str, user: str, output_format,
                      source_key: str | None = None, model: str | None = None, effort: str = "low",
                      max_tokens: int = 2000):
     """One structured LLM call: schema in, validated object out, spend recorded, budget respected.
 
-    `messages.parse` validates the response against the Pydantic model, so a malformed answer raises here
-    instead of becoming half-filled criteria downstream.
+    The schema is delivered as a **tool**, not as `messages.parse(output_format=...)`.
 
-    `effort="low"` is deliberate. Opus 5 thinks adaptively by default and this is a short extraction from a
-    few sentences of Portuguese; low effort keeps a single parse at well under a cent, which is what keeps
-    the quoted 9-15 USD/month honest. Do not pass `thinking.budget_tokens` - Opus 5 rejects it with a 400.
+    That is not a style preference. With the real key in place (2026-11-04, the first time this path could
+    ever run) `messages.parse` answered **HTTP 400 "Schema is too complex"** for `ParsedCriteria`, so voice
+    intake and note parsing were dead in production - deliverable 3 - and no test could have caught it
+    because there was no key to call with. Measured while narrowing it down:
+
+        output_format, 13 fields / 6 arrays  -> 400 too complex
+        output_format, 13 fields / 3 arrays  -> 400 too complex
+        output_format, 10 fields / 2 arrays  -> OK
+        tool_choice,   13 fields / 6 arrays  -> OK
+
+    Neither the nullable unions nor the field descriptions were the cause; 6 nullable fields alone passed.
+    The limit is a function of field count and array count together, and the criteria schema is simply past
+    it. Tool input schemas are validated far more permissively, so the whole contract survives - `exclude`,
+    `nice_to_have` and `ambiguities` included - and the alternative would have been to delete fields she was
+    promised.
+
+    What is lost by not using `output_format` is the server-side guarantee, so the response is validated
+    here with Pydantic instead. A malformed answer still raises rather than becoming half-filled criteria.
+
+    `effort="low"` is deliberate and still applies with tools (verified). Opus 5 thinks adaptively by
+    default and this is a short extraction from a few sentences of Portuguese; low effort keeps one parse
+    near 1.7 cents, which is what keeps the quoted 9-15 USD/month honest. Do not pass
+    `thinking.budget_tokens` - Opus 5 rejects it with a 400.
     """
     assert_llm_allowed(source_key, purpose=operation)
     budget_guard(session)
     chosen = model or settings.llm_model
-    response = anthropic_client().messages.parse(
-        model=chosen,
-        max_tokens=max_tokens,
-        system=system,
-        messages=[{"role": "user", "content": user}],
-        output_config={"effort": effort},
-        output_format=output_format,
-    )
+    tool = {
+        "name": SCHEMA_TOOL_NAME,
+        "description": "Registe os critérios de pesquisa extraídos da nota.",
+        "input_schema": output_format.model_json_schema(),
+    }
+    client = anthropic_client()
+    try:
+        response = client.messages.create(
+            model=chosen,
+            max_tokens=max_tokens,
+            system=system,
+            messages=[{"role": "user", "content": user}],
+            output_config={"effort": effort},
+            tools=[tool],
+            tool_choice={"type": "tool", "name": SCHEMA_TOOL_NAME},
+        )
+    except (AiUnavailable, BudgetExceeded, AiGuardError):
+        raise
+    except Exception as exc:  # noqa: BLE001 - any provider failure must degrade, never surface raw
+        log.warning("llm call failed (%s): %s", operation, exc)
+        raise as_unavailable(exc) from exc
+    # Recorded before any raise below, so a refused or malformed answer is still billed in the ledger -
+    # it cost real money and her cap must see it.
     record_llm_spend(session, operation=operation, model=chosen, response=response)
     if getattr(response, "stop_reason", None) == "refusal":
         raise AiRefused(f"o modelo recusou o pedido ({operation})")
-    parsed = getattr(response, "parsed_output", None)
-    if parsed is None:
+    block = next((b for b in getattr(response, "content", []) if getattr(b, "type", None) == "tool_use"), None)
+    if block is None:
         raise AiRefused(f"resposta sem conteúdo estruturado ({operation})")
-    return parsed
+    try:
+        return output_format.model_validate(block.input)
+    except Exception as exc:  # pydantic.ValidationError, kept broad so callers always get AiRefused
+        raise AiRefused(f"resposta estruturada inválida ({operation}): {exc}") from exc
 
 
 class AiRefused(RuntimeError):

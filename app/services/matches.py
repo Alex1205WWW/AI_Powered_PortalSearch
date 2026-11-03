@@ -26,12 +26,40 @@ def zone_codes(criteria: Criteria) -> list[str]:
     return [z.geo_code for z in criteria.zones]
 
 
-def evaluate_and_store(session: Session, subject: Any, criteria: Criteria) -> StoredMatch:
-    """`subject` is a `Listing` or a `properties.PropertyView`: anything with `property_id` and the listing fields."""
-    result = evaluate(subject, criteria, zone_codes(criteria))
-    existing = session.scalar(
-        select(PropertyMatch).where(PropertyMatch.property_id == subject.property_id, PropertyMatch.criteria_id == criteria.id)
+LOOK_IT_UP = object()  # `existing` was not supplied, so evaluate_and_store queries for the row itself
+
+
+def _stored_match(session: Session, property_id: int, criteria: Criteria) -> PropertyMatch | None:
+    return session.scalar(
+        select(PropertyMatch).where(PropertyMatch.property_id == property_id, PropertyMatch.criteria_id == criteria.id)
     )
+
+
+def existing_by_property(session: Session, criteria: Criteria) -> dict[int, PropertyMatch]:
+    """Every stored match for one criteria, by property id.
+
+    For callers that evaluate a criteria against many properties in a row: passing the row in spares
+    `evaluate_and_store` its per-property SELECT, which was the last query the rematch loop still paid for
+    every property in a buyer's zones."""
+    return {m.property_id: m for m in session.scalars(select(PropertyMatch).where(PropertyMatch.criteria_id == criteria.id))}
+
+
+def evaluate_and_store(session: Session, subject: Any, criteria: Criteria, existing: Any = LOOK_IT_UP) -> StoredMatch:
+    """`subject` is a `Listing` or a `properties.PropertyView`: anything with `property_id` and the listing fields.
+
+    `existing` is the already-loaded `PropertyMatch` for this (property, criteria), or None when the caller
+    knows there is none - from `existing_by_property`. Left out, the row is looked up here as before."""
+    result = evaluate(subject, criteria, zone_codes(criteria))
+    supplied = existing is not LOOK_IT_UP
+    if not supplied:
+        existing = _stored_match(session, subject.property_id, criteria)
+    elif existing is None and result.ok:
+        # The caller's map was read before the loop started, and `rematch_criteria` runs both from the panel
+        # (a criteria being saved) and from the worker, with no lock between them. Re-reading here, and only
+        # on the path that is about to INSERT, keeps the window for a duplicate exactly as narrow as it was
+        # when every property paid for this query - while the properties that match nothing, which are most
+        # of a buyer's zone, now cost none at all.
+        existing = _stored_match(session, subject.property_id, criteria)
     previous_grade = existing.grade if existing else None
     if result.ok:
         if existing is None:

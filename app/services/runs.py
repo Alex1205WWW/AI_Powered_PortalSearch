@@ -29,6 +29,7 @@ load_adapters()
 
 INITIAL_SOURCES = ("imovirtual",)  # portals that support a targeted first pass for new criteria
 COMMIT_EVERY = 25  # listings between commits during a catalogue pass; also how often the cursor is saved
+REMATCH_CHUNK = 500  # properties whose listings are loaded per query in rematch_criteria
 EMAIL_SOURCE = "idealista_email"
 
 
@@ -156,19 +157,26 @@ def rematch_criteria(session: Session, criteria: Criteria, *, announce: bool = F
     if criteria.estate_types:
         in_scope = in_scope.where(or_(Listing.estate_type.is_(None), Listing.estate_type.in_(criteria.estate_types)))
     already = select(PropertyMatch.property_id).where(PropertyMatch.criteria_id == criteria.id)
-    property_ids = set(session.scalars(in_scope)) | set(session.scalars(already))
+    property_ids = sorted(set(session.scalars(in_scope)) | set(session.scalars(already)))
     count = 0
-    for property_id in sorted(property_ids):
-        subject = prop_svc.view_for(session, property_id)
-        if subject is None:
-            continue
-        stored = match_svc.evaluate_and_store(session, subject, criteria)
-        if not stored.result.ok:
-            continue
-        count += 1
-        if announce and stored.created:
-            notif_svc.enqueue(session, buyer_id=criteria.buyer_id, property_id=property_id,
-                              reason="criteria_changed", price=getattr(subject, "price", None))
+    # Both per-property queries are hoisted out of the loop: the stored matches for this criteria in one
+    # query here, and the listings of each chunk in one query below. What is left per property is pure
+    # evaluation plus the writes it actually needs.
+    stored_matches = match_svc.existing_by_property(session, criteria)
+    for start in range(0, len(property_ids), REMATCH_CHUNK):
+        chunk = property_ids[start:start + REMATCH_CHUNK]
+        subjects = prop_svc.views_for(session, chunk)
+        for property_id in chunk:
+            subject = subjects.get(property_id)  # absent = no listings left, same case view_for calls None
+            if subject is None:
+                continue
+            stored = match_svc.evaluate_and_store(session, subject, criteria, stored_matches.get(property_id))
+            if not stored.result.ok:
+                continue
+            count += 1
+            if announce and stored.created:
+                notif_svc.enqueue(session, buyer_id=criteria.buyer_id, property_id=property_id,
+                                  reason="criteria_changed", price=getattr(subject, "price", None))
     return count
 
 

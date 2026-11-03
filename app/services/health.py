@@ -27,6 +27,12 @@ FAILURES_BEFORE_DEGRADED = 2  # Roadmap_M1.md section 2 item 9
 # daily digest instead (Plan_Day5.md section 5 items 3-4).
 ANNOUNCED_KINDS = ("portal", "email")
 
+# Shown in the panel banner. `channel` (the Telegram delivery channel) is here but NOT in
+# ANNOUNCED_KINDS: when the channel itself is down, a Telegram message about it is the one notice that
+# cannot be delivered, so the panel is the only honest place to say it.
+BANNER_KINDS = ANNOUNCED_KINDS + ("channel",)
+CHANNEL_KEY = "telegram"
+
 
 def _announce(source: Source, text: str) -> None:
     """Telling her must never break a crawl: a Telegram outage degrades the message, not the run."""
@@ -85,8 +91,24 @@ def banner(session: Session) -> list[dict]:
 
     Listing hundreds of agency rows individually would bury the one line that matters - that Imovirtual
     stopped responding - which is the opposite of what deliverable 15 is for."""
-    rows = [{"name": s.name, "status": s.status, "error": s.last_error, "last_ok_at": s.last_ok_at}
-            for s in unhealthy(session, ANNOUNCED_KINDS)]
+    rows = []
+    for s in unhealthy(session, BANNER_KINDS):
+        row = {"name": s.name, "status": s.status, "error": s.last_error, "last_ok_at": s.last_ok_at}
+        if s.kind == "channel":
+            # The default wording ("não está a responder. As outras fontes continuam a funcionar") would be
+            # actively misleading here: nothing is wrong with the sources, the alerts are simply not
+            # reaching her, and she needs to know how many are waiting and that the panel still has them.
+            from app.services import notifications
+
+            waiting = notifications.undelivered_count(session)
+            row["text"] = "os alertas não estão a ser entregues. "
+            if waiting:
+                row["text"] += f"{waiting} à espera de envio. "
+            row["text"] += "As oportunidades continuam a ser recolhidas e estão no painel."
+            # "Última recolha correta" is about crawling; nothing is being collected here. What the date
+            # means for a channel is the last message that actually arrived.
+            row["ok_label"] = "Último envio com sucesso"
+        rows.append(row)
     counts = dict(session.execute(
         select(Source.status, func.count(Source.id))
         .where(Source.enabled.is_(True), Source.kind == "agency", Source.status.in_(("degraded", "blocked")))

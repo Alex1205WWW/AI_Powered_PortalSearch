@@ -12,6 +12,7 @@ It restores the cap, the warning flag and every buyer's paused state before exit
 """
 from __future__ import annotations
 
+import io
 import sys
 from datetime import datetime, timezone
 
@@ -25,6 +26,36 @@ from app.services import runs
 from app.services.criteria import list_active
 
 ok_count, fail_count = 0, 0
+
+
+def _references_budget(path: str) -> str:
+    """Any real reference to the spend cap in `path`, or "" if there is none.
+
+    The point of this guard is that running out of AI credit must never stop her searches or her alerts,
+    so these four modules may not depend on the budget. It reads the syntax tree rather than grepping for
+    the word: a docstring that merely explains why a module does NOT touch the budget is not coupling, and
+    a substring match flagged exactly that on 2026-11-04. Imports, bare names and attributes are all
+    checked, so a genuine `budget.guard(...)` or `from app.services import budget` is still caught.
+    """
+    import ast
+
+    tree = ast.parse(io.open(path, encoding="utf-8").read())
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom):
+            if node.module and "budget" in node.module:
+                return f"from {node.module} import ..."
+            for alias in node.names:
+                if "budget" in alias.name:
+                    return f"from {node.module} import {alias.name}"
+        elif isinstance(node, ast.Import):
+            for alias in node.names:
+                if "budget" in alias.name:
+                    return f"import {alias.name}"
+        elif isinstance(node, ast.Name) and "budget" in node.id:
+            return f"name {node.id}"
+        elif isinstance(node, ast.Attribute) and "budget" in node.attr:
+            return f"attribute .{node.attr}"
+    return ""
 
 
 def check(name: str, condition: bool, detail: str = "") -> None:
@@ -85,8 +116,8 @@ def main() -> int:
             check("matching still runs with the AI suspended", evaluated > 0, f"{evaluated} match(es)")
         for module in ("app/services/runs.py", "app/services/notifications.py",
                        "app/services/properties.py", "app/services/matches.py"):
-            body = open(module, encoding="utf-8").read()
-            check(f"no cap coupling in {module.split('/')[-1]}", "budget" not in body)
+            referenced = _references_budget(module)
+            check(f"no cap coupling in {module.split('/')[-1]}", not referenced, referenced or "")
 
         print("\n3. a paused buyer: silent, but nothing is lost")
         buyer = session.scalars(select(Buyer).where(Buyer.active.is_(True))).first()

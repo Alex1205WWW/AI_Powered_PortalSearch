@@ -68,7 +68,18 @@ def send(session: Session, *, force: bool = False) -> bool:
     if not chat:
         log.info("digest not sent: no chat id yet (she has not pressed Start)")
         return False
-    telegram.send_message(text, chat_id=chat)
+    # A failed digest must not kill the job, must not be marked as sent (so the next tick inside the slack
+    # window retries it), and must show up on the channel health - the digest is the second delivery path
+    # and used to be the one that failed invisibly.
+    from app.services import notifications
+
+    try:
+        telegram.send_message(text, chat_id=chat)
+    except Exception as exc:  # noqa: BLE001 - any transport failure, recorded rather than raised
+        notifications.record_send_result(session, ok=False, error=str(exc))
+        log.error("digest not delivered, will retry: %s", exc)
+        return False
+    notifications.record_send_result(session, ok=True)
     appsettings.put(session, LAST_SENT_KEY, now_local.date().isoformat())
     session.flush()
     log.info("digest sent for %d buyer(s)", len(rows))

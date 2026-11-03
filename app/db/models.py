@@ -19,6 +19,7 @@ from sqlalchemy import (
     Index,
     Integer,
     Numeric,
+    SmallInteger,
     String,
     Text,
     UniqueConstraint,
@@ -223,6 +224,10 @@ class ListingImage(Base):
     position: Mapped[int] = mapped_column(Integer, primary_key=True)
     url: Mapped[str] = mapped_column(Text, nullable=False)
     phash: Mapped[int | None] = mapped_column(BigInteger, index=True)
+    # Failed hash attempts for this URL. `phash` stays NULL - the image really has no hash, and dedup must
+    # keep reading that as unknown - but the warmer needs to know it has already tried, or a permanently
+    # dead URL is re-fetched every 15 minutes for ever (36 of them were).
+    phash_failures: Mapped[int] = mapped_column(SmallInteger, default=0, nullable=False, server_default="0")
 
 
 class ListingPriceHistory(Base):
@@ -280,6 +285,13 @@ class Notification(Base):
     created_at: Mapped[datetime] = mapped_column(TS, server_default=func.now(), nullable=False)
     sent_at: Mapped[datetime | None] = mapped_column(TS)
     telegram_message_id: Mapped[int | None] = mapped_column(BigInteger)
+    # Delivery bookkeeping. Without it a failing send is retried every two minutes for the life of the
+    # process - 738 such attempts in 24 h while the bot was blocked - with nothing anywhere saying so.
+    # `failed_at` is the give-up marker: the row stays for the record but leaves the pending queue, so a
+    # permanent failure can never block the alerts queued behind it.
+    attempts: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    last_error: Mapped[str | None] = mapped_column(Text)
+    failed_at: Mapped[datetime | None] = mapped_column(TS)
 
 
 class CrawlRun(Base):

@@ -41,7 +41,17 @@ def transcribe(session: Session, audio: bytes, *, filename: str = "nota.ogg",
     ai.budget_guard(session)
     stream = io.BytesIO(audio)
     stream.name = filename  # the SDK infers the format from the filename
-    response = ai.openai_client().audio.transcriptions.create(model=MODEL, file=stream, language=LANGUAGE)
+    client = ai.openai_client()
+    try:
+        response = client.audio.transcriptions.create(model=MODEL, file=stream, language=LANGUAGE)
+    except (ai.AiUnavailable, ai.BudgetExceeded):
+        raise
+    except Exception as exc:  # noqa: BLE001 - see ai.client.as_unavailable
+        # Her key authenticates but had no credit on 2026-11-04 (429 `insufficient_quota`). Raw, that
+        # exception escapes the bot handler and she gets no reply at all to her voice note; as
+        # `AiUnavailable` she is told the reason and pointed at the panel form, which needs no model.
+        log.warning("transcription failed: %s", exc)
+        raise ai.as_unavailable(exc) from exc
     seconds = float(duration_s or 0.0)
     ai.record_spend(session, provider="openai", operation="transcribe", model=MODEL,
                     audio_seconds=seconds, cost_cents=pricing.stt_cost_cents(seconds))

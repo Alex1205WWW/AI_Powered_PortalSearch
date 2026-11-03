@@ -27,6 +27,15 @@ SOURCE_SEED: list[dict] = [
     {"key": "casayes", "kind": "portal", "name": "CasaYes", "base_url": "https://casa.sapo.pt",
      "enabled": False, "schedule_minutes": None, "crawl_delay_s": 2.0,
      "notes": "Client-rendered shell. Fase 2 (browser engine)."},
+    # Not a place listings come FROM: the channel they go TO. It is a source row because `services.health`
+    # already owns exactly the state machine delivery needs - ok / degraded / blocked, a failure counter,
+    # last_ok_at, last_error - and `banner()` already puts that on every page. Reusing it means a dead
+    # Telegram channel is visible with no new table and no new UI concept. Deliberately NOT in
+    # health.ANNOUNCED_KINDS: announcing a Telegram outage over Telegram is the one message that cannot
+    # arrive. `schedule_minutes` is None because nothing crawls it.
+    {"key": "telegram", "kind": "channel", "name": "Notificações (Telegram)",
+     "base_url": "https://api.telegram.org", "enabled": True, "schedule_minutes": None, "crawl_delay_s": 0.0,
+     "notes": "Canal de saída dos alertas. O estado é atualizado a cada envio em services/notifications.py."},
 ]
 
 ADAPTERS: dict[str, type] = {}

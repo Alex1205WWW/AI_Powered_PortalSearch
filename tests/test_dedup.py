@@ -163,3 +163,59 @@ def test_reference_beats_photos_and_picks_the_oldest_cluster():
 def test_phash_of_rejects_non_images(bad):
     with pytest.raises(Exception):
         dedup.phash_of(bad)
+
+
+# --- an unstorable price must not kill the run (2026-11-02) --------------------------------------
+
+def test_a_price_too_large_for_the_column_becomes_sob_consulta():
+    """sintraneves.com lists a genuine 7 500 000 000 EUR industrial portfolio. `listings.price` is a
+    Postgres `integer`, so storing it raised NumericValueOutOfRange, killed the transaction and left all
+    279 of that site's listings unstored with the source permanently `degraded`."""
+    from app.domain.listing import PRICE_MAX, storable_price
+
+    assert PRICE_MAX == 2_147_483_647
+    assert storable_price(None) is None
+    assert storable_price(650_000) == 650_000
+    assert storable_price(69_600_000) == 69_600_000        # the largest real listing in the database
+    assert storable_price(PRICE_MAX) == PRICE_MAX
+    assert storable_price(PRICE_MAX + 1) is None
+    assert storable_price(7_500_000_000) is None           # the sintraneves listing
+    assert storable_price(-7_500_000_000) is None
+    assert storable_price(650_000.0) == 650_000            # floats from JSON-LD still round-trip
+
+
+# --- a dead photo URL must not be re-fetched for ever (T1.5, 2026-11-04) ------------------------
+
+def test_the_hash_warmer_gives_up_after_a_bounded_number_of_attempts():
+    """36 permanently dead URLs (a withdrawn Supabase bucket, an OLX CDN path that 404s) were re-fetched
+    every 15 minutes with no memory of having tried: `failed: 36, remaining: 36`, every tick, for ever.
+    The waste is small; the reason to cap it is that a constant floor of 36 failures is exactly where a
+    new, real breakage hides from the canary."""
+    from app.services.properties import MAX_HASH_FAILURES
+
+    assert MAX_HASH_FAILURES == 3
+
+    import inspect
+
+    from app.services import properties as prop_svc
+
+    warm = inspect.getsource(prop_svc.warm_hashes)
+    assert "phash_failures < MAX_HASH_FAILURES" in warm, "given-up images must leave the query"
+    assert "image.phash_failures = (image.phash_failures or 0) + 1" in warm, "the attempt must be counted"
+    assert '"given_up"' in warm, "the operator needs the number it gave up on"
+
+    ensure = inspect.getsource(prop_svc.ensure_hashes)
+    assert "MAX_HASH_FAILURES" in ensure, "the ingest path must respect the cap too"
+
+
+def test_giving_up_leaves_the_hash_unknown_not_zero():
+    """`phash` stays NULL: the image genuinely has no hash, and the photo rule must keep reading that as
+    unknown. A sentinel of 0 would be a real hash value and could match another image."""
+    import inspect
+
+    from app.services import properties as prop_svc
+
+    warm = inspect.getsource(prop_svc.warm_hashes)
+    # the failure branch increments the counter and continues; it never assigns phash
+    failure_branch = warm.split("if value is None:")[1].split("image.phash, done")[0]
+    assert "image.phash =" not in failure_branch and "image.phash," not in failure_branch

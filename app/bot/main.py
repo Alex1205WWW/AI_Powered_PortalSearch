@@ -36,8 +36,24 @@ def build_application() -> Application:
 
 
 async def _on_error(update: object, context) -> None:
-    """A failing handler must never stop the polling loop: she would simply find the bot silent."""
+    """A failing handler must never stop the polling loop, and must never leave her without an answer.
+
+    Logging alone was not enough. Any exception a handler does not catch used to end there, so she would
+    send a voice note and receive nothing at all - no error, no hint, just silence - which reads as "the
+    system is broken" and is the worst possible behaviour during the acceptance test. One sentence back is
+    the difference between a bug she can report and a bug she cannot see.
+    """
     log.exception("bot handler error", exc_info=context.error)
+    message = getattr(update, "effective_message", None)
+    if message is None:
+        return
+    try:
+        await message.reply_text(
+            "Não consegui processar esse pedido. O erro ficou registado.\n"
+            "Pode usar o formulário no painel, que funciona sempre."
+        )
+    except Exception:  # noqa: BLE001 - the reply itself may fail (blocked bot); never recurse
+        log.warning("could not deliver the error notice to the chat")
 
 
 def main() -> None:

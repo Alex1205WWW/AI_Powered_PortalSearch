@@ -3,6 +3,7 @@
 assign()   decide which property a freshly persisted listing belongs to (rules in `domain.dedup`)
 split()    operator says "não é o mesmo imóvel": move a listing to its own property and remember the pair
 view_for() the merged view of a property that matching evaluates (best-known value per field across its listings)
+views_for() the same for many properties in one query - what the rematch loop uses
 
 Image hashes are computed only when the photo rule can apply (a candidate from another source exists), only for the
 first `MAX_IMAGES` photos, cached by URL, and never stored as bytes (Milestone1_Plan.md §4.2)."""
@@ -11,6 +12,7 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime
+from typing import Sequence
 
 from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session, selectinload
@@ -25,7 +27,13 @@ log = logging.getLogger(__name__)
 MAX_CANDIDATES = 60  # closest candidates by price, then area; bounds the number of photo downloads per listing
 IMAGE_DELAY_S = 0.5  # image CDNs, not the portal itself
 IMAGE_MAX_BYTES = 3_000_000
+# Attempts before a photo URL is given up on. `_fetch_hash` already retries once per call, and the warmer
+# runs every 15 minutes, so 3 spans roughly half an hour of transient trouble before we accept the image is
+# gone. Without a cap, 36 permanently dead URLs were re-fetched on every tick for ever, and a constant
+# floor of 36 failures is exactly where a new, real breakage hides.
+MAX_HASH_FAILURES = 3
 CONFIDENCE_RANK = {"full": 0, "partial": 1, "none": 2}
+_SOURCE_MAP_KEY = "imoveis.source_map"  # see source_map(): cached on Session.info, so one read per session
 
 
 # --- candidates ---------------------------------------------------------------------------------
@@ -91,7 +99,14 @@ def ensure_hashes(session: Session, listing: Listing, limit: int = dedup.MAX_IMA
     for image in sorted(listing.images_rel, key=lambda i: i.position)[:limit]:
         if image.phash is None:
             cached = session.scalar(select(ListingImage.phash).where(ListingImage.url == image.url, ListingImage.phash.is_not(None)).limit(1))
-            value = dedup.to_unsigned(cached) if cached is not None else _fetch_hash(image.url)
+            if cached is not None:
+                value = dedup.to_unsigned(cached)
+            elif (image.phash_failures or 0) >= MAX_HASH_FAILURES:
+                continue  # already given up on this URL; see MAX_HASH_FAILURES
+            else:
+                value = _fetch_hash(image.url)
+                if value is None:
+                    image.phash_failures = (image.phash_failures or 0) + 1
             if value is None:
                 continue
             image.phash = dedup.to_signed(value)
@@ -119,7 +134,7 @@ def warm_hashes(session: Session, limit: int = 500) -> dict:
     stmt = (select(ListingImage)
             .join(Listing, Listing.id == ListingImage.listing_id)
             .where(ListingImage.phash.is_(None), ListingImage.position < dedup.MAX_IMAGES,
-                   Listing.status == "active")
+                   Listing.status == "active", ListingImage.phash_failures < MAX_HASH_FAILURES)
             .order_by(ListingImage.listing_id.desc(), ListingImage.position)
             .limit(limit))
     done = failed = cached = 0
@@ -131,16 +146,24 @@ def warm_hashes(session: Session, limit: int = 500) -> dict:
             continue
         value = _fetch_hash(image.url)
         if value is None:
+            # Count the attempt, so a URL that is simply gone is not re-fetched every 15 minutes for ever.
+            image.phash_failures = (image.phash_failures or 0) + 1
             failed += 1
+            if image.phash_failures >= MAX_HASH_FAILURES:
+                log.info("giving up on photo url after %d attempts: %s", image.phash_failures, image.url)
             continue
         image.phash, done = dedup.to_signed(value), done + 1
-        if done % 50 == 0:
+        if (done + failed) % 50 == 0:
             session.commit()
     session.commit()
-    remaining = session.scalar(
-        select(func.count()).select_from(ListingImage).join(Listing, Listing.id == ListingImage.listing_id)
-        .where(ListingImage.phash.is_(None), ListingImage.position < dedup.MAX_IMAGES, Listing.status == "active"))
-    return {"hashed": done, "from_cache": cached, "failed": failed, "remaining": remaining}
+    base = (select(func.count()).select_from(ListingImage)
+            .join(Listing, Listing.id == ListingImage.listing_id)
+            .where(ListingImage.phash.is_(None), ListingImage.position < dedup.MAX_IMAGES,
+                   Listing.status == "active"))
+    remaining = session.scalar(base.where(ListingImage.phash_failures < MAX_HASH_FAILURES))
+    given_up = session.scalar(base.where(ListingImage.phash_failures >= MAX_HASH_FAILURES))
+    return {"hashed": done, "from_cache": cached, "failed": failed,
+            "remaining": remaining, "given_up": given_up}
 
 
 # --- assign / split -----------------------------------------------------------------------------
@@ -252,6 +275,21 @@ def build_view(property_id: int, listings: list[Listing], source_by_id: dict[int
     return view
 
 
+def source_map(session: Session) -> dict[int, Source]:
+    """Every source by id, read once per session.
+
+    `build_view` needs this only to rank listings by their source's `confidence`, and a session is one job,
+    one request or one bot update - short enough that a source being enabled mid-session cannot matter, and
+    `_rank` would only reorder equally-good listings if it did. Without the cache this was the single most
+    repeated query in the system: `pg_stat_user_tables` recorded 48 966 sequential scans of `sources`,
+    because a merged property re-read the whole table every time one was built."""
+    cached = session.info.get(_SOURCE_MAP_KEY)
+    if cached is None:
+        cached = {s.id: s for s in session.scalars(select(Source))}
+        session.info[_SOURCE_MAP_KEY] = cached
+    return cached
+
+
 def view_for(session: Session, property_id: int) -> Listing | PropertyView | None:
     """A single-listing property is evaluated as the listing itself; otherwise the merged view. None when the
     property has no listings left (only possible after a manual delete)."""
@@ -260,5 +298,24 @@ def view_for(session: Session, property_id: int) -> Listing | PropertyView | Non
         return None
     if len(listings) == 1:
         return listings[0]
-    source_by_id = {s.id: s for s in session.scalars(select(Source))}
-    return build_view(property_id, listings, source_by_id)
+    return build_view(property_id, listings, source_map(session))
+
+
+def views_for(session: Session, property_ids: Sequence[int]) -> dict[int, Listing | PropertyView]:
+    """`view_for` for many properties in ONE query instead of one per property.
+
+    `rematch_criteria` evaluates every property in a criteria's zones, so the per-property query was an N+1
+    that grew with her catalogue and with every buyer added: 33 131 properties are in scope today and the
+    contract is 50 buyers. Properties with no listings left are simply absent from the result, which is the
+    same thing `view_for` says with None."""
+    ids = list(property_ids)
+    if not ids:
+        return {}
+    grouped: dict[int, list[Listing]] = {}
+    for listing in session.scalars(
+        select(Listing).where(Listing.property_id.in_(ids)).order_by(Listing.property_id, Listing.first_seen_at)
+    ):
+        grouped.setdefault(listing.property_id, []).append(listing)
+    sources = source_map(session) if any(len(v) > 1 for v in grouped.values()) else {}
+    return {pid: (listings[0] if len(listings) == 1 else build_view(pid, listings, sources))
+            for pid, listings in grouped.items()}

@@ -13,6 +13,7 @@
   flush-notifications      send unsent alerts
   rewind-watermarks <source_key> <hours>   look further back on the next sweep
   rematch                  silently re-evaluate every active criteria against stored properties (no alerts)
+  restatus-sold [--apply]  mark stored listings whose TITLE says vendido/reservado, then rematch (dry run by default)
   poll-email               read new Idealista alert emails now (the worker does this every 3 min)
   split <listing_id>       dedup override: this listing is not the same property as its siblings
 
@@ -237,6 +238,42 @@ def cmd_rematch(_: list[str]) -> None:
             print(f"criteria {criteria_id}: {count} matching properties")
 
 
+def cmd_restatus_sold(args: list[str]) -> None:
+    """restatus-sold [--apply]: mark stored listings whose TITLE says sold/reserved, then rematch.
+
+    A one-off catch-up for listings already in the database when the title rule arrived
+    (`domain.listing.sold_from_title`). New crawls apply it on ingest, so this is only needed once -
+    but it is idempotent and safe to run again.
+
+    Dry run by default: it prints what it would change and touches nothing. `--apply` writes, then runs
+    the silent rematch so her grades reflect the new status immediately instead of at the next sweep.
+    """
+    from sqlalchemy import select
+
+    from app.db.models import Listing
+    from app.domain.listing import sold_from_title
+    from app.services import runs
+
+    apply = "--apply" in args
+    with session_scope() as session:
+        rows = list(session.scalars(select(Listing).where(Listing.status == "active")))
+        hits = [r for r in rows if sold_from_title(r.title)]
+        print(f"active listings: {len(rows)}; titles saying sold/reserved: {len(hits)}")
+        for row in hits[:15]:
+            print(f"  {row.id}  {(row.title or '')[:95]}")
+        if len(hits) > 15:
+            print(f"  ... and {len(hits) - 15} more")
+        if not apply:
+            print("dry run; nothing written. Re-run with --apply to write.")
+            return
+        for row in hits:
+            row.status = "sold"
+        session.flush()
+        print(f"marked {len(hits)} listing(s) as sold")
+        for criteria_id, count in runs.rematch_all(session).items():
+            print(f"criteria {criteria_id}: {count} matching properties")
+
+
 def cmd_poll_email(args: list[str]) -> None:
     """poll-email [--rescan] [--silent]: read the alert mailbox.
 
@@ -416,6 +453,7 @@ COMMANDS = {
     "flush-notifications": cmd_flush_notifications,
     "rewind-watermarks": cmd_rewind_watermarks,
     "rematch": cmd_rematch,
+    "restatus-sold": cmd_restatus_sold,
     "poll-email": cmd_poll_email,
     "split": cmd_split,
     "seed-geo": cmd_seed_geo,

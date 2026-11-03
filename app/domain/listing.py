@@ -71,6 +71,90 @@ def feature_tier(features: dict[str, dict] | None, key: str) -> str:
     return entry["tier"] if entry else TIER_UNKNOWN
 
 
+# `listings.price` and `listing_price_history.price` are Postgres `integer`. A price above this cannot be
+# stored at all: psycopg raises NumericValueOutOfRange, the transaction dies, and - because ingestion runs
+# inside the source's run - the WHOLE pass fails. Seen 2026-11-02: one sintraneves.com listing priced at
+# 7 500 000 000 EUR (a genuine industrial portfolio, "10 Fábricas de Álcool / Etanol" - not a typo) left all
+# 279 of that site's listings unstored and the source permanently `degraded`.
+#
+# The boundary is the column's, not a guess about the market: the largest real listing in the database is a
+# 69 600 000 EUR Dubai penthouse, three orders of magnitude below the limit, so nothing she could plausibly
+# search for is affected. A price that does not fit is treated as "preço sob consulta" - the listing is kept
+# and matched on its other fields, the figure is preserved as `raw.price_unstorable`, and `hide_price` makes
+# the panel say so instead of showing a blank.
+PRICE_MAX = 2**31 - 1
+
+
+def storable_price(value: int | float | None) -> int | None:
+    """The price as it can be stored, or None when the column cannot hold it."""
+    if value is None:
+        return None
+    price = int(value)
+    return price if -PRICE_MAX <= price <= PRICE_MAX else None
+
+
+# A source-reported "previous price" that differs from the current one by a factor of ten or more is a
+# scale error in the feed, not a market move. Measured on all 3 277 reported previous prices 2026-11-02:
+# every plausible one falls between 0.36x and 2.3x of the current price, and the only values outside that
+# band are exact powers of ten with the SAME digits - 830 000 -> 830 000 000 and 2 000 000 -> 2 000 000 000
+# (x1000), 439 -> 439 000 (x1/1000), 39 900 -> 399 000 (x1/10). Seven rows in total. A factor of ten is
+# therefore ~4x clear of the most extreme real change on either side.
+#
+# It matters because this row is what her Excel export prints as "preço anterior" (`services/export.py`),
+# so an unfiltered feed error reaches the client as "this house used to cost 2 000 000 000 EUR".
+PRICE_SCALE_LIMIT = 10
+
+
+def plausible_previous_price(previous: int | None, current: int | None) -> int | None:
+    """A source-reported previous price, or None when the feed's figure is a scale error."""
+    if previous is None or not current or previous <= 0:
+        return None
+    ratio = previous / current
+    return previous if 1 / PRICE_SCALE_LIMIT < ratio < PRICE_SCALE_LIMIT else None
+
+
+# --- sold / reserved stated in the title --------------------------------------------------------
+# She asked for this directly on 2026-11-03: "também estão aparecer opções que já dizem 'Reservado',
+# essas não é necessário que apareçam".
+#
+# Some sources carry a typed flag (RE/MAX `isSold`, eGO `availability: soldout`) and those already arrive
+# as `status="sold"`. The rest say it only in the title, and 98 listings on production did exactly that
+# while still being served as active.
+#
+# TITLE ONLY, and that is the whole finding. Scanning descriptions was measured on the same data and is
+# pure noise: all 14 sampled description hits meant a secluded setting ("ambiente reservado", "espaço
+# reservado à privacidade") or a preserved facade ("traça preservada" - "preservad" literally contains
+# "reservad"). Filtering on descriptions would have hidden 65 properties, 23 of them her `confirmada`.
+#
+# The exclusions are not hypothetical either. Of the 98 title hits, 9 use the word as a SALE CONDITION:
+#   "2 MORADIAS ... VENDIDAS EM CONJUNTO"        sold as a pair, still for sale      (6)
+#   "T1 vendido no estado atual"                 sold as-is                          (2)
+#   "... è vendido com todo o recheio"           sold with the contents included     (1)
+# Those stay visible. "vendida em projeto" (an off-plan unit that is sold) is NOT excluded.
+_SOLD_WORD = r"(?:vendid|reservad)[oa]s?"
+_SALE_CONDITION = r"(?:em\s+conjunto|conjunto|no\s+estado|com\b|por\b)"
+# The lookbehind is what keeps "preservado" out: in that word the character before "reservad" is a letter.
+SOLD_TITLE_RE = re.compile(rf"(?<![a-zA-Z]){_SOLD_WORD}(?![a-zA-Z])(?!\s*{_SALE_CONDITION})",
+                           re.IGNORECASE)
+
+# "reservado" also means secluded, and then it describes a noun rather than the sale. No production title
+# does this today (all 3 real "reservad" titles are genuine markers) but plenty of descriptions do, so a
+# title like "Moradia T3 em ambiente reservado" is entirely plausible and must stay visible. Removing the
+# phrase before testing is clearer than stacking lookbehinds, and keeps the sale rule readable.
+_SECLUDED_RE = re.compile(
+    r"\b(?:ambientes?|espa[çc]os?|zonas?|[áa]reas?|locais|local|condom[íi]nios?|utiliza[çc][ãa]o|uso|"
+    r"recantos?|p[áa]tios?|jardins?|jardim|terra[çc]os?|salas?|quartos?|su[íi]tes?|varandas?)"
+    r"\s+(?:muito\s+|mais\s+|bastante\s+|t[ãa]o\s+)?reservad[oa]s?\b",
+    re.IGNORECASE)
+
+
+def sold_from_title(title: str | None) -> bool:
+    """True when the title itself says the property is sold or reserved."""
+    if not title:
+        return False
+    return SOLD_TITLE_RE.search(_SECLUDED_RE.sub(" ", title)) is not None
+
+
 CANARY_MIN_SAMPLE = 30
 CANARY_THRESHOLDS = {"agency": 0.85, "area": 0.90, "rooms": 0.90, "published": 0.90}  # plan Day 2 said date 100 %; real ads carry occasional impossible dates, so 90 % (live fill 2026-10-28: 100 / 100 / 99.5 / 99.4 %)
 
@@ -179,6 +263,13 @@ class CanonicalListing:
     price_reduced_at: datetime | None = None  # set only when the source states the previous price was a REDUCTION
     status: str = "active"
     raw: dict = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        # Applied here so no adapter can forget it, and so a source that already reports a typed status
+        # always wins: only an otherwise-active listing is downgraded. `matching.evaluate` already rejects
+        # anything that is not active, so this is all it takes for her to stop seeing sold listings.
+        if self.status == "active" and sold_from_title(self.title):
+            self.status = "sold"
 
     def missing_fields(self) -> list[str]:
         missing = []

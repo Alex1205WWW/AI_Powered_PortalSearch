@@ -14,7 +14,11 @@ router = APIRouter(prefix="/sources")
 
 @router.get("")
 def list_sources(request: Request, db: DB, user: User):
-    return render(request, "sources.html", sources=svc.list_portals(db))
+    # The worker re-reads the schedule on a timer, so the page can promise when a toggle takes effect
+    # instead of leaving her wondering whether the button did anything.
+    from app.worker.main import RELOAD_MINUTES
+
+    return render(request, "sources.html", sources=svc.list_portals(db), reload_minutes=RELOAD_MINUTES)
 
 
 @router.post("/{source_id}/toggle")

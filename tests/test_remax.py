@@ -266,3 +266,29 @@ def test_a_real_price_is_untouched(councils):
     info = remax.parse_slug(payload["descriptionTags"], councils)
     listing = remax.normalise(payload, "https://remax.pt/pt/imoveis/venda-moradia-t3-loures-santo-antao/123456789-1", info)
     assert listing.price == 450000 and listing.hide_price is False
+
+
+# --- a feed scale error is not a price change (2026-11-02) ---------------------------------------
+
+def test_a_thousandfold_previous_price_is_rejected_as_a_scale_error():
+    """RE/MAX `previousPrice` carries occasional scale errors. Measured on all 3 277 source-reported
+    previous prices: every plausible one is 0.36x-2.3x of the current price, and the seven outside that
+    band are exact powers of ten with the same digits. The Excel export prints this row as "preco
+    anterior", so an unfiltered one reaches her as "this house used to cost 2 000 000 000 EUR"."""
+    from app.domain.listing import PRICE_SCALE_LIMIT, plausible_previous_price
+
+    assert PRICE_SCALE_LIMIT == 10
+    # the real scale errors found in production
+    assert plausible_previous_price(2_000_000_000, 2_000_000) is None     # x1000
+    assert plausible_previous_price(830_000_000, 830_000) is None         # x1000
+    assert plausible_previous_price(439, 439_000) is None                 # x1/1000
+    assert plausible_previous_price(39_900, 399_000) is None              # x1/10
+    assert plausible_previous_price(8_850, 88_500) is None                # x1/10
+    # the most extreme REAL changes observed must survive
+    assert plausible_previous_price(580_000, 250_000) == 580_000          # 2.3x drop
+    assert plausible_previous_price(530_000, 1_470_000) == 530_000        # 0.36x rise
+    assert plausible_previous_price(220_000, 150_000) == 220_000
+    # degenerate inputs
+    assert plausible_previous_price(None, 300_000) is None
+    assert plausible_previous_price(300_000, None) is None
+    assert plausible_previous_price(0, 300_000) is None

@@ -2,6 +2,8 @@
 {% block title %}Fontes{% endblock %}
 {% block content %}
 <h2>Fontes</h2>
+<p class="muted">Quando ativa ou desativa uma fonte, a alteração entra em vigor dentro de {{ reload_minutes }} minutos.
+Não precisa de fazer mais nada.</p>
 <form method="post" action="/sources/refresh-robots"><button class="secondary outline">Verificar robots.txt agora</button></form>
 <table>
   <thead><tr><th>Fonte</th><th>Tipo</th><th>Ativa</th><th>Estado</th><th>robots.txt</th><th>Content-Signal</th><th>Intervalo</th><th>Notas</th></tr></thead>

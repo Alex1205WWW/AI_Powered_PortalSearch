@@ -39,7 +39,7 @@
   <article class="source-down" aria-live="polite">
     <strong>&#9888; {{ s.name }}</strong>{% if s.text %}: {{ s.text }}{% else %} {{ "não está a responder" if s.status == "degraded" else "está bloqueada" }}.
     As outras fontes continuam a funcionar.{% endif %}
-    <div class="muted">Última recolha correta: {{ s.last_ok_at.strftime("%d/%m/%Y %H:%M") if s.last_ok_at else "nunca" }}{% if s.error %} &middot; {{ s.error[:160] }}{% endif %}</div>
+    <div class="muted">{{ s.ok_label or "Última recolha correta" }}: {{ s.last_ok_at.strftime("%d/%m/%Y %H:%M") if s.last_ok_at else "nunca" }}{% if s.error %} &middot; {{ s.error[:160] }}{% endif %}</div>
   </article>
   {% endfor %}
   {% if msg %}<article aria-live="polite">{{ msg }}</article>{% endif %}

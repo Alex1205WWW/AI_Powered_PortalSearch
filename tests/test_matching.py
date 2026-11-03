@@ -106,3 +106,95 @@ def test_listing_located_only_at_district_level_is_unknown_for_a_council_zone():
     assert r.ok and r.grade == GRADE_POSSIBLE  # hide is about obligatory features; a coarse zone stays 'possivel'
     r = evaluate(listing(geo_code="lisboa", features={}), C(unknown_policy="hide"), ROSA_ZONES)
     assert not r.ok and "exterior:nao-indicado" in r.unsatisfied and "zona:nao-indicado" not in r.unsatisfied
+
+
+# --- "Reservado"/"Vendido" in the title (2026-11-03, her request) --------------------------------
+# She asked: "também estão aparecer opções que já dizem 'Reservado', essas não é necessário que
+# apareçam". Every title below is real, taken from production on 2026-11-04, and the rule was validated
+# against the WHOLE population of 101 titles containing these words: 92 sold/reserved, 9 kept, zero
+# misclassified in either direction.
+
+import pytest  # noqa: E402
+
+from app.domain.listing import sold_from_title  # noqa: E402
+
+
+@pytest.mark.parametrize("title", [
+    "Apartamento T2 Vendido Lisboa",
+    "Apartamento T2 Vendido Seixal",
+    "Moradia T5+1 Vendido Oeiras",
+    "Apartamento T3 Reservado Lisboa",
+    "Moradia T4 em Agualva-Cacém (RESERVADO)",
+    "RESERVADO: Moradia T3+1 em São João dos Montes",
+    "** VENDIDO ** Terreno com Projeto Aprovado para construção de Aparthotel | Sintra",
+    "** VENDIDA ** Azeitão | T4 | 180mtr - Patricia Taylor Imóveis | Moradias de Luxo em Portugal",
+    "Moradia T3 vendida em projeto - Resort em Óbidos.",
+])
+def test_a_title_that_says_sold_or_reserved_is_recognised(title):
+    assert sold_from_title(title) is True
+
+
+@pytest.mark.parametrize("title", [
+    # The word is a SALE CONDITION, not a completed sale. All nine of these are live listings.
+    "2 MORADIAS REMODELADAS COM 2 PISOS, VENDIDAS EM CONJUNTO",
+    "1 de 2 Moradias com 2 Pisos - Vendidas em Conjunto - AJUDA - INVEST...",
+    "2 moradias ligadas entre si vendidas em conjunto - Arrendadas",
+    "6 lotes de Terreno com 7830mts2 cada, vendidos em conjunto",
+    "T1 vendido no estado atual",
+    "T2 vendido no estado actual",
+    "Excelente T4 com uma área útil de ( 130 m2 ), dois W/C, è vendido com todo o recheio",
+    # "preservad" literally contains "reservad": the lookbehind is what keeps these out.
+    "Apartamento T3 com traça clássica preservada em Alfama",
+    "Moradia T4 com fachada preservada e jardim",
+    # A secluded setting, which is a selling point. This is why descriptions are not scanned at all:
+    # all 14 sampled description hits read like this, and filtering them would have hidden 65 properties.
+    "Moradia T3 em ambiente reservado e tranquilo",
+    None,
+    "",
+])
+def test_a_title_that_only_looks_sold_stays_visible(title):
+    assert sold_from_title(title) is False
+
+
+def test_the_canonical_listing_downgrades_itself_so_no_adapter_can_forget():
+    from app.domain.listing import CanonicalListing
+
+    base = dict(source_key="imovirtual", external_id="1", url="https://x/1")
+    assert CanonicalListing(**base, title="Apartamento T2 Vendido Lisboa").status == "sold"
+    assert CanonicalListing(**base, title="Apartamento T2 em Lisboa").status == "active"
+    assert CanonicalListing(**base, title="T1 vendido no estado atual").status == "active"
+
+
+def test_a_status_the_source_reported_is_never_overwritten():
+    """RE/MAX `isSold` and eGO `soldout` already arrive typed; the title rule must not fight them."""
+    from app.domain.listing import CanonicalListing
+
+    base = dict(source_key="remax", external_id="1", url="https://x/1")
+    assert CanonicalListing(**base, title="Moradia T4 em Sintra", status="sold").status == "sold"
+    assert CanonicalListing(**base, title="Apartamento T2 Vendido Lisboa", status="removed").status == "removed"
+
+
+def test_a_sold_listing_fails_matching_which_is_what_hides_it():
+    """No new filter is needed: `matching.evaluate` already requires an active listing."""
+    r = evaluate(listing(status="sold", features={"exterior": {"value": True, "tier": "confirmed"}}),
+                 C(), ROSA_ZONES)
+    assert not r.ok and "ativo" in r.unsatisfied
+
+
+@pytest.mark.parametrize("title", [
+    "Moradia T3 em ambiente reservado e tranquilo",
+    "Apartamento com espaço reservado para refeições",
+    "Moradia T4 com zona reservada e piscina",
+    "T3 com varanda reservada sobre o jardim",
+    "Apartamento com utilização reservada do logradouro",
+])
+def test_reservado_meaning_secluded_is_not_a_sale_status(title):
+    """"Reservado" also means secluded, and then it describes a noun, not the sale. No production title
+    does this today, but every sampled DESCRIPTION hit did, so a title like these is plainly plausible."""
+    assert sold_from_title(title) is False
+
+
+def test_a_secluded_phrase_does_not_mask_a_real_marker_elsewhere():
+    """Removing the phrase must not let a genuine marker slip past in the same title."""
+    assert sold_from_title("RESERVADO: Moradia T3 em ambiente reservado") is True
+    assert sold_from_title("Apartamento T2 Vendido Lisboa, zona reservada") is True

@@ -16,6 +16,14 @@ from app.services import appsettings
 log = logging.getLogger(__name__)
 ALERT_REASONS = ("new", "price_drop", "data_completed", "criteria_changed")
 
+# Tries before an alert is given up on. The flush runs every 2 minutes, so 30 is about an hour of a
+# transient outage absorbed silently, which is the behaviour we want for a dropped connection or a
+# Telegram blip. Past that it is not transient - the bot was blocked, or the chat id is wrong - and
+# retrying for days while saying nothing is how 738 failures accumulated unnoticed in 24 hours.
+# A given-up row keeps everything it knows (`last_error`, `attempts`) and leaves the pending queue, so it
+# can neither hide the problem nor block the alerts queued behind it.
+MAX_ATTEMPTS = 30
+
 
 def enqueue(session: Session, *, buyer_id: int, property_id: int, reason: str, price: int | None, payload: dict | None = None) -> bool:
     """Insert one notification; silently ignored if the same (buyer, property, reason, price) was already queued.
@@ -34,8 +42,93 @@ def enqueue(session: Session, *, buyer_id: int, property_id: int, reason: str, p
 
 
 def pending(session: Session) -> list[Notification]:
-    stmt = select(Notification).where(Notification.sent_at.is_(None), Notification.reason.in_(ALERT_REASONS)).order_by(Notification.created_at)
+    """Alerts still waiting to go out. Rows given up on are excluded: the queue is ordered by
+    `created_at`, so leaving a permanently undeliverable row in it would block every alert behind it."""
+    stmt = (select(Notification)
+            .where(Notification.sent_at.is_(None), Notification.failed_at.is_(None),
+                   Notification.reason.in_(ALERT_REASONS))
+            .order_by(Notification.created_at))
     return list(session.scalars(stmt))
+
+
+def undelivered_count(session: Session) -> int:
+    """Alerts still waiting to be sent, for the panel banner.
+
+    Counts every pending row, not only the ones already tried. `flush()` stops the whole batch on the first
+    failure, so with a dead channel exactly one group carries attempts while everything queued behind it is
+    equally stuck - counting attempts reported "1 à espera" while 197 alerts were going nowhere.
+
+    Rows with `failed_at` are excluded, because the banner says "à espera de envio" and that is no longer
+    true of them: they were either given up on after `MAX_ATTEMPTS` or retired deliberately (the 197
+    development-period alerts retired at handover on 2026-11-04, which were already visible in the panel
+    and would have arrived as 197 messages in one burst). Leaving them in made the banner claim they were
+    still waiting, for ever. The channel's own `degraded` status is what tells her delivery is broken; this
+    number only says how much is queued behind it.
+    """
+    from sqlalchemy import func
+
+    return int(session.scalar(
+        select(func.count(Notification.id)).where(
+            Notification.sent_at.is_(None),
+            Notification.failed_at.is_(None),
+            Notification.reason.in_(ALERT_REASONS),
+        )) or 0)
+
+
+def _channel(session: Session):
+    """The source row standing for the Telegram channel, or None if it has not been seeded."""
+    from app.services import health
+
+    return session.scalar(select(Source).where(Source.key == health.CHANNEL_KEY))
+
+
+def _record_delivery_failure(session: Session, group: list[Notification], error: str) -> None:
+    """Count the attempt on every row in the group, give up past the cap, and degrade the channel.
+
+    Called instead of letting the rows sit untouched, which is what made a dead channel invisible."""
+    from app.services import health
+
+    now = datetime.now(timezone.utc)
+    for row in group:
+        row.attempts = (row.attempts or 0) + 1
+        row.last_error = error[:2000]
+        if row.attempts >= MAX_ATTEMPTS:
+            row.failed_at = now
+            log.error("alert given up after %d attempts", row.attempts,
+                      extra={"notification": row.id, "buyer": row.buyer_id})
+    channel = _channel(session)
+    if channel is not None:
+        health.record_failure(channel, error)
+    session.flush()
+
+
+def _record_delivery_ok(session: Session) -> None:
+    from app.services import health
+
+    channel = _channel(session)
+    if channel is not None:
+        health.mark_ok(channel)
+
+
+def record_send_result(session: Session, *, ok: bool, error: str = "") -> None:
+    """Record a Telegram outcome on the channel health, for senders that are not the alert flush.
+
+    The flush is not the only thing that talks to Telegram: the daily digest does, every morning. Without
+    this, a digest that cannot be delivered left the channel reporting `ok` and the panel silent, which
+    defeats the whole point of making delivery observable. There is no notification row to count here, so
+    only the channel state moves.
+
+    `services/health.py` keeps its own try/except for source alerts, and `services/budget.py` for the
+    once-a-month spend warning: those are deliberately fire-and-forget, because telling her must never
+    break the crawl or the AI call that triggered them."""
+    if ok:
+        _record_delivery_ok(session)
+        return
+    from app.services import health
+
+    channel = _channel(session)
+    if channel is not None:
+        health.record_failure(channel, error or "envio falhou")
 
 
 def flush(session: Session, *, ignore_hours: bool = False) -> int:
@@ -85,7 +178,10 @@ def flush(session: Session, *, ignore_hours: bool = False) -> int:
         try:
             message_id = telegram.send_message(text, reply_markup=keyboard)
         except telegram.TelegramError as exc:
+            # Stop the batch (the channel is down for all of it), but record the attempt first so the
+            # failure is counted, bounded, and visible in the panel instead of only in the container log.
             log.error("telegram send failed, will retry: %s", exc)
+            _record_delivery_failure(session, group, str(exc))
             break
         now = datetime.now(timezone.utc)
         for row in group:
@@ -93,4 +189,6 @@ def flush(session: Session, *, ignore_hours: bool = False) -> int:
             row.telegram_message_id = message_id
         session.flush()
         sent += 1
+    if sent:
+        _record_delivery_ok(session)
     return sent
