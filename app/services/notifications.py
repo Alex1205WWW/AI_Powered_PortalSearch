@@ -110,6 +110,24 @@ def _record_delivery_ok(session: Session) -> None:
         health.mark_ok(channel)
 
 
+# The reason stored on the channel while she has not pressed Start. The banner matches on it to give her
+# the one instruction that fixes it, instead of the generic "delivery is broken" wording.
+NO_CHAT_REASON = "no-chat-id"
+
+
+def _mark_channel_waiting(session: Session) -> None:
+    """Show that alerts are waiting for her to connect, without consuming any row's attempts."""
+    from app.services import health
+
+    channel = _channel(session)
+    if channel is None:
+        return
+    channel.last_error = NO_CHAT_REASON
+    if channel.status == "ok":
+        channel.status = "degraded"
+        log.warning("telegram channel waiting: she has not pressed Start")
+
+
 def record_send_result(session: Session, *, ok: bool, error: str = "") -> None:
     """Record a Telegram outcome on the channel health, for senders that are not the alert flush.
 
@@ -144,6 +162,17 @@ def flush(session: Session, *, ignore_hours: bool = False) -> int:
     if not ignore_hours and not appsettings.within_alert_hours(session):
         log.info("outside alert hours: %d alert(s) held", len(rows))
         return 0
+    # Resolved once per flush, from the database. None means she has not pressed Start yet.
+    #
+    # Held, exactly like being outside her alert hours: the rows are NOT touched and NOT counted as
+    # attempts. Waiting for a precondition is not a delivery failure, and charging attempts for it would
+    # retire every alert after 30 flushes - an hour - which is the same data loss by a slower route.
+    # The channel state is still moved, so the panel says why nothing is arriving.
+    chat_id = appsettings.chat_id(session)
+    if not chat_id:
+        log.info("no chat id yet: %d alert(s) held until she presses Start", len(rows))
+        _mark_channel_waiting(session)
+        return 0
     groups: dict[tuple[int, str], list[Notification]] = defaultdict(list)
     for row in rows:
         groups[(row.property_id, row.reason)].append(row)
@@ -176,7 +205,11 @@ def flush(session: Session, *, ignore_hours: bool = False) -> int:
         # One row of state buttons per buyer in this message, so she can mark it without opening the panel.
         keyboard = formats.state_keyboard([(m.id, label) for label, m, _must in buyers]) if buyers else None
         try:
-            message_id = telegram.send_message(text, reply_markup=keyboard)
+            # The chat id MUST come from `appsettings`, which reads the database first. `send_message`
+            # alone falls back to `settings.telegram_chat_id`, the `.env` value, and that is empty by
+            # design so her first `/start` can be adopted. Omitting it here meant buyer alerts would have
+            # kept going nowhere even AFTER she connected, while the digest - which passes it - worked.
+            message_id = telegram.send_message(text, chat_id=chat_id, reply_markup=keyboard)
         except telegram.TelegramError as exc:
             # Stop the batch (the channel is down for all of it), but record the attempt first so the
             # failure is counted, bounded, and visible in the panel instead of only in the container log.

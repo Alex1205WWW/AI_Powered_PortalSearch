@@ -101,10 +101,19 @@ def banner(session: Session) -> list[dict]:
             from app.services import notifications
 
             waiting = notifications.undelivered_count(session)
-            row["text"] = "os alertas não estão a ser entregues. "
-            if waiting:
-                row["text"] += f"{waiting} à espera de envio. "
-            row["text"] += "As oportunidades continuam a ser recolhidas e estão no painel."
+            if (s.last_error or "") == notifications.NO_CHAT_REASON:
+                # Not broken - never connected. Telling her "não estão a ser entregues" would read as a
+                # fault in the system when the fix is one tap, so say the tap.
+                row["text"] = ("falta ligar o Telegram. Abra o seu bot e toque em \"Começar\" — "
+                               "a partir daí os alertas começam a chegar.")
+                if waiting:
+                    row["text"] += f" {waiting} já estão à espera."
+                row["error"] = None
+            else:
+                row["text"] = "os alertas não estão a ser entregues. "
+                if waiting:
+                    row["text"] += f"{waiting} à espera de envio. "
+                row["text"] += "As oportunidades continuam a ser recolhidas e estão no painel."
             # "Última recolha correta" is about crawling; nothing is being collected here. What the date
             # means for a channel is the last message that actually arrived.
             row["ok_label"] = "Último envio com sucesso"
