@@ -7,14 +7,17 @@ hold must not be lost, but they must not buzz her phone either.
 """
 from __future__ import annotations
 
+import asyncio
+import html
 import logging
 
 from sqlalchemy import func, select
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from app.bot.common import adopt_chat_id, allowed, in_db
+from app.bot.common import adopt_chat_id, allowed, configured_chat_id, in_db, is_operator
 from app.db.models import Buyer, Criteria, PropertyMatch
+from app.notify import telegram
 from app.services import appsettings, digest
 
 log = logging.getLogger(__name__)
@@ -42,6 +45,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.message.reply_text(
             "Pronto — este chat está agora ligado ao sistema e vai receber os alertas.\n\n" + HELP,
             parse_mode="HTML")
+        return
+    if await is_operator(update):
+        await update.message.reply_text(OPERATOR_HELP, parse_mode="HTML")
         return
     # A chat id is already configured and it is not this one: say nothing useful.
     log.warning("start from unexpected chat %s", chat.id)
@@ -119,3 +125,60 @@ def _apply_pause(session, name: str, paused: bool) -> str:
         return (f"⏸ <b>{buyer.label}</b> em pausa. Continuo a vigiar e a guardar tudo no painel, "
                 f"mas não lhe mando alertas até retomar.")
     return f"▶️ <b>{buyer.label}</b> retomado. Só lhe mando o que aparecer de novo a partir de agora."
+
+
+OPERATOR_HELP = """<b>Canal do operador</b>
+
+Este chat não recebe alertas. Serve para lhe enviar um recado:
+
+<code>/dizer o texto que quer que ela receba</code>
+
+O texto chega ao Telegram dela com a indicação de que é um recado seu.
+Para marcar texto use <code>/dizer --html &lt;b&gt;assim&lt;/b&gt;</code>."""
+
+RELAY_PREFIX = "💬 <b>Recado do Alex</b>\n\n"
+RELAY_MAX_CHARS = 3000
+
+
+async def dizer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Relay one note from Alex's own Telegram into her chat. Operator only.
+
+    Why a command and not plain text: a bare message in the operator chat would be relayed by accident the
+    first time he typed a note to himself, and there is no unsend. `/dizer` makes every relay deliberate.
+
+    The text is HTML-escaped unless he asks otherwise. `send_message` uses parse_mode=HTML, so an ordinary
+    "preço < 400k" or "Rosa & Raquel" would come back HTTP 400 and simply never arrive - which is exactly
+    the kind of sentence this command exists to send.
+
+    It does not touch `notifications`: a hand-typed note is not an alert, so it must not enter the queue, be
+    retried, or move the channel's health state. A failure is reported straight back to him instead.
+    """
+    if not await is_operator(update):
+        return
+
+    args = list(context.args or [])
+    as_html = "--html" in args
+    body = " ".join(a for a in args if a != "--html").strip()
+    if not body:
+        await update.message.reply_text(OPERATOR_HELP, parse_mode="HTML")
+        return
+    if len(body) > RELAY_MAX_CHARS:
+        await update.message.reply_text(
+            f"Demasiado longo: {len(body)} caracteres, o limite é {RELAY_MAX_CHARS}.")
+        return
+
+    chat = await asyncio.to_thread(configured_chat_id)
+    if not chat:
+        await update.message.reply_text(
+            "Ela ainda não tocou em Começar, por isso não há para onde enviar.")
+        return
+
+    text = RELAY_PREFIX + (body if as_html else html.escape(body))
+    try:
+        message_id = await asyncio.to_thread(telegram.send_message, text, chat_id=chat)
+    except Exception as error:  # noqa: BLE001 - he must see the reason, whatever it is
+        log.warning("operator relay failed: %s", error)
+        await update.message.reply_text(f"Não foi entregue: {error}")
+        return
+    log.info("operator relay delivered to %s as message %s", chat, message_id)
+    await update.message.reply_text(f"Entregue (mensagem {message_id}).")

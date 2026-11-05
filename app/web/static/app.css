@@ -371,9 +371,19 @@ tbody tr:last-child td { border-bottom: 0; }
    column until its dropdown showed no text at all. `fixed` makes the percentages authoritative. */
 .table-properties { table-layout: fixed; }
 /* Eight columns in one row is tight. Without hints the browser crushed the narrow ones until headings
-   broke mid-word ("COMPRAD OR", "MEDIA DORA"). These are percentages, so the table still adapts. */
-.table-properties th:nth-child(1) { width: 11%; }   /* Comprador  - "Raquel Gonçalves" must not break */
-.table-properties th:nth-child(2) { width: 20%; }   /* Imóvel     */
+   broke mid-word ("COMPRAD OR", "MEDIA DORA"). These are percentages, so the table still adapts.
+
+   The percentages alone were NOT enough, and the reason is pico: it scales the root font with the
+   viewport, to 20px above 1280px. So `thead th { font-size: .76rem }` renders at 15.2px on a wide screen
+   while these widths were tuned on a narrower one, and "COMPRADOR" needed 101px inside a 92px content box
+   - measured on the live page 2026-11-05, where it rendered as two text rects, "COMPRADO" + "R". Hence
+   the tighter cell padding and the smaller heading below: with 20px of padding each side, a 132px column
+   spends a third of itself on whitespace. Measured after the change: no heading breaks at 1280-1920px,
+   and only "Comprador" does at 1024-1100px, where eight columns are genuinely too many for the width. */
+.table-properties th, .table-properties td { padding-left: 10px; padding-right: 10px; }
+.table-properties thead th { font-size: .68rem; }
+.table-properties th:nth-child(1) { width: 13%; }   /* Comprador  - "Raquel Gonçalves" must not break */
+.table-properties th:nth-child(2) { width: 18%; }   /* Imóvel     */
 .table-properties th:nth-child(3) { width: 10%; }   /* Preço      - fits "sob consulta" on one line */
 .table-properties th:nth-child(4) { width: 10%; }   /* Zona       */
 .table-properties th:nth-child(5) { width: 12%; }   /* Requisitos */

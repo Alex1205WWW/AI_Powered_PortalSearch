@@ -182,6 +182,14 @@ def select_refs(entries: Iterator[tuple[str, str | None]], councils: dict[str, s
 ENCODED_RE = re.compile(r'"listingEncoded"\s*:\s*"([A-Za-z0-9+/=]{100,})"')
 
 
+def _public_street(payload: dict) -> str | None:
+    """The street, but only when RE/MAX says it may be shown."""
+    if payload.get("publicAddress") is False or payload.get("hasPrivateAddress") is True:
+        return None
+    address = payload.get("address")
+    return address.strip() or None if isinstance(address, str) else None
+
+
 def extract_listing_encoded(page_html: str) -> dict | None:
     match = ENCODED_RE.search(page_html)
     if not match:
@@ -305,7 +313,12 @@ def normalise(payload: dict, url: str, info: SlugInfo) -> CanonicalListing:
         transaction=info.transaction,
         geo_code=geo_code,
         geo_path=geo_path,
-        street=payload.get("publicAddress") or None,
+        # `publicAddress` is a BOOLEAN ("may this address be shown?"), not an address - it stored the
+        # string "true" as the street of 9 842 listings, printed under the zone on every row of her panel.
+        # The street is `address`. The flags are honoured rather than ignored: all 5 live listings sampled
+        # 2026-11-05 had publicAddress=True / hasPrivateAddress=False, so this only ever withholds an
+        # address RE/MAX itself marks as not public.
+        street=_public_street(payload),
         lat=payload.get("latitude"),
         lng=payload.get("longitude"),
         agency_name=payload.get("officeName"),

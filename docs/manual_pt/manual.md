@@ -13,6 +13,12 @@ que é novo.** O resto são detalhes.
 Entra com o seu utilizador e palavra-passe. É onde vê as listas completas, exporta para Excel e muda
 configurações.
 
+![O painel, a primeira página que vê ao entrar](images/painel.png)
+
+A primeira página é um resumo do dia. Cada número é um botão: toque e abre a lista por trás dele. O
+botão ☀/🌙 em cima à direita troca entre o modo claro e o escuro — as imagens deste manual estão no modo
+claro.
+
 **O bot do Telegram**, no telemóvel: `@Andreia_imoveis_bot`
 É onde cria pesquisas por voz e recebe os alertas de novidades.
 
@@ -161,6 +167,8 @@ responde logo a dizer em que categoria caiu:
 É assim que medimos se o sistema está a cumprir os 80 % que combinámos. Pode ver a contagem em
 **Painel → Faltaram**.
 
+![A página Faltaram: a contagem do teste, por comprador](images/cobertura.png)
+
 ---
 
 ## 8. O painel, página por página
@@ -174,6 +182,15 @@ responde logo a dizer em que categoria caiu:
 | **Mediadoras** | As mediadoras encontradas, o nível de leitura de cada site, e acrescentar à mão |
 | **Faltaram** | A contagem do teste: o que encontrou à mão e nós não |
 | **Configurações** | Horário dos alertas, hora do resumo, limite de gastos de IA |
+
+![A página Imóveis: filtros em cima, uma linha por imóvel, estado à direita](images/imoveis-filtros.png)
+
+Na página **Imóveis**, cada linha é um imóvel, não um anúncio: se o mesmo T2 está em quatro sites,
+aparece-lhe uma vez só, com os quatro links na coluna *Fontes*. A coluna *Mediadora* traz o telefone, e
+num telemóvel basta tocar no número para ligar. O botão **Exportar para Excel** guarda exactamente o que
+está a ver, já filtrado.
+
+![A página Mediadoras: nível de leitura e anúncios fora dos portais](images/mediadoras.png)
 
 ### Níveis de leitura das mediadoras
 
@@ -194,6 +211,8 @@ limite.
 
 Em **Configurações** vê quanto gastou este mês e pode definir o máximo.
 
+![A página Configurações: gasto de IA, horário dos alertas e o limite](images/configuracoes.png)
+
 A IA é usada em duas coisas apenas: transcrever as suas notas de voz, e interpretar os critérios. **Não é
 usada para procurar imóveis** — isso é feito por regras, e não custa nada por imóvel.
 
@@ -204,6 +223,10 @@ Quando chega a 80 % do limite, recebo-lhe um aviso. Quando chega ao limite:
 - pode continuar a criar pesquisas no formulário do painel.
 
 Nunca o limite de IA para o sistema. Só para a parte da voz.
+
+---
+
+![A página Fontes: o estado de cada portal e de cada site de mediadora](images/fontes.png)
 
 ---
 
@@ -257,9 +280,27 @@ Prefiro que saiba isto de antemão:
 
 ## 13. Imagens
 
-As capturas de ecrã deste manual ficam em `docs/manual_pt/images/`. Estão por recolher: serão tiradas do
-painel real, com os seus dados, quando o sistema estiver completo — um manual com imagens de dados
-inventados seria pior do que um manual sem imagens.
+As imagens deste manual são capturas do **seu** painel, com os seus dados reais, tiradas a 5 de novembro
+de 2026. Nenhuma é inventada ou de demonstração. Ficam em `docs/manual_pt/images/`.
 
-Pontos a ilustrar: o cartão de confirmação no Telegram, um alerta com os botões de estado, a página de
-Imóveis com os filtros, a página de Mediadoras com os níveis de leitura, e a página de Configurações.
+| Imagem | Página |
+|---|---|
+| `painel.png` | Painel |
+| `imoveis-filtros.png` | Imóveis |
+| `mediadoras.png` | Mediadoras |
+| `fontes.png` | Fontes |
+| `configuracoes.png` | Configurações |
+| `cobertura.png` | Faltaram |
+
+Os números que vê nelas são os do dia em que foram tiradas e mudam todos os dias — servem para reconhecer
+a página, não para a informação.
+
+Para as voltar a tirar depois de alguma alteração ao painel:
+
+```sh
+PANEL_PASSWORD=... python -m scripts.capture_manual_images https://andreia-imoveis.duckdns.org
+```
+
+**Faltam duas imagens do Telegram** — o cartão de confirmação de uma pesquisa, e um alerta com os botões
+de estado. Essas não se tiram do painel: são conversas no telemóvel, e as suas ainda são poucas. Tiro-as
+da minha própria conversa de testes e acrescento-as aqui.

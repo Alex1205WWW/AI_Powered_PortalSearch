@@ -36,6 +36,9 @@ class Settings(BaseSettings):
     # Telegram (alerts go to exactly one chat: hers)
     telegram_bot_token: str = ""
     telegram_chat_id: str = ""
+    # Alex's own Telegram id, so he can relay a note to her with /dizer from his phone. Env only:
+    # it must not be changeable from the panel, and it widens nothing except that one command.
+    telegram_operator_chat_id: str = ""
     telegram_min_spacing_s: float = 3.0
 
     # AI

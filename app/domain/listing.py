@@ -305,6 +305,12 @@ class CanonicalListing:
         # anything that is not active, so this is all it takes for her to stop seeing sold listings.
         if self.status == "active" and sold_from_title(self.title):
             self.status = "sold"
+        # A text field that is handed a flag by mistake reaches the database as "true" and is printed to
+        # her as an address. That is how 9 842 RE/MAX listings came to have the street "true": the adapter
+        # read `publicAddress`, which is a boolean. Fixed at the adapter, and fixed here too, so no future
+        # adapter can repeat it - a value that is not text is not an address.
+        if self.street is not None and not isinstance(self.street, str):
+            self.street = None
 
     def missing_fields(self) -> list[str]:
         missing = []

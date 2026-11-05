@@ -19,6 +19,9 @@ from app.logging_setup import setup_logging
 
 log = logging.getLogger(__name__)
 
+# How often the idle loop re-asserts "there is still no token" on the channel row.
+IDLE_REPORT_S = 3600
+
 
 def build_application() -> Application:
     application = Application.builder().token(settings.telegram_bot_token).build()
@@ -28,6 +31,8 @@ def build_application() -> Application:
     application.add_handler(CommandHandler("pausar", commands.pausar))
     application.add_handler(CommandHandler("retomar", commands.retomar))
     application.add_handler(CommandHandler("faltou", findings.faltou))
+    # Operator-only: Alex relays a note to her from his own Telegram. Never reaches a buyer handler.
+    application.add_handler(CommandHandler("dizer", commands.dizer))
     application.add_handler(MessageHandler(filters.VOICE | filters.AUDIO, intake.on_voice))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, intake.on_text))
     application.add_handler(CallbackQueryHandler(callbacks.on_callback))
@@ -56,15 +61,45 @@ async def _on_error(update: object, context) -> None:
         log.warning("could not deliver the error notice to the chat")
 
 
+def _report_token_state(missing: bool) -> None:
+    """Put the token state where someone will see it: the panel banner, via the channel source row.
+
+    Idling with a log line was the worst of the three options. The container reads "Up", the panel reads
+    `ok`, and nothing at all is delivered - the failure mode that looks healthiest from the outside. The
+    database is the only channel the bot shares with the panel, so that is where it says so.
+
+    Never fatal: a database that is briefly unreachable must not stop the bot from starting, or from
+    idling quietly while it waits for the token.
+    """
+    from app.db.session import session_scope
+    from app.services import notifications
+
+    try:
+        with session_scope() as session:
+            if missing:
+                notifications.mark_channel_token_missing(session)
+            else:
+                notifications.clear_channel_token_missing(session)
+            session.commit()
+    except Exception as exc:  # noqa: BLE001 - reporting a fault must never become one
+        log.warning("could not record the Telegram token state: %r", exc)
+
+
 def main() -> None:
     setup_logging(settings.log_level)
     if not settings.telegram_bot_token:
         # Under compose `restart: unless-stopped` an exit would loop every few seconds; idling keeps the
-        # container quiet and "Up" until the token is configured.
-        log.warning("TELEGRAM_BOT_TOKEN not set; bot idle until it is configured (restart the container afterwards)")
+        # container quiet until the token is configured. The panel is what reports it, not the log.
+        log.error("TELEGRAM_BOT_TOKEN not set; bot idle until it is configured (restart the container afterwards)")
         while True:
-            time.sleep(3600)
-            log.warning("bot idle: TELEGRAM_BOT_TOKEN still not set")
+            # Re-asserted on every tick, not only at startup: the channel row is shared state and a
+            # successful send elsewhere, or someone clearing the banner by hand, would otherwise leave the
+            # panel claiming delivery works while this container still has no token.
+            _report_token_state(missing=True)
+            time.sleep(IDLE_REPORT_S)
+    # A token exists now, so the stored "no token" fault has no cause left. Only that one is cleared: a
+    # channel degraded by a real delivery failure stays degraded until a send succeeds.
+    _report_token_state(missing=False)
     application = build_application()
     log.info("bot polling started")
     # `drop_pending_updates` avoids replaying a backlog of taps after a long outage: acting on a button

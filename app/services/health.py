@@ -110,7 +110,16 @@ def banner(session: Session) -> list[dict]:
             from app.services import notifications
 
             waiting = notifications.undelivered_count(session)
-            if (s.last_error or "") == notifications.NO_CHAT_REASON:
+            if (s.last_error or "") == notifications.NO_TOKEN_REASON:
+                # Nothing is broken on her side and there is nothing she can do: the bot has no token, so
+                # not a single message can leave. Say what is true - the opportunities are still being
+                # collected - and leave the fix named in the reason line, for whoever maintains it.
+                row["text"] = ("o Telegram ainda não está configurado, por isso os alertas não saem. "
+                               "As oportunidades continuam a ser recolhidas e estão no painel.")
+                if waiting:
+                    row["text"] += f" {waiting} à espera de envio."
+                row["error"] = "Falta TELEGRAM_BOT_TOKEN no servidor (o bot está parado à espera dele)."
+            elif (s.last_error or "") == notifications.NO_CHAT_REASON:
                 # Not broken - never connected. Telling her "não estão a ser entregues" would read as a
                 # fault in the system when the fix is one tap, so say the tap.
                 row["text"] = ("falta ligar o Telegram. Abra o seu bot e toque em \"Começar\" — "

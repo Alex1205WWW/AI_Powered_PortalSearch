@@ -18,6 +18,7 @@ from typing import Callable, TypeVar
 
 from telegram import Update
 
+from app.config import settings
 from app.db.session import session_scope
 from app.services import appsettings
 
@@ -73,6 +74,32 @@ def chat_matches(update: Update, configured: str | None) -> bool:
     if chat is None:
         return False
     return bool(configured) and str(chat.id) == str(configured)
+
+
+def chat_is_operator(update: Update, operator: str | None, buyer_chat: str | None) -> bool:
+    """True when this update comes from Alex's own chat, used ONLY by /dizer.
+
+    Deliberately a SEPARATE decision from `chat_matches`, not a widening of it. The allowlist exists to keep
+    anything from reaching her end clients, and every buyer-facing handler must keep answering exactly one
+    chat. The operator can relay a note to her and nothing else: he cannot create a search, press a state
+    button or read a buyer.
+
+    A misconfigured operator equal to her own chat would make /dizer relay her message back to herself, so
+    that case is refused rather than producing a confusing echo.
+    """
+    chat = update.effective_chat
+    if chat is None or not operator:
+        return False
+    if buyer_chat and str(operator) == str(buyer_chat):
+        log.warning("operator chat id equals the buyer chat id; /dizer disabled")
+        return False
+    return str(chat.id) == str(operator)
+
+
+async def is_operator(update: Update) -> bool:
+    """The operator id comes from the environment, so only the buyer chat needs a database read."""
+    configured = await asyncio.to_thread(configured_chat_id)
+    return chat_is_operator(update, settings.telegram_operator_chat_id, configured)
 
 
 async def allowed(update: Update) -> bool:

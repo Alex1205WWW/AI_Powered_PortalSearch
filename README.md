@@ -134,6 +134,34 @@ docker compose exec worker python -m app.cli export /tmp/imoveis.xlsx     # folh
 Passe sempre as opções com `sh -c "..."`: o `docker compose exec` consome os `--flags` que vêm
 soltos e o comando corre sem elas, em silêncio.
 
+### Falar com ela pelo Telegram (`/dizer`)
+
+O bot responde a um único chat — o dela — para que nada chegue aos clientes finais. O operador é a
+excepção, e apenas para uma coisa: enviar-lhe um recado.
+
+`TELEGRAM_OPERATOR_CHAT_ID` no `.env` (só no `.env`: não é alterável no painel) define o chat do Alex.
+Depois, no Telegram dele, no mesmo bot dela:
+
+```
+/dizer Bom dia Andreia, os alertas de ontem já estão no painel
+/dizer --html <b>urgente</b>: confirme a data do teste
+```
+
+Ela recebe o texto com a indicação «Recado do Alex»; ele recebe de volta o id da mensagem, ou a razão
+exacta da falha. O texto é escapado para HTML por omissão — `send_message` usa `parse_mode=HTML`, logo um
+«preço < 400k» seria recusado com HTTP 400 e simplesmente não chegaria.
+
+O operador **não** pode fazer mais nada pelo bot: criar pesquisas, carregar nos botões de estado ou ler
+compradores continuam a exigir o chat dela. `/dizer` também não passa pela fila de notificações — um
+recado escrito à mão não é um alerta, por isso não é repetido nem altera o estado de saúde do canal.
+
+Alternativa sem Telegram, a partir do servidor:
+
+```sh
+docker compose exec -T worker python -m scripts.say --dry "texto"   # pré-visualiza, não envia
+docker compose exec -T worker python -m scripts.say "texto"
+```
+
 ## Desenvolvimento local
 
 ```sh

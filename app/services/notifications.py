@@ -114,6 +114,41 @@ def _record_delivery_ok(session: Session) -> None:
 # the one instruction that fixes it, instead of the generic "delivery is broken" wording.
 NO_CHAT_REASON = "no-chat-id"
 
+# The reason stored on the channel when the bot has no token at all. Without it the bot container idles
+# quietly and reads "Up" while nothing can ever be delivered - the one failure mode that looks healthiest
+# from the outside. `app/bot/main.py` is the only writer; the banner matches on it the same way.
+NO_TOKEN_REASON = "no-bot-token"
+
+
+def mark_channel_token_missing(session: Session) -> None:
+    """The bot started with no `TELEGRAM_BOT_TOKEN`: say so where someone will see it.
+
+    Deliberately not a delivery failure: no alert was attempted, so nothing may consume a row's attempts.
+    Only the channel state moves, exactly as `_mark_channel_waiting` does for the missing chat id.
+    """
+    channel = _channel(session)
+    if channel is None:
+        return
+    channel.last_error = NO_TOKEN_REASON
+    if channel.status == "ok":
+        channel.status = "degraded"
+    log.error("telegram channel unusable: TELEGRAM_BOT_TOKEN is not set")
+
+
+def clear_channel_token_missing(session: Session) -> None:
+    """A token is configured now, so the stored "no token" fault no longer has a cause.
+
+    Only ever clears the fault this module wrote. A channel degraded by a real delivery failure is left
+    alone - that one is cleared by a send that succeeds, not by a bot restart.
+    """
+    channel = _channel(session)
+    if channel is None or (channel.last_error or "") != NO_TOKEN_REASON:
+        return
+    channel.status = "ok"
+    channel.last_error = None
+    channel.consecutive_failures = 0
+    log.info("telegram channel: token configured, cleared the stored no-token fault")
+
 
 def _mark_channel_waiting(session: Session) -> None:
     """Show that alerts are waiting for her to connect, without consuming any row's attempts."""

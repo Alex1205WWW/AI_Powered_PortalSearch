@@ -292,3 +292,47 @@ def test_a_thousandfold_previous_price_is_rejected_as_a_scale_error():
     assert plausible_previous_price(None, 300_000) is None
     assert plausible_previous_price(300_000, None) is None
     assert plausible_previous_price(0, 300_000) is None
+
+
+def test_the_street_is_the_address_not_the_flag_that_says_it_is_public(payloads, councils):
+    """`publicAddress` is a BOOLEAN. Read as the street it stored the text "true" on 9 842 live listings,
+    which her panel printed under the zone as if it were the address. Found 2026-11-05 by looking at a
+    screenshot of the real Imóveis page - no test and no crawl error had ever shown it."""
+    for name in payloads:
+        listing = canonical(payloads, name, councils)
+        assert listing.street not in ("true", "false", True, False), name
+        assert listing.street is None or isinstance(listing.street, str), name
+
+
+def test_an_address_remax_marks_as_not_public_is_not_stored(payloads, councils):
+    """The flag genuinely varies: 2 of the 6 real payloads carry `publicAddress: False` while still
+    publishing an `address` string, so honouring it is not theoretical. Five live listings sampled
+    2026-11-05 were all True, which is why the street is normally present."""
+    public = canonical(payloads, "mafra_t2_price_rise", councils)
+    assert payloads["mafra_t2_price_rise"]["publicAddress"] is True
+    assert public.street == "Avenida de Portugal"
+
+    withheld = canonical(payloads, "almada_t3_sold_price_drop", councils)
+    assert payloads["almada_t3_sold_price_drop"]["publicAddress"] is False
+    assert payloads["almada_t3_sold_price_drop"]["address"], "the payload does carry an address string"
+    assert withheld.street is None, "RE/MAX says this address is not public"
+
+    assert remax._public_street({"publicAddress": True, "address": "Avenida de Portugal"}) == "Avenida de Portugal"
+    assert remax._public_street({"address": "Rua da Recosta"}) == "Rua da Recosta"
+    assert remax._public_street({"publicAddress": False, "address": "Avenida de Portugal"}) is None
+    assert remax._public_street({"hasPrivateAddress": True, "address": "Avenida de Portugal"}) is None
+    assert remax._public_street({"address": "   "}) is None
+    assert remax._public_street({"address": True}) is None
+    assert remax._public_street({}) is None
+
+
+def test_a_street_that_is_not_text_can_never_be_stored_by_any_adapter():
+    """The same defect in a future adapter must not reach her panel. Fixed at the canonical boundary too,
+    for the same reason `sold_from_title` lives there: so no adapter can forget it."""
+    from app.domain.listing import CanonicalListing
+
+    common = dict(source_key="x", external_id="1", url="https://example.invalid/1")
+    assert CanonicalListing(**common, street=True).street is None
+    assert CanonicalListing(**common, street=0).street is None
+    assert CanonicalListing(**common, street="Rua Augusta").street == "Rua Augusta"
+    assert CanonicalListing(**common).street is None
