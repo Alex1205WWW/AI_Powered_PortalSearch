@@ -1,115 +1,372 @@
-/* Imóveis — panel styling on top of Pico.
-   Moved out of base.html once it outgrew a <style> block: the browser caches it, and a stylesheet is
-   easier to reason about than 60 lines wedged in a <head>.
+/* Imóveis — panel design system.
+ *
+ * Built on pico.css, which supplies the form controls. Everything below is the layer that makes it read
+ * as a dashboard rather than a document: tokens, surfaces, the stat grid, the responsive tables and both
+ * themes. Deliberately CSS-only except for the theme toggle, so the panel keeps working with scripts
+ * blocked and on whatever browser her phone has.
+ *
+ * Rules that look arbitrary are measured, and say so. Do not "tidy" them away.
+ */
 
-   Two constraints shaped everything here:
-     * she reads this on a phone between viewings, so the phone layout is not an afterthought;
-     * Pico already sets a sane baseline, so this adds a small accent system and gets out of the way
-       rather than restyling every element. */
+/* ============================================================================================== *
+ * 1. Tokens
+ * ============================================================================================== */
 
 :root {
-  --brand: #15514a;          /* the house mark */
+  /* The house mark. The darker tone is the brand; the soft one is for hover and accents. */
+  --brand: #15514a;
   --brand-soft: #1d6a60;
   --brand-ink: #ffffff;
-  --radius: .6rem;
-  --pico-border-radius: var(--radius);
+
+  /* One spacing scale, so vertical rhythm is consistent instead of per-page guesswork. */
+  --sp-1: .25rem;
+  --sp-2: .5rem;
+  --sp-3: .75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+
+  --radius: .7rem;
+  --radius-sm: .45rem;
+  --radius-pill: 999px;
+  --pico-border-radius: var(--radius-sm);
+
+  /* Layered rather than heavy: a dashboard with drop shadows everywhere reads as cluttered. */
+  --shadow-1: 0 1px 2px rgba(16, 24, 40, .04), 0 1px 3px rgba(16, 24, 40, .06);
+  --shadow-2: 0 4px 6px -2px rgba(16, 24, 40, .04), 0 12px 16px -4px rgba(16, 24, 40, .08);
+
+  --ring: 0 0 0 3px var(--accent-faint);
+  --tabular: "tnum" 1, "lnum" 1;   /* numbers line up in columns */
 }
 
-/* Pico's own accent follows the brand, so links, focus rings and primary buttons all agree. */
+/* --- light (the default, defined on bare :root so nothing depends on a media query) ------------ */
 :root:not([data-theme="dark"]) {
-  --pico-primary: var(--brand);
-  --pico-primary-hover: var(--brand-soft);
-  --pico-primary-focus: rgba(21, 81, 74, .2);
-  --surface: #ffffff;
-  --head-bg: #ffffff;
-  --head-border: rgba(0, 0, 0, .09);
+  --accent: var(--brand);
+  --accent-hover: var(--brand-soft);
+  --accent-ink: #ffffff;
+  --accent-faint: rgba(21, 81, 74, .14);
+  --accent-wash: rgba(21, 81, 74, .05);
+
+  --page: #f6f7f8;              /* the ground behind the cards */
+  --surface: #ffffff;           /* cards, table rows */
+  --surface-2: #fbfbfc;         /* table headers, insets */
+  --border: rgba(16, 24, 40, .10);
+  --border-strong: rgba(16, 24, 40, .16);
+
+  --ink: #141b1f;
+  --ink-soft: #5b6670;
+  --ink-faint: #8b949c;
+
+  --ok: #1b7f4b;      --ok-bg: rgba(27, 127, 75, .10);
+  --warn: #b45309;    --warn-bg: rgba(180, 83, 9, .11);
+  --bad: #b42318;     --bad-bg: rgba(180, 35, 24, .10);
+  --off: #6b7280;     --off-bg: rgba(107, 114, 128, .10);
+
+  --pico-primary: var(--accent);
+  --pico-primary-hover: var(--accent-hover);
+  --pico-primary-focus: var(--accent-faint);
+  --pico-background-color: var(--page);
+  --pico-card-background-color: var(--surface);
+  --pico-muted-color: var(--ink-soft);
+  color-scheme: light;
 }
+
+/* --- dark, applied for the OS preference unless light was explicitly chosen -------------------- */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --pico-primary: #4fbfae;
-    --pico-primary-hover: #6fd6c5;
-    --pico-primary-focus: rgba(79, 191, 174, .25);
-    --surface: #16191d;
-    --head-bg: #12151a;
-    --head-border: rgba(255, 255, 255, .09);
+    --accent: #4fbfae;
+    --accent-hover: #6fd6c5;
+    --accent-ink: #06201c;
+    --accent-faint: rgba(79, 191, 174, .20);
+    --accent-wash: rgba(79, 191, 174, .07);
+
+    --page: #0e1113;
+    --surface: #171b1f;
+    --surface-2: #1c2126;
+    --border: rgba(255, 255, 255, .10);
+    --border-strong: rgba(255, 255, 255, .18);
+
+    --ink: #e8eaec;
+    --ink-soft: #9aa4ad;
+    --ink-faint: #6f7a83;
+
+    --ok: #46c07e;      --ok-bg: rgba(70, 192, 126, .14);
+    --warn: #e0a042;    --warn-bg: rgba(224, 160, 66, .14);
+    --bad: #f0786c;     --bad-bg: rgba(240, 120, 108, .14);
+    --off: #8b949c;     --off-bg: rgba(139, 148, 156, .14);
+
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, .3);
+    --shadow-2: 0 8px 24px -6px rgba(0, 0, 0, .45);
+
+    --pico-primary: var(--accent);
+    --pico-primary-hover: var(--accent-hover);
+    --pico-primary-focus: var(--accent-faint);
+    --pico-background-color: var(--page);
+    --pico-card-background-color: var(--surface);
+    --pico-muted-color: var(--ink-soft);
+    color-scheme: dark;
   }
 }
-[data-theme="dark"] {
-  --pico-primary: #4fbfae;
-  --pico-primary-hover: #6fd6c5;
-  --surface: #16191d;
-  --head-bg: #12151a;
-  --head-border: rgba(255, 255, 255, .09);
+
+/* --- dark, chosen explicitly by the toggle. Repeated so the toggle wins in BOTH directions:
+       choosing dark on a light OS must work, and choosing light on a dark OS must too. --------- */
+:root[data-theme="dark"] {
+  --accent: #4fbfae;
+  --accent-hover: #6fd6c5;
+  --accent-ink: #06201c;
+  --accent-faint: rgba(79, 191, 174, .20);
+  --accent-wash: rgba(79, 191, 174, .07);
+
+  --page: #0e1113;
+  --surface: #171b1f;
+  --surface-2: #1c2126;
+  --border: rgba(255, 255, 255, .10);
+  --border-strong: rgba(255, 255, 255, .18);
+
+  --ink: #e8eaec;
+  --ink-soft: #9aa4ad;
+  --ink-faint: #6f7a83;
+
+  --ok: #46c07e;      --ok-bg: rgba(70, 192, 126, .14);
+  --warn: #e0a042;    --warn-bg: rgba(224, 160, 66, .14);
+  --bad: #f0786c;     --bad-bg: rgba(240, 120, 108, .14);
+  --off: #8b949c;     --off-bg: rgba(139, 148, 156, .14);
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, .3);
+  --shadow-2: 0 8px 24px -6px rgba(0, 0, 0, .45);
+
+  --pico-primary: var(--accent);
+  --pico-primary-hover: var(--accent-hover);
+  --pico-primary-focus: var(--accent-faint);
+  --pico-background-color: var(--page);
+  --pico-card-background-color: var(--surface);
+  --pico-muted-color: var(--ink-soft);
+  color-scheme: dark;
 }
 
-/* --- header ------------------------------------------------------------------------------------ */
+/* ============================================================================================== *
+ * 2. Page
+ * ============================================================================================== */
 
-.site-head {
-  background: var(--head-bg);
-  border-bottom: 1px solid var(--head-border);
-  position: sticky; top: 0; z-index: 20;
+body {
+  background: var(--page);
+  color: var(--ink);
+  -webkit-text-size-adjust: 100%;   /* iOS Safari inflates text in landscape without this */
 }
-.head-inner {
-  display: flex; align-items: center; gap: 1rem;
-  padding-top: .55rem; padding-bottom: .55rem;
-}
-.brand {
-  display: inline-flex; align-items: center; gap: .5rem;
-  font-weight: 700; font-size: 1.08rem; text-decoration: none;
-  color: var(--pico-contrast); flex: 0 0 auto;
-}
-.brand img { border-radius: 6px; display: block; }
-.mainnav { display: flex; flex-wrap: wrap; gap: .15rem; flex: 1 1 auto; justify-content: flex-end; }
-@media (max-width: 1250px) { .navlink { padding: .4rem .45rem; font-size: .88rem; } }
-.navlink {
-  display: inline-block; padding: .4rem .6rem; border-radius: var(--radius);
-  text-decoration: none; font-size: .93rem; line-height: 1.2;
-  color: var(--pico-contrast); opacity: .75;
-}
-.navlink:hover { background: var(--pico-primary-focus); opacity: 1; }
-/* The current page is filled, not merely underlined: on a phone, in a wrapped two-line menu, a subtle
-   marker is invisible. */
-.navlink.is-active {
-  background: var(--brand); color: var(--brand-ink); opacity: 1; font-weight: 600;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .navlink.is-active { background: var(--pico-primary); color: #06201c; }
-}
-[data-theme="dark"] .navlink.is-active { background: var(--pico-primary); color: #06201c; }
-.logout { margin: 0; flex: 0 0 auto; }
-.logout button { padding: .35rem .8rem; font-size: .85rem; margin: 0; }
 
-/* --- content ----------------------------------------------------------------------------------- */
+main.container { padding-top: var(--sp-5); padding-bottom: var(--sp-7); }
 
-main.container { padding-top: 1.4rem; padding-bottom: 3rem; }
-h2 { margin-bottom: .2rem; font-size: 1.5rem; }
-h2 + p, h2 + form { margin-top: .8rem; }
-h3 { font-size: 1.1rem; margin-bottom: .4rem; }
-.muted { color: var(--pico-muted-color); }
-.errors { color: #c62828; }
+h2 {
+  margin-bottom: var(--sp-1); font-size: 1.55rem; letter-spacing: -.015em; font-weight: 650;
+  color: var(--ink);
+}
+h2 + p, h2 + form, h2 + .toolbar { margin-top: var(--sp-3); }
+h3 { font-size: 1.05rem; margin-bottom: var(--sp-2); font-weight: 650; letter-spacing: -.01em; }
+.muted { color: var(--ink-soft); }
+.errors { color: var(--bad); }
 form.inline { display: inline; margin: 0; }
 
-.tag {
-  display: inline-block; font-size: .72rem; font-weight: 600; letter-spacing: .02em;
-  padding: .15em .55em; border-radius: 999px; background: #6b7280; color: #fff; vertical-align: middle;
-}
-.tag.ok { background: #1b7f4b; }
-.tag.warn { background: #b45309; }
-.tag.bad { background: #b42318; }
-.tag.off { background: #6b7280; }
+/* Section heading with room above it, so stacked blocks do not run together. */
+main.container > h3 { margin-top: var(--sp-6); }
 
-article { border: 1px solid var(--head-border); border-radius: var(--radius); }
-article.source-down { border-left: 4px solid #b45309; }
+/* ============================================================================================== *
+ * 3. Header
+ * ============================================================================================== */
+
+.site-head {
+  position: sticky; top: 0; z-index: 20;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+/* color-mix is recent; a flat surface is the fallback on anything that does not support it. */
+@supports not (background: color-mix(in srgb, red 50%, transparent)) {
+  .site-head { background: var(--surface); }
+}
+
+.head-inner {
+  display: flex; align-items: center; gap: var(--sp-4);
+  padding-top: var(--sp-3); padding-bottom: var(--sp-3);
+}
+
+.brand {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  font-weight: 700; letter-spacing: -.02em; text-decoration: none;
+  color: var(--ink); flex: 0 0 auto;
+}
+.brand:hover { color: var(--accent); }
+.brand img { border-radius: var(--radius-sm); }
+
+.mainnav { display: flex; align-items: center; gap: var(--sp-1); flex-wrap: wrap; }
+
+.navlink {
+  display: inline-block; padding: .42rem .7rem; border-radius: var(--radius-pill);
+  text-decoration: none; font-size: .9rem; font-weight: 550; white-space: nowrap;
+  color: var(--ink-soft); transition: background .12s ease, color .12s ease;
+}
+.navlink:hover { background: var(--accent-wash); color: var(--ink); }
+.navlink.is-active { background: var(--accent); color: var(--accent-ink); font-weight: 650; }
+
+@media (max-width: 1250px) { .navlink { padding: .4rem .55rem; font-size: .86rem; } }
+
+.head-actions { display: flex; align-items: center; gap: var(--sp-2); margin-left: auto; flex: 0 0 auto; }
+.logout { margin: 0; }
+.logout button { margin: 0; }
+
+/* The theme button is an icon, so it must not stretch the way pico stretches buttons. */
+.theme-toggle {
+  width: 2.4rem; height: 2.4rem; padding: 0; margin: 0;
+  display: inline-grid; place-items: center;
+  border-radius: var(--radius-pill); border: 1px solid var(--border);
+  background: transparent; color: var(--ink-soft); cursor: pointer; line-height: 1;
+}
+.theme-toggle:hover { background: var(--accent-wash); color: var(--ink); border-color: var(--border-strong); }
+.theme-toggle svg { width: 1.05rem; height: 1.05rem; display: block; }
+/* One button, two icons: CSS decides which is visible, so the label never lies about the state. */
+.theme-toggle .i-dark { display: none; }
+:root[data-theme="dark"] .theme-toggle .i-dark { display: block; }
+:root[data-theme="dark"] .theme-toggle .i-light { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .i-dark { display: block; }
+  :root:not([data-theme="light"]) .theme-toggle .i-light { display: none; }
+}
+
+/* ============================================================================================== *
+ * 4. Cards and the stat grid
+ * ============================================================================================== */
+
+article {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); box-shadow: var(--shadow-1);
+}
+
+/* Her attention goes here first, so the numbers are large, tabular and quiet underneath. */
+.stats {
+  display: grid; gap: var(--sp-4); margin: var(--sp-5) 0;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+}
+/* The surface is declared here, not inherited from `article`: a stat tile is an <a> or a <div>, so it
+   never matched the `article` rule and rendered as bare text on the page background. */
+.stat {
+  padding: var(--sp-4) var(--sp-4) var(--sp-3);
+  display: flex; flex-direction: column; gap: var(--sp-1);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow-1);
+}
+.stat-label {
+  font-size: .76rem; font-weight: 650; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.stat-value {
+  font-size: 2.1rem; font-weight: 680; line-height: 1.05; letter-spacing: -.03em;
+  font-variant-numeric: tabular-nums; font-feature-settings: var(--tabular); color: var(--ink);
+}
+.stat-note { font-size: .82rem; color: var(--ink-soft); }
+.stat-value a { color: inherit; text-decoration: none; }
+.stat-value a:hover { color: var(--accent); }
+
+/* A card that is also a link: the whole tile is the target, which is what a thumb expects. */
+/* [!] Must NOT set `display`. `.card-link` and `.stat` have the same specificity and this rule comes
+   later, so a `display: block` here silently overrode `.stat`'s `display: flex` and the label, value and
+   note flowed inline as one sentence ("POR ANALISAR 1850 correspondências novas"). Layout belongs to the
+   component; this class only carries link behaviour. */
+.card-link { text-decoration: none; color: inherit; transition: box-shadow .14s ease, transform .14s ease, border-color .14s ease; }
+.card-link:hover { box-shadow: var(--shadow-2); border-color: var(--border-strong); transform: translateY(-1px); }
+
+/* Buyer summary and source health both use this: a titled card with rows of label/value. */
+.panel-grid { display: grid; gap: var(--sp-4); grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); }
+.panel { padding: var(--sp-4); }
+.panel-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+.panel-head h3 { margin: 0; }
+.panel-row {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-3);
+  padding: var(--sp-2) 0; border-top: 1px solid var(--border);
+  font-size: .9rem;
+}
+.panel-row:first-of-type { border-top: 0; }
+.panel-row dt, .panel-row .k { color: var(--ink-soft); }
+.panel-row dd, .panel-row .v {
+  margin: 0; font-weight: 650; font-variant-numeric: tabular-nums; color: var(--ink);
+}
+
+.toolbar { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; }
+.toolbar > * { margin: 0; }
+.toolbar button, .toolbar [role="button"] { width: auto; }
+
+/* ============================================================================================== *
+ * 5. Badges
+ * ============================================================================================== */
+
+/* Tinted rather than solid: eight saturated pills in a table row is noise, and the state colour still
+   reads at a glance. */
+.tag {
+  display: inline-block; font-size: .73rem; font-weight: 650; letter-spacing: .01em;
+  padding: .2em .6em; border-radius: var(--radius-pill); vertical-align: middle;
+  background: var(--off-bg); color: var(--off); border: 1px solid transparent; white-space: nowrap;
+}
+.tag.ok   { background: var(--ok-bg);   color: var(--ok); }
+.tag.warn { background: var(--warn-bg); color: var(--warn); }
+.tag.bad  { background: var(--bad-bg);  color: var(--bad); }
+.tag.off  { background: var(--off-bg);  color: var(--off); }
+
+/* ============================================================================================== *
+ * 6. Notices
+ * ============================================================================================== */
+
+/* A message from Alex. Accent-coloured and calm, never the warning styling: a fault banner and a note
+   must not look alike, or she learns to skim past both. */
+article.notice {
+  border-left: 4px solid var(--accent); background: var(--accent-wash);
+  padding: var(--sp-3) var(--sp-4); margin-bottom: var(--sp-3);
+}
+.notice-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-3); }
+.notice-head strong { color: var(--accent); font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; }
+.notice-body { margin-top: var(--sp-2); white-space: pre-line; }   /* her line breaks are kept */
+.notice-close {
+  width: 1.9rem; height: 1.9rem; min-height: 0; padding: 0; margin: 0; flex: 0 0 auto;
+  display: grid; place-items: center; font-size: 1.2rem; line-height: 1;
+  background: transparent; border: 0; color: var(--ink-faint); cursor: pointer; border-radius: var(--radius-pill);
+}
+.notice-close:hover { background: var(--accent-faint); color: var(--ink); }
+.notice-actions { margin: var(--sp-3) 0 0; }
+.notice-reply {
+  display: inline-block; padding: .45rem .9rem; border-radius: var(--radius-pill);
+  background: var(--accent); color: var(--accent-ink); text-decoration: none;
+  font-size: .88rem; font-weight: 650;
+}
+.notice-reply:hover { background: var(--accent-hover); color: var(--accent-ink); }
+
+article.source-down {
+  border-left: 4px solid var(--warn); background: var(--warn-bg);
+  padding: var(--sp-3) var(--sp-4); margin-bottom: var(--sp-3);
+}
+article.source-down strong { color: var(--ink); }
+
+/* ============================================================================================== *
+ * 7. Tables
+ * ============================================================================================== */
+
+.table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); }
+.table-wrap > table { margin: 0; }
 
 table { font-size: .92rem; }
 /* Sentence case, not uppercase: "COMPRADOR" with letter-spacing is wider than its own column and broke
    as "COMPRADO / R". Small and muted reads as a header perfectly well without shouting. */
 thead th {
-  font-size: .78rem; letter-spacing: .01em;
-  color: var(--pico-muted-color); font-weight: 600;
+  font-size: .76rem; letter-spacing: .02em; text-transform: uppercase;
+  color: var(--ink-faint); font-weight: 650; background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
 }
-tbody tr:hover { background: var(--pico-primary-focus); }
-td, th { overflow-wrap: break-word; vertical-align: top; }
+tbody tr { transition: background .1s ease; }
+tbody tr:hover { background: var(--accent-wash); }
+td, th { overflow-wrap: break-word; vertical-align: top; border-bottom: 1px solid var(--border); }
+tbody tr:last-child td { border-bottom: 0; }
+
 /* `auto` layout treats the widths below as hints and redistributes by content, which squeezed the state
    column until its dropdown showed no text at all. `fixed` makes the percentages authoritative. */
 .table-properties { table-layout: fixed; }
@@ -126,22 +383,36 @@ td, th { overflow-wrap: break-word; vertical-align: top; }
 /* The state cell was squeezed until its dropdown showed no text and the share field read "part". It holds
    two controls, so they stack and take the full cell. */
 .table-properties td:nth-child(8) select,
-.table-properties td:nth-child(8) input { width: 100%; max-width: none; margin-bottom: .3rem; font-size: .85rem; }
+.table-properties td:nth-child(8) input { width: 100%; max-width: none; margin-bottom: var(--sp-1); font-size: .85rem; }
 
-.filters { margin-bottom: .6rem; }
-.filters details { margin: .5rem 0; }
-.filters summary { cursor: pointer; font-size: .9rem; color: var(--pico-primary); }
-.filter-actions { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; }
+/* The phone number is a tel: link she taps between viewings. */
+td a[href^="tel:"] { color: var(--accent); text-decoration: none; font-variant-numeric: tabular-nums; }
+td a[href^="tel:"]:hover { text-decoration: underline; }
+
+/* ============================================================================================== *
+ * 8. Filters
+ * ============================================================================================== */
+
+.filters { margin-bottom: var(--sp-3); }
+.filters details {
+  margin: var(--sp-2) 0; border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); padding: var(--sp-3) var(--sp-4);
+}
+.filters summary { cursor: pointer; font-size: .9rem; color: var(--accent); font-weight: 600; }
+.filter-actions { display: flex; gap: var(--sp-3); align-items: center; flex-wrap: wrap; }
 .filter-actions > * { margin: 0; }
 /* Pico sizes every button to 100%. Its `[type=submit]` selector ties with `.filter-actions > *` on
    specificity, so naming the element is what actually wins (measured: the button computed to 510px until
    this rule existed). */
 .filter-actions button, .filter-actions [role="button"] { width: auto; }
 
-.danger-zone { margin-top: 2.5rem; border-left: 3px solid #b42318; padding-left: .9rem; }
-.danger-zone summary { color: #b42318; cursor: pointer; }
+.danger-zone { margin-top: var(--sp-7); border-left: 3px solid var(--bad); padding-left: var(--sp-3); }
+.danger-zone summary { color: var(--bad); cursor: pointer; }
 
-/* --- phone ------------------------------------------------------------------------------------- */
+/* ============================================================================================== *
+ * 9. Phone and tablet
+ * ============================================================================================== */
+
 /* She reads this on a phone between viewings. Below 860px every table becomes a stack of cards: the
    header row leaves the flow and each cell prints its own label from `data-label`. No JavaScript, so it
    survives with scripts blocked. */
@@ -150,37 +421,73 @@ td, th { overflow-wrap: break-word; vertical-align: top; }
      column unreachable, which is how the first attempt failed. */
   html, body { max-width: 100%; overflow-x: hidden; }
   .table-properties th { width: auto; }
-  .head-inner { flex-wrap: wrap; gap: .4rem .8rem; padding-top: .5rem; padding-bottom: .5rem; }
+
+  .head-inner { flex-wrap: wrap; gap: var(--sp-2) var(--sp-3); padding-top: var(--sp-2); padding-bottom: var(--sp-2); }
   .brand { order: 1; }
-  .logout { order: 2; margin-left: auto; }
-  .mainnav { order: 3; flex-basis: 100%; gap: .25rem; }
-  .navlink { padding: .45rem .7rem; font-size: .9rem; }
+  .head-actions { order: 2; }
+  /* The nav scrolls sideways instead of wrapping to three cramped rows, which is what seven links did
+     on a 390px screen. The row keeps its own scrollbar; the page still cannot scroll sideways. */
+  .mainnav {
+    order: 3; flex-basis: 100%; flex-wrap: nowrap; gap: var(--sp-1);
+    overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px; scroll-snap-type: x proximity;
+  }
+  .mainnav::-webkit-scrollbar { display: none; }
+  .navlink { padding: .5rem .8rem; font-size: .9rem; scroll-snap-align: start; }
+
+  /* The wrapper's border would double up with each card's own. */
+  .table-wrap { overflow-x: visible; border: 0; background: transparent; border-radius: 0; }
 
   table, thead, tbody, tr, td { display: block; width: 100%; }
   thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   tbody tr {
-    border: 1px solid var(--head-border); border-radius: var(--radius);
-    padding: .8rem .9rem; margin-bottom: .85rem; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: var(--sp-3) var(--sp-4); margin-bottom: var(--sp-3);
+    background: var(--surface); box-shadow: var(--shadow-1);
   }
   tbody tr:hover { background: var(--surface); }
-  tbody td { border: none; padding: .28rem 0; display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: .6rem; align-items: start; }
+  tbody td { border: none; padding: .3rem 0; display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--sp-3); align-items: start; }
   tbody td::before {
-    content: attr(data-label); font-size: .7rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .03em; color: var(--pico-muted-color);
+    content: attr(data-label); font-size: .68rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .04em; color: var(--ink-faint);
   }
   tbody td:not([data-label]) { display: block; }
   /* The first cell identifies the card, so it reads as a heading rather than "Comprador: Rosa". */
-  tbody td:first-child { display: block; font-weight: 700; font-size: 1.02rem; margin-bottom: .45rem; }
+  tbody td:first-child { display: block; font-weight: 700; font-size: 1.02rem; margin-bottom: var(--sp-2); }
   tbody td:first-child::before { content: none; }
-  tbody td select, tbody td input { width: 100%; max-width: none !important; margin-bottom: .3rem; }
+  tbody td select, tbody td input { width: 100%; max-width: none !important; margin-bottom: var(--sp-1); }
 
   h2 { font-size: 1.3rem; }
-  main.container { padding-top: 1rem; }
+  main.container { padding-top: var(--sp-4); }
+  .stats { gap: var(--sp-3); margin: var(--sp-4) 0; grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr)); }
+  .stat { padding: var(--sp-3); }
+  .stat-value { font-size: 1.7rem; }
   /* Comfortable touch targets - the state dropdown is tapped constantly. */
   button, [role="button"], select, input { min-height: 2.6rem; }
+  .theme-toggle { min-height: 0; }
 }
+
 @media (max-width: 480px) {
-  tbody td { grid-template-columns: minmax(0, 1fr); gap: .1rem; }
-  tbody td::before { margin-top: .25rem; }
-  main.container, .head-inner { padding-left: .8rem; padding-right: .8rem; }
+  tbody td { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  tbody td::before { margin-top: var(--sp-1); }
+  main.container, .head-inner { padding-left: var(--sp-3); padding-right: var(--sp-3); }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .panel-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ============================================================================================== *
+ * 10. Accessibility and print
+ * ============================================================================================== */
+
+:where(a, button, select, input, summary, [role="button"]):focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px; box-shadow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+  .card-link:hover { transform: none; }
+}
+@media print {
+  .site-head, .filters, .danger-zone, .theme-toggle { display: none; }
+  body { background: #fff; }
+  article, tbody tr { box-shadow: none; }
 }

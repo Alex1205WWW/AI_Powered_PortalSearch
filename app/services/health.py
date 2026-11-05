@@ -12,7 +12,7 @@ import logging
 from datetime import datetime, timezone
 
 from sqlalchemy import func, select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, object_session
 
 from app.db.models import Source
 
@@ -30,19 +30,28 @@ ANNOUNCED_KINDS = ("portal", "email")
 # Shown in the panel banner. `channel` (the Telegram delivery channel) is here but NOT in
 # ANNOUNCED_KINDS: when the channel itself is down, a Telegram message about it is the one notice that
 # cannot be delivered, so the panel is the only honest place to say it.
-BANNER_KINDS = ANNOUNCED_KINDS + ("channel",)
+BANNER_KINDS = ANNOUNCED_KINDS + ("channel", "worker")
 CHANNEL_KEY = "telegram"
 
 
 def _announce(source: Source, text: str) -> None:
-    """Telling her must never break a crawl: a Telegram outage degrades the message, not the run."""
+    """Telling her must never break a crawl: a Telegram outage degrades the message, not the run.
+
+    The chat id comes from the database, never from the environment. `TELEGRAM_CHAT_ID` in `.env` is
+    deliberately empty since the handover, so that her first `/start` could be adopted - a send that
+    falls back to it reaches nobody.
+    """
     from app.notify import telegram
+    from app.services import appsettings
 
     if source.kind not in ANNOUNCED_KINDS:
         log.info("source health changed, not announced individually", extra={"source": source.key})
         return
     try:
-        telegram.send_message(text)
+        # `object_session` raises on anything not mapped, and this whole block is swallowed - so an
+        # unmapped caller would turn a delivery failure into silence. Ask only when it can answer.
+        session = object_session(source) if isinstance(source, Source) else None
+        telegram.send_message(text, chat_id=appsettings.chat_id(session) if session is not None else None)
     except Exception as exc:  # noqa: BLE001
         log.warning("source-health alert not delivered: %r", exc, extra={"source": source.key})
 
@@ -117,6 +126,12 @@ def banner(session: Session) -> list[dict]:
             # "Última recolha correta" is about crawling; nothing is being collected here. What the date
             # means for a channel is the last message that actually arrived.
             row["ok_label"] = "Último envio com sucesso"
+        elif s.kind == "worker":
+            # Her side of this is "nothing, I am on it". The detail is for whoever maintains the system,
+            # so the reason line carries the job names and the headline does not alarm her.
+            row["text"] = ("algumas tarefas automáticas não estão a correr como devem. "
+                           "A recolha de imóveis continua e nada se perde — estou a ver o que se passa.")
+            row["ok_label"] = "Última verificação correta"
         rows.append(row)
     counts = dict(session.execute(
         select(Source.status, func.count(Source.id))

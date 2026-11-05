@@ -1,12 +1,14 @@
 from __future__ import annotations
 
+from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
 from fastapi import APIRouter, Form, Request
 from fastapi.responses import RedirectResponse
 from sqlalchemy import func, select
 
-from app.db.models import Buyer, Criteria, Listing, PropertyMatch, Source
+from app.db.models import Buyer, Criteria, Listing, Property, PropertyMatch, Source
+from app.services import digest
 from app.web import auth
 from app.web.deps import DB, User, render
 
@@ -47,5 +49,13 @@ def dashboard(request: Request, db: DB, user: User):
         "listings": db.scalar(select(func.count()).select_from(Listing)) or 0,
         "matches_new": db.scalar(select(func.count()).select_from(PropertyMatch).where(PropertyMatch.state == "novo")) or 0,
     }
+    counts["properties"] = db.scalar(select(func.count()).select_from(Property)) or 0
+    counts["matches_confirmed"] = db.scalar(
+        select(func.count()).select_from(PropertyMatch).where(PropertyMatch.grade == "confirmada")) or 0
+    # Reuses the digest's own summary rather than a second, slightly different definition of "new": it
+    # counts the alerts actually queued for her, so the dashboard and her morning message agree.
+    buyer_rows = digest.per_buyer(db, datetime.now(timezone.utc) - timedelta(hours=24))
     sources = list(db.scalars(select(Source).where(Source.enabled.is_(True)).order_by(Source.name)))
-    return render(request, "dashboard.html", counts=counts, sources=sources)
+    # The channel and worker rows are health, not sources she chose; the banner already reports them.
+    crawl_sources = [s for s in sources if s.kind not in ("channel", "worker")]
+    return render(request, "dashboard.html", counts=counts, sources=crawl_sources, buyer_rows=buyer_rows)

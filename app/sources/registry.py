@@ -36,6 +36,14 @@ SOURCE_SEED: list[dict] = [
     {"key": "telegram", "kind": "channel", "name": "Notificações (Telegram)",
      "base_url": "https://api.telegram.org", "enabled": True, "schedule_minutes": None, "crawl_delay_s": 0.0,
      "notes": "Canal de saída dos alertas. O estado é atualizado a cada envio em services/notifications.py."},
+    # Not a source either: the worker itself. Same trick as the channel row above - `services/health.py`
+    # already owns the ok/degraded state machine and `banner()` already renders it, so a job that fails
+    # repeatedly, runs late, or dies mid-crawl becomes visible with no new table and no new page.
+    # `services/jobhealth.py` is the only writer. Outside health.ANNOUNCED_KINDS on purpose: a worker
+    # fault is not something she can act on and her phone should not buzz about it.
+    {"key": "worker", "kind": "worker", "name": "Tarefas automáticas",
+     "base_url": "internal://worker", "enabled": True, "schedule_minutes": None, "crawl_delay_s": 0.0,
+     "notes": "Estado das tarefas agendadas: falhas repetidas, atrasos e recolhas presas."},
 ]
 
 ADAPTERS: dict[str, type] = {}

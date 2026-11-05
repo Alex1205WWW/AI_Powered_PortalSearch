@@ -19,7 +19,7 @@ from sqlalchemy.orm import Session, selectinload
 
 from app.db.models import Listing, ListingImage, Property, PropertySplit, Source
 from app.domain import dedup
-from app.domain.listing import TYPED_TIERS, normalize_text
+from app.domain.listing import TYPED_TIERS, normalize_text, plausible_phone
 from app.sources.http import get_client
 
 log = logging.getLogger(__name__)
@@ -273,6 +273,39 @@ def build_view(property_id: int, listings: list[Listing], source_by_id: dict[int
                 merged[key] = entry
     view.features = merged
     return view
+
+
+def contact_for(primary: Listing, listings: Sequence[Listing],
+                agency_by_id: dict[int, object] | None = None) -> tuple[str | None, str | None]:
+    """(agency name, dialable phone) for one property, in the order she would want to be told.
+
+    The panel and the Excel export both used the PRIMARY listing's phone and nothing else, which left a
+    number she can call on only 68.9 % of her 1 515 shown properties - while the system actually held one
+    for 90.4 % of them (measured 2026-11-05). The missing fifth sits on the agency record, put there by
+    the Imovirtual agency directory, and nothing ever looked at it.
+
+    Order: the primary listing, then any sibling listing of the same property, then the agency record.
+    The sibling step only recovers 10 rows, but this is the one place that resolves a contact, so the
+    whole chain lives here rather than being half-applied in two call sites.
+
+    The agency fallback is safe to trust, checked rather than assumed: of the 271 shown properties where
+    the listing's phone and the agency record's phone BOTH existed and disagreed, the agency NAME was
+    identical in 271 of 271. They are simply two real lines for the same agency (office, second office,
+    agent), so the agency record never points somewhere else. Where both exist the listing's own number
+    still wins, because it is the one printed on that advert.
+    """
+    name = primary.agency_name_raw or next(
+        (l.agency_name_raw for l in listings if l.agency_name_raw), None)
+    phone = plausible_phone(primary.agency_phone_raw)
+    if phone is None:
+        phone = next((p for p in (plausible_phone(l.agency_phone_raw) for l in listings) if p), None)
+    if phone is None and agency_by_id:
+        for candidate in (primary, *listings):
+            agency = agency_by_id.get(candidate.agency_id) if candidate.agency_id else None
+            phone = plausible_phone(getattr(agency, "phone", None)) if agency else None
+            if phone:
+                break
+    return name, phone
 
 
 def source_map(session: Session) -> dict[int, Source]:

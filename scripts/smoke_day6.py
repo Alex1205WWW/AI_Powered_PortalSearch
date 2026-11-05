@@ -14,11 +14,11 @@ import sys
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 
 from app.ai.parse_criteria import ParsedCriteria, sanitise
 from app.bot.handlers import findings
-from app.db.models import Buyer, CrawlRun, Criteria, CriteriaDraft, PropertyMatch
+from app.db.models import Buyer, CrawlRun, Criteria, CriteriaDraft, ManualFinding, PropertyMatch
 from app.db.session import session_scope
 from app.notify import formats
 from app.services import appsettings, digest, drafts
@@ -38,6 +38,10 @@ def check(name: str, condition: bool, detail: str = "") -> None:
         print(f"  FAIL  {name}" + (f"  [{detail}]" if detail else ""))
 
 
+PROBE_URLS = ["https://www.imovirtual.com/pt/anuncio/nao-existe-aqui-xyz",
+              "https://www.supercasa.pt/imovel/123"]
+
+
 def cleanup(session) -> None:
     for buyer in session.scalars(select(Buyer).where(Buyer.label == LABEL)):
         for criteria in list(buyer.criteria):
@@ -45,6 +49,11 @@ def cleanup(session) -> None:
             session.query(CrawlRun).filter(CrawlRun.criteria_id == criteria.id).delete()
         session.delete(buyer)
     session.query(CriteriaDraft).filter(CriteriaDraft.telegram_chat_id == CHAT).delete()
+    # These are the acceptance-test instrument. Left behind, every smoke run adds a permanent "falha
+    # nossa" to the number that decides whether she pays - the scoreboard cannot tell a probe from a
+    # real miss she reported.
+    session.query(ManualFinding).filter(ManualFinding.url.in_(PROBE_URLS)).delete(
+        synchronize_session=False)
     session.commit()
 
 
@@ -116,9 +125,9 @@ def main() -> int:
         check("digest renders", "Resumo" in text)
 
         print("\n9. /faltou reconciles against what we hold")
-        verdict = findings._record(session, "https://www.imovirtual.com/pt/anuncio/nao-existe-aqui-xyz")
+        verdict = findings._record(session, PROBE_URLS[0])
         check("a known source we missed is our fault", "falha nossa" in verdict, verdict)
-        verdict = findings._record(session, "https://www.supercasa.pt/imovel/123")
+        verdict = findings._record(session, PROBE_URLS[1])
         check("an out-of-scope source is excluded from the test", "fora do âmbito" in verdict, verdict)
         stored = session.scalar(select(Criteria.id).limit(1))
         session.commit()
@@ -126,6 +135,8 @@ def main() -> int:
         print("\n10. cleanup")
         cleanup(session)
         check("buyer removed", session.scalar(select(Buyer).where(Buyer.label == LABEL)) is None)
+        left = session.scalar(select(func.count(ManualFinding.id)).where(ManualFinding.url.in_(PROBE_URLS)))
+        check("probe findings removed", left == 0, f"{left} left on the scoreboard")
 
     print(f"\n{ok_count} ok, {fail_count} failed")
     return 1 if fail_count else 0

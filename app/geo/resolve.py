@@ -12,6 +12,39 @@ from app.db.models import Geo
 
 LEVELS = {1: "district", 2: "council", 3: "parish"}
 
+# She names the administrative level out loud - "concelho de Lisboa" - and that qualifier is not noise, it
+# is the answer to the one question this geography always raises: all three of her districts collide with a
+# council of the same name (lisboa/lisboa, setubal/setubal, santarem/santarem), so a bare "Lisboa" can never
+# be resolved without asking. "conselho" is in this table deliberately: it is a homophone of "concelho" in
+# Portuguese and it is how Whisper spells what she says.
+ADMIN_PREFIXES = {
+    "distrito": "district",
+    "concelho": "council", "conselho": "council", "municipio": "council",
+    "freguesia": "parish",
+}
+_LEADING = {"no", "na", "em", "nos", "nas", "do", "da"}
+_OF = {"de", "do", "da", "das", "dos"}
+
+
+def split_admin_level(text: str) -> tuple[str | None, str]:
+    """-> (level, bare name). `("council", "Lisboa")` for "concelho de Lisboa", `(None, text)` otherwise.
+
+    Returns the ORIGINAL spelling of the remainder, not a slug, so the caller can still quote her words
+    back at her when it has to ask a question.
+    """
+    tokens = (text or "").strip().split()
+    i = 0
+    if tokens and slugify(tokens[0]) in _LEADING:
+        i = 1
+    if len(tokens) <= i + 1 or slugify(tokens[i]) not in ADMIN_PREFIXES:
+        return None, (text or "").strip()
+    level = ADMIN_PREFIXES[slugify(tokens[i])]
+    i += 1
+    if len(tokens) > i + 1 and slugify(tokens[i]) in _OF:
+        i += 1
+    rest = " ".join(tokens[i:]).strip()
+    return (level, rest) if rest else (None, (text or "").strip())
+
 
 def slugify(text: str) -> str:
     ascii_text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")

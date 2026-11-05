@@ -16,7 +16,7 @@ from openpyxl.utils import get_column_letter
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.db.models import Buyer, Criteria, Geo, Listing, ListingPriceHistory, PropertyMatch, Source
+from app.db.models import Agency, Buyer, Criteria, Geo, Listing, ListingPriceHistory, PropertyMatch, Source
 from app.domain.criteria import FEATURES
 from app.domain.matching import tier_label
 from app.services import properties as prop_svc
@@ -68,6 +68,9 @@ def rows_for(session: Session, *, buyer_id: int | None = None, state: str | None
             by_property.setdefault(listing.property_id, []).append(listing)
     sources_by_id = {s.id: s for s in session.scalars(select(Source))}
     source_names = {sid: src.name for sid, src in sources_by_id.items()}
+    # Bounded to the agencies on this export, for the same fallback the panel uses.
+    agency_ids = {l.agency_id for ls in by_property.values() for l in ls if l.agency_id}
+    agencies_by_id = {a.id: a for a in session.scalars(select(Agency).where(Agency.id.in_(agency_ids)))} if agency_ids else {}
     geo_codes = {l.geo_code for ls in by_property.values() for l in ls if l.geo_code}
     geo = {g.code: g for g in session.scalars(select(Geo).where(Geo.code.in_(geo_codes)))} if geo_codes else {}
 
@@ -92,7 +95,9 @@ def rows_for(session: Session, *, buyer_id: int | None = None, state: str | None
         previous = session.scalar(
             select(ListingPriceHistory.price).where(ListingPriceHistory.listing_id == primary.id)
             .order_by(ListingPriceHistory.observed_at.desc()).offset(1).limit(1))
-        contact = next((l for l in listings if l.agency_phone_raw), primary)
+        # Same resolver as the panel, so the spreadsheet and the screen can never disagree about
+        # who to call. Falls back to the agency record, which is where a fifth of her numbers live.
+        agency_name, agency_phone = prop_svc.contact_for(primary, listings, agencies_by_id)
         out.append([
             label,
             match.state,
@@ -104,8 +109,8 @@ def rows_for(session: Session, *, buyer_id: int | None = None, state: str | None
             view.area_util or view.area_bruta,
             zone_name(view.geo_code),
             _requirements(criteria, view.features),
-            contact.agency_name_raw or primary.agency_name_raw or "",
-            contact.agency_phone_raw or "",
+            agency_name or "",
+            agency_phone or "",
             ", ".join(sorted({source_names.get(l.source_id, "?") for l in listings})),
             _naive(primary.first_seen_at),
             _naive(primary.last_seen_at),

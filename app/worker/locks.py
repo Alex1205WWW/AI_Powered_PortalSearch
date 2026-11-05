@@ -6,6 +6,7 @@ unlocking through the session would then hit a different connection and the lock
 (verified 2026-10-28: after one commit the lock leaked and every later acquire returned False)."""
 from __future__ import annotations
 
+import logging
 from collections.abc import Iterator
 from contextlib import contextmanager
 
@@ -13,11 +14,18 @@ from sqlalchemy import text
 
 from app.db.session import engine
 
+log = logging.getLogger(__name__)
+
 
 @contextmanager
 def advisory_lock(name: str) -> Iterator[bool]:
     with engine.connect().execution_options(isolation_level="AUTOCOMMIT") as conn:
         acquired = bool(conn.execute(text("SELECT pg_try_advisory_lock(hashtext(:name))"), {"name": name}).scalar())
+        if not acquired:
+            # Normal and harmless - the previous run of this job is still going - but silent until now,
+            # so a job permanently skipping itself because a lock leaked looked identical to a job with
+            # nothing to do. One line makes the difference greppable.
+            log.info("lock busy, skipping this tick", extra={"lock": name})
         try:
             yield acquired
         finally:

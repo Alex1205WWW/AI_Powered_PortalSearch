@@ -4,39 +4,92 @@
 <h2>Imóveis que faltaram</h2>
 
 <article>
-  {% if score is none %}
-    <p>Ainda não registou nenhum imóvel em falta.</p>
-    <p><small>No Telegram, envie <code>/faltou &lt;link&gt;</code> quando encontrar um imóvel à mão que o
-      sistema não lhe trouxe. É assim que medimos o resultado do teste.</small></p>
+  {% if window %}
+    <p><small>Janela do teste: <strong>{{ window[0].strftime('%d/%m/%Y') }}</strong> a
+      <strong>{{ window[1].strftime('%d/%m/%Y') }}</strong>. Contam apenas imóveis publicados dentro
+      destas datas e em fontes acordadas.</small></p>
+  {% else %}
+    <p><small>A janela do teste ainda não está definida, por isso nenhum registo pode ser datado.</small></p>
+  {% endif %}
+
+  {% if overall.pct is none %}
+    <p>Ainda não há registos suficientes para calcular a cobertura.</p>
+    <p><small>No Telegram, envie <code>/faltou &lt;link&gt; &lt;comprador&gt;</code> quando encontrar à mão
+      um imóvel que o sistema não lhe trouxe. É assim que medimos o resultado do teste.</small></p>
   {% else %}
     <p>
-      Cobertura: <strong>{{ (score * 100)|round|int }}%</strong>
-      ({{ had }} de {{ counted }} contavam e já tínhamos)
-      {% if score >= 0.8 %}<span class="tag ok">acima dos 80% acordados</span>
+      Cobertura: <strong>{{ (overall.pct * 100)|round|int }}%</strong>
+      ({{ overall.had }} de {{ overall.eligible }} que contavam)
+      {% if overall.pct >= 0.8 %}<span class="tag ok">acima dos 80% acordados</span>
       {% else %}<span class="tag warn">abaixo dos 80% acordados</span>{% endif %}
     </p>
-    <p><small>{{ excluded }} registo(s) excluído(s) por serem de fontes fora do âmbito acordado.</small></p>
   {% endif %}
+  <p><small>
+    {{ overall.excluded }} excluído(s) (fonte fora do âmbito ou publicado fora da janela).
+    {% if overall.pending %}
+      <strong>{{ overall.pending }} por decidir</strong> — falta saber se foram publicados dentro da
+      janela. Enquanto estiverem por decidir, a percentagem acima não é final.
+    {% endif %}
+  </small></p>
 </article>
 
+{% if per_buyer|length > 1 %}
+<article>
+  <h3>Por comprador</h3>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Comprador</th><th>Cobertura</th><th>Contaram</th><th>Por decidir</th><th>Excluídos</th></tr></thead>
+    <tbody>
+    {% for b in per_buyer %}
+    <tr>
+      <td data-label="Comprador">{{ b.name }}</td>
+      <td data-label="Cobertura">
+        {% if b.pct is none %}<span class="muted">—</span>
+        {% elif b.pct >= 0.8 %}<span class="tag ok">{{ (b.pct * 100)|round|int }}%</span>
+        {% else %}<span class="tag warn">{{ (b.pct * 100)|round|int }}%</span>{% endif %}
+      </td>
+      <td data-label="Contaram">{{ b.had }}/{{ b.eligible }}</td>
+      <td data-label="Por decidir">{{ b.pending }}</td>
+      <td data-label="Excluídos">{{ b.excluded }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</article>
+{% endif %}
+
+<div class="table-wrap">
 <table>
-  <thead><tr><th>Quando</th><th>Link</th><th>Resultado</th><th>No sistema</th></tr></thead>
+  <thead><tr><th>Quando</th><th>Comprador</th><th>Link</th><th>Resultado</th><th>Na janela</th><th>No sistema</th></tr></thead>
   <tbody>
   {% for row in rows %}
   <tr>
     <td data-label="Quando"><small>{{ row.finding.reported_at.strftime('%d/%m %H:%M') }}</small></td>
-    <td data-label="Link"><a href="{{ row.finding.url }}" rel="noopener"><small>{{ row.finding.url[:70] }}</small></a></td>
+    <td data-label="Comprador"><small>{{ row.buyer.label if row.buyer else '—' }}</small></td>
+    <td data-label="Link"><a href="{{ row.finding.url }}" rel="noopener"><small>{{ row.finding.url[:60] }}</small></a></td>
     <td data-label="Resultado">
       {% if row.finding.verdict == 'ja_tinha' %}<span class="tag ok">{{ row.label }}</span>
       {% elif row.finding.verdict == 'fonte_acordada' %}<span class="tag bad">{{ row.label }}</span>
       {% else %}<span class="tag">{{ row.label }}</span>{% endif %}
     </td>
-    <td data-label="No sistema">{% if row.listing %}<a href="/properties?q={{ row.listing.property_id }}"><small>{{ row.listing.title[:48] if row.listing.title else row.listing.id }}</small></a>
+    <td data-label="Na janela">
+      {% if row.finding.published_in_window is true %}<span class="tag ok">sim</span>
+      {% elif row.finding.published_in_window is false %}<span class="tag">não</span>
+      {% else %}
+        <form class="inline" method="post" action="/findings/{{ row.finding.id }}/window">
+          <button name="inside" value="sim" class="secondary outline" style="padding:0 .5em;font-size:.8em" title="Publicado dentro da janela do teste">sim</button>
+          <button name="inside" value="nao" class="secondary outline" style="padding:0 .5em;font-size:.8em" title="Publicado fora da janela do teste">não</button>
+        </form>
+      {% endif %}
+    </td>
+    <td data-label="No sistema">{% if row.listing %}<a href="/properties?q={{ row.listing.property_id }}"><small>{{ row.listing.title[:40] if row.listing.title else row.listing.id }}</small></a>
         {% else %}<span class="muted">—</span>{% endif %}</td>
   </tr>
   {% else %}
-  <tr><td colspan="4" class="muted">Nada registado.</td></tr>
+  <tr><td colspan="6" class="muted">Nada registado.</td></tr>
   {% endfor %}
   </tbody>
 </table>
+</div>
 {% endblock %}

@@ -20,9 +20,14 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 from app.bot.common import allowed, in_db
-from app.db.models import Listing, ManualFinding, Source
+from app.db.models import Buyer, Listing, ManualFinding, Source
+from app.services import appsettings
 
 log = logging.getLogger(__name__)
+
+NO_BUYER = """
+
+Não percebi para que comprador é. Diga o nome a seguir ao link (<code>/faltou https://… Rosa</code>) para contar na pontuação dele."""
 
 VERDICTS = {
     "ja_tinha": "Já tínhamos este imóvel — estava no painel.",
@@ -34,16 +39,21 @@ VERDICTS = {
 async def faltou(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if not await allowed(update):
         return
-    url = (" ".join(context.args or []).strip() or "").split()[0] if context.args else ""
+    args = list(context.args or [])
+    url = args[0] if args else ""
+    # Anything after the link names the buyer. The test is scored per buyer, so a finding with no buyer
+    # can only ever land in a total - and she is reporting while walking between viewings, so asking a
+    # follow-up question would lose it.
+    buyer_hint = " ".join(args[1:]).strip()
     if not url.startswith("http"):
         await update.message.reply_text(
-            "Envie o link: <code>/faltou https://…</code>", parse_mode="HTML")
+            "Envie o link e o comprador: <code>/faltou https://… Rosa</code>", parse_mode="HTML")
         return
-    outcome = await in_db(lambda s: _record(s, url))
+    outcome = await in_db(lambda s: _record(s, url, buyer_hint))
     await update.message.reply_text(outcome, parse_mode="HTML")
 
 
-def _record(session, url: str) -> str:
+def _record(session, url: str, buyer_hint: str = "") -> str:
     host = urlparse(url).netloc.lower().removeprefix("www.")
     existing = session.scalar(select(Listing).where(Listing.url == url))
     if existing is None:
@@ -55,11 +65,31 @@ def _record(session, url: str) -> str:
         verdict = "ja_tinha"
     else:
         verdict = "fonte_acordada" if in_agreed else "fora_do_ambito"
-    session.add(ManualFinding(url=url[:2000], matched_listing_id=existing.id if existing else None,
-                              in_agreed_source=in_agreed, verdict=verdict))
+    # Only decidable when we hold the advert. A listing we never saw has no publication date here, and
+    # `in_test_window` answers None rather than guessing - the scoreboard then shows it as pending.
+    in_window = appsettings.in_test_window(session, existing.published_at if existing else None)
+    buyer = _match_buyer(session, buyer_hint)
+    session.add(ManualFinding(url=url[:2000], buyer_id=buyer.id if buyer else None,
+                              matched_listing_id=existing.id if existing else None,
+                              in_agreed_source=in_agreed, published_in_window=in_window,
+                              verdict=verdict))
     session.flush()
-    log.info("manual finding recorded: %s -> %s", host, verdict)
-    return VERDICTS[verdict]
+    log.info("manual finding recorded: %s -> %s (buyer=%s, in_window=%s)",
+             host, verdict, buyer.label if buyer else None, in_window)
+    answer = VERDICTS[verdict]
+    if buyer is None:
+        answer += NO_BUYER
+    return answer
+
+
+def _match_buyer(session, hint: str) -> Buyer | None:
+    """Her shorthand, not an exact label: "Rosa" must find "Rosa Brás". Two matches is not a match -
+    attaching the finding to the wrong buyer corrupts the number it exists to measure."""
+    text = (hint or "").strip().lower()
+    if not text:
+        return None
+    hits = [b for b in session.scalars(select(Buyer)) if text in (b.label or "").lower()]
+    return hits[0] if len(hits) == 1 else None
 
 
 def _is_agreed_source(session, host: str) -> bool:

@@ -28,6 +28,8 @@ def show(request: Request, db: DB, user: User):
                   spend=budget.status(db),
                   spend_rows=budget.by_operation(db),
                   banner=health.banner(db),
+                  notice_text=(appsettings.notice(db) or {}).get("text", ""),
+                  notice_url=(appsettings.notice(db) or {}).get("url", ""),
                   money=budget.human)
 
 
@@ -36,8 +38,19 @@ def save(request: Request, db: DB, user: User,
          alert_from: Annotated[int, Form()] = 8,
          alert_to: Annotated[int, Form()] = 21,
          digest_at: Annotated[str, Form()] = "08:30",
-         cap_usd: Annotated[str, Form()] = "5.00"):
+         cap_usd: Annotated[str, Form()] = "5.00",
+         notice_text: Annotated[str, Form()] = "",
+         notice_url: Annotated[str, Form()] = ""):
     messages = []
+    # Saved first and unconditionally: it is the one field whose value may legitimately be empty, and
+    # clearing the note must work even if another field below is rejected.
+    stored, truncated = appsettings.set_notice(db, notice_text, notice_url)
+    if not stored:
+        messages.append("Recado removido.")
+    elif truncated:
+        messages.append(f"Recado guardado, mas cortado a {appsettings.NOTICE_MAX_CHARS} caracteres.")
+    else:
+        messages.append("Recado guardado.")
     start_hour, end_hour = max(0, min(23, alert_from)), max(1, min(24, alert_to))
     if start_hour >= end_hour:
         messages.append("A hora de início tem de ser anterior à de fim; mantive as anteriores.")

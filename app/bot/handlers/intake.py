@@ -128,9 +128,22 @@ def _make(session, text: str, chat_id: int, file_id: str | None) -> dict:
                                           _zone_names(session, draft.parsed))}
 
 
+LEVEL_WORD = {"district": "distrito", "council": "concelho", "parish": "freguesia"}
+
+
 def _zone_names(session, parsed: dict) -> list[str]:
+    """Qualified names, because the card exists for her to catch a mistake.
+
+    "Lisboa" alone cannot be checked: the district and the council are both called Lisboa, and so are
+    Setúbal and Santarém - her whole working area. "Lisboa (concelho)" is her own vocabulary and it is
+    the difference between confirming the right search and confirming a search 50x too wide.
+    """
     names = []
     for code in parsed.get("zone_codes") or []:
         geo = session.get(Geo, code)
-        names.append(geo.name if geo else code)
+        if geo is None:
+            names.append(code)
+            continue
+        word = LEVEL_WORD.get(geo.level)
+        names.append(f"{geo.name} ({word})" if word else geo.name)
     return names

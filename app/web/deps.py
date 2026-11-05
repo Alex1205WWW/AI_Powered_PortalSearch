@@ -13,8 +13,31 @@ from app.domain import criteria as vocab
 from app.web.auth import current_user
 
 TEMPLATES_DIR = Path(__file__).resolve().parent / "templates"
+STATIC_DIR = Path(__file__).resolve().parent / "static"
+
+
+def static_url(filename: str) -> str:
+    """`/static/app.css?v=<mtime>` - the same URL until the file itself changes.
+
+    Without this a deploy ships new CSS that browsers never fetch. Seen on 2026-11-05: the server was
+    serving the new 20 894-byte stylesheet while the browser kept a cached copy with no `.theme-toggle`
+    rule in it, so the toggle fell back to pico's default blue button and stacked above "Sair". The page
+    looked broken and the server was fine.
+
+    A hard refresh fixes it for whoever knows to do that, which is not her. The mtime changes on every
+    deploy because the files are unpacked fresh, so the query string changes with the content and the
+    browser is obliged to re-fetch - while still caching aggressively between deploys.
+    """
+    path = STATIC_DIR / filename
+    try:
+        return f"/static/{filename}?v={int(path.stat().st_mtime)}"
+    except OSError:
+        return f"/static/{filename}"   # a missing file is the template's problem, not a 500 here
+
+
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 templates.env.globals.update(
+    static_url=static_url,
     TRANSACTIONS=vocab.TRANSACTIONS,
     ESTATE_TYPES=vocab.ESTATE_TYPES,
     FEATURES=vocab.FEATURES,
@@ -32,7 +55,21 @@ def render(request: Request, name: str, **context):
     context.setdefault("user", request.session.get("user"))
     context.setdefault("path", request.url.path)   # so the nav can mark where she is
     context.setdefault("health_banner", _banner())
+    context.setdefault("notice", _notice())
     return templates.TemplateResponse(request, name, context)
+
+
+def _notice():
+    """The operator's message, or None. Never takes a page down: a panel that will not render because of
+    a note is worse than no note, which is the same reasoning as `_banner`."""
+    from app.db.session import session_scope
+    from app.services import appsettings
+
+    try:
+        with session_scope() as session:
+            return appsettings.notice(session)
+    except Exception:  # noqa: BLE001
+        return None
 
 
 def _banner() -> list[dict]:

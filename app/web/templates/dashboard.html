@@ -1,24 +1,70 @@
 {% extends "base.html" %}
+{% block title %}Painel{% endblock %}
 {% block content %}
 <h2>Painel</h2>
-<div class="grid">
-  <article><h3>{{ counts.buyers_active }}</h3><p class="muted">compradores ativos<br><small>{{ counts.buyers_paused }} em pausa</small></p></article>
-  <article><h3>{{ counts.criteria_active }}</h3><p class="muted">pesquisas ativas</p></article>
-  <article><h3>{{ counts.listings }}</h3><p class="muted">anúncios recolhidos</p></article>
-  <article><h3>{{ counts.matches_new }}</h3><p class="muted">correspondências por analisar</p></article>
+<p class="muted">Resumo de hoje. Toque num número para abrir a lista.</p>
+
+{# The four numbers she acts on. Each tile is a link, so on a phone the whole card is the target. #}
+<div class="stats">
+  <a class="stat card-link" href="/properties?state=novo">
+    <span class="stat-label">Por analisar</span>
+    <span class="stat-value">{{ counts.matches_new }}</span>
+    <span class="stat-note">correspondências novas</span>
+  </a>
+  <a class="stat card-link" href="/properties?grade=confirmada">
+    <span class="stat-label">Confirmadas</span>
+    <span class="stat-value">{{ counts.matches_confirmed }}</span>
+    <span class="stat-note">cumprem todos os requisitos</span>
+  </a>
+  <a class="stat card-link" href="/buyers">
+    <span class="stat-label">Compradores</span>
+    <span class="stat-value">{{ counts.buyers_active }}</span>
+    <span class="stat-note">{{ counts.criteria_active }} pesquisas ativas{% if counts.buyers_paused %} · {{ counts.buyers_paused }} em pausa{% endif %}</span>
+  </a>
+  <div class="stat">
+    <span class="stat-label">Imóveis vigiados</span>
+    <span class="stat-value">{{ "{:,}".format(counts.properties).replace(",", " ") }}</span>
+    <span class="stat-note">de {{ "{:,}".format(counts.listings).replace(",", " ") }} anúncios recolhidos</span>
+  </div>
 </div>
-<h3>Fontes ativas</h3>
-<table>
-  <thead><tr><th>Fonte</th><th>Estado</th><th>robots.txt</th><th>Último sucesso</th></tr></thead>
-  <tbody>
-  {% for s in sources %}
-    <tr>
-      <td data-label="Fonte">{{ s.name }}</td>
-      <td data-label="Estado"><span class="tag {{ 'ok' if s.status == 'ok' else ('warn' if s.status == 'degraded' else 'bad') }}">{{ s.status }}</span></td>
-      <td data-label="robots.txt">{% if s.robots_status is none %}<span class="muted">por verificar</span>{% else %}HTTP {{ s.robots_status }} · {{ 'permite' if s.robots_allowed else 'bloqueia' }}{% if s.content_signal %} · {{ s.content_signal }}{% endif %}{% endif %}</td>
-      <td data-label="Último sucesso">{{ s.last_ok_at.strftime('%Y-%m-%d %H:%M') if s.last_ok_at else '—' }}</td>
-    </tr>
+
+<h3>Por comprador <span class="muted" style="font-weight:400;font-size:.85rem">· últimas 24 h</span></h3>
+{% if buyer_rows %}
+<div class="panel-grid">
+  {% for label, new_count, confirmed, possible in buyer_rows %}
+  <article class="panel">
+    <div class="panel-head">
+      <h3>{{ label }}</h3>
+      {% if new_count %}<span class="tag ok">{{ new_count }} novo{{ 's' if new_count != 1 }}</span>
+      {% else %}<span class="tag off">sem novidades</span>{% endif %}
+    </div>
+    <div class="panel-row"><span class="k">Confirmadas</span><span class="v">{{ confirmed }}</span></div>
+    <div class="panel-row"><span class="k">Possíveis</span><span class="v">{{ possible }}</span></div>
+    <div class="panel-row">
+      <span class="k">Ver</span>
+      <span class="v"><a href="/properties?q={{ label | urlencode }}">lista completa</a></span>
+    </div>
+  </article>
   {% endfor %}
-  </tbody>
-</table>
+</div>
+{% else %}
+<p class="muted">Ainda não há compradores ativos. <a href="/criteria/new">Criar a primeira pesquisa</a>.</p>
+{% endif %}
+
+<h3>Fontes</h3>
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Fonte</th><th>Estado</th><th>robots.txt</th><th>Último sucesso</th></tr></thead>
+    <tbody>
+    {% for s in sources %}
+      <tr>
+        <td data-label="Fonte">{{ s.name }}</td>
+        <td data-label="Estado"><span class="tag {{ 'ok' if s.status == 'ok' else ('warn' if s.status == 'degraded' else 'bad') }}">{{ s.status }}</span></td>
+        <td data-label="robots.txt">{% if s.robots_status is none %}<span class="muted">por verificar</span>{% else %}HTTP {{ s.robots_status }} · {{ 'permite' if s.robots_allowed else 'bloqueia' }}{% if s.content_signal %} · {{ s.content_signal }}{% endif %}{% endif %}</td>
+        <td data-label="Último sucesso">{{ s.last_ok_at.strftime('%d/%m %H:%M') if s.last_ok_at else '—' }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}

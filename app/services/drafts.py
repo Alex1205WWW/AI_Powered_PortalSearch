@@ -52,7 +52,12 @@ def resolve_zones(session: Session, names: list[str]) -> tuple[list[str], list[s
     codes: list[str] = []
     questions: list[str] = []
     for name in dict.fromkeys(n.strip() for n in names if n and n.strip()):
-        hits = geo_resolve.find(session, name)
+        level, bare = geo_resolve.split_admin_level(name)
+        # The qualifier narrows first; if it narrows to nothing (she said "concelho de Alcântara" and
+        # Alcântara is a parish) fall back to the plain search so a wrong word costs her nothing.
+        hits = geo_resolve.find(session, bare, level=level) if level else []
+        if not hits:
+            hits = geo_resolve.find(session, bare)
         if not hits:
             questions.append(f'Não reconheci a zona "{name}". Qual é o concelho?')
             continue

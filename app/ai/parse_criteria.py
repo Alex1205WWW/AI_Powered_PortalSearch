@@ -31,8 +31,10 @@ Regras:
 - Preços em euros. "300" ou "300 mil" significam 300000. "1,2 milhões" significa 1200000.
 - Tipologia portuguesa: T0, T1, T2... "T2 ou superior" -> typology_min=2 e typology_max=null.
   "T1 ou T2" -> typology_min=1, typology_max=2. "T1+1" conta como T1.
-- zones: escreve os nomes dos locais tal como ela os disse (ex. "Lisboa", "Oeiras", "Alcântara").
-  NÃO tentes adivinhar distrito ou concelho; se o nome for ambíguo, diz isso em ambiguities.
+- zones: escreve os nomes dos locais tal como ela os disse, INCLUINDO "distrito de", "concelho de" ou
+  "freguesia de" quando ela usar essas palavras (ex. "concelho de Lisboa", "Oeiras", "Alcântara").
+  Esse qualificador resolve a ambiguidade e não deve ser removido.
+  NÃO tentes adivinhar distrito ou concelho quando ela não o disser; nesse caso diz-o em ambiguities.
 - must_have: apenas o que ela exigir. nice_to_have: o que for desejável ("de preferência", "se possível").
   Usa exclusivamente estas chaves: {features}
 - estate_types: exclusivamente destas chaves: {estates}

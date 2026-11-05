@@ -52,6 +52,16 @@
   </label>
   <small class="muted">Só limita a interpretação de voz e de texto. 0 remove o teto.</small>
 
+  <h3>Recado no painel</h3>
+  <label>Mensagem mostrada no topo de todas as páginas (deixe em branco para remover)
+    <textarea name="notice_text" rows="5" placeholder="ex.: Olá Andreia, os alertas já estão ligados.">{{ notice_text }}</textarea>
+  </label>
+  <label>Link do botão (opcional) — ex. a conversa no Workana
+    <input type="url" name="notice_url" value="{{ notice_url }}" placeholder="https://www.workana.com/inbox/...">
+  </label>
+  <p><small class="muted">Ela pode fechar o recado, mas ele volta na visita seguinte. Só desaparece
+  quando apagar o texto aqui. Se houver link, aparece o botão "Responder ao Alex".</small></p>
+
   <p><button type="submit">Guardar</button></p>
 </form>
 

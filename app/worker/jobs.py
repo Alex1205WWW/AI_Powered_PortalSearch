@@ -17,8 +17,20 @@ from app.worker.locks import advisory_lock
 log = logging.getLogger(__name__)
 
 
-def heartbeat() -> None:
+def heartbeat(scheduler=None) -> None:
+    """Worker alive, and the one place the worker checks itself over.
+
+    `scheduler` is passed by `build_scheduler` so `next_run_time` can be read; it stays optional so the
+    job is still callable by hand and from tests. A problem moves the `worker` source row, which the panel
+    banner already renders."""
+    from app.services import jobhealth
+
     log.info("worker alive", extra={"job": "heartbeat"})
+    jobs_list = scheduler.get_jobs() if scheduler is not None else []
+    with session_scope() as session:
+        problems = jobhealth.evaluate(session, jobs_list)
+    if problems:
+        log.warning("worker health: %s", "; ".join(problems), extra={"job": "heartbeat"})
 
 
 def run_queued() -> None:

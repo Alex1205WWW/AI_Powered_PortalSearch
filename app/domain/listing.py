@@ -155,6 +155,41 @@ def sold_from_title(title: str | None) -> bool:
     return SOLD_TITLE_RE.search(_SECLUDED_RE.sub(" ", title)) is not None
 
 
+# --- agency phone numbers -----------------------------------------------------------------------
+# She hands this column to someone who dials it, so a number that cannot be called is worse than a blank:
+# it spends a paid assistant's time before it fails.
+#
+# Measured on all 1 522 numbers held for her shown properties (2026-11-05): 0 had the wrong length and
+# only 62 were junk, all from two directory entries - `990000000` on an "agency" called OLX, and
+# `210000000` on one literally named "12 12 12". So the filter below is deliberately narrow: two patterns
+# that were actually observed, nothing invented.
+#
+# What it must NOT reject, because these looked wrong and are real Portuguese numbers:
+#   808 200 030   shared-cost "linha azul" (RE/MAX + Grupo Vantagem)
+#   308 806 576   the 30x nomadic / VoIP range, used by several agencies
+_PHONE_JUNK = (
+    re.compile(r"^9[^1236]"),   # mobiles are 91/92/93/96; 99… is not a real prefix
+    re.compile(r"0{6}"),        # six zeros in a row is a placeholder, never a number
+)
+
+
+def normalize_phone(value: str | None) -> str | None:
+    """Digits only, without the +351 country code, so formatting never counts as a difference."""
+    if not value:
+        return None
+    digits = re.sub(r"\D", "", value)
+    digits = digits[3:] if digits.startswith("351") and len(digits) > 9 else digits
+    return digits or None
+
+
+def plausible_phone(value: str | None) -> str | None:
+    """The number if it could actually be dialled, else None."""
+    digits = normalize_phone(value)
+    if digits is None or len(digits) != 9:
+        return None
+    return None if any(pattern.search(digits) for pattern in _PHONE_JUNK) else digits
+
+
 CANARY_MIN_SAMPLE = 30
 CANARY_THRESHOLDS = {"agency": 0.85, "area": 0.90, "rooms": 0.90, "published": 0.90}  # plan Day 2 said date 100 %; real ads carry occasional impossible dates, so 90 % (live fill 2026-10-28: 100 / 100 / 99.5 / 99.4 %)
 

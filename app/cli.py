@@ -73,11 +73,17 @@ def cmd_hash_password(args: list[str]) -> None:
 
 
 def cmd_send_test(args: list[str]) -> None:
+    """Send one message to her chat. The id comes from the database: `.env` is empty by design."""
     from app.notify import telegram
+    from app.services import appsettings
 
     text = " ".join(args) or "Teste do painel Imóveis: ligação ao Telegram a funcionar."
-    message_id = telegram.send_message(text)
-    print(f"sent message_id={message_id} to chat {settings.telegram_chat_id or '(none)'}")
+    with session_scope() as session:
+        chat = appsettings.chat_id(session)
+    if not chat:
+        sys.exit("sem chat id: ela ainda nao carregou em Comecar no bot")
+    message_id = telegram.send_message(text, chat_id=chat)
+    print(f"sent message_id={message_id} to chat {chat}")
 
 
 def cmd_seed_demo_buyers(args: list[str]) -> None:
@@ -442,6 +448,27 @@ def cmd_ai_spend(_: list[str]) -> None:
         print(f"  {operation:<18} {str(model):<18} {calls:>5} chamada(s)  {cents or 0:>6} centimos")
 
 
+def cmd_test_window(args: list[str]) -> None:
+    """`test-window [AAAA-MM-DD] [dias]` - fix the acceptance window, or show it.
+
+    The window is what makes "publicado dentro do periodo" measurable. Without it every finding stays
+    pending and the coverage number cannot be closed.
+    """
+    from datetime import date as _date
+    from app.services import appsettings
+
+    with session_scope() as session:
+        if args:
+            start = _date.fromisoformat(args[0])
+            days = int(args[1]) if len(args) > 1 else appsettings.DEFAULT_TEST_DAYS
+            first, last = appsettings.set_test_window(session, start, days)
+            session.commit()
+            print(f"janela do teste: {first} a {last} ({days} dias)")
+            return
+        window = appsettings.test_window(session)
+        print(f"janela do teste: {window[0]} a {window[1]}" if window else "janela do teste: por definir")
+
+
 COMMANDS = {
     "run-initial": cmd_run_initial,
     "run-queued": cmd_run_queued,
@@ -473,6 +500,7 @@ COMMANDS = {
     "digest": cmd_digest,
     "parse-note": cmd_parse_note,
     "ai-spend": cmd_ai_spend,
+    "test-window": cmd_test_window,
 }
 
 

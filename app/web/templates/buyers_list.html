@@ -7,6 +7,7 @@
   <button type="submit">Criar comprador</button>
 </form>
 {% if error %}<p class="errors">{{ error }}</p>{% endif %}
+<div class="table-wrap">
 <table>
   <thead><tr><th>Etiqueta</th><th>Estado</th><th>Pesquisas</th><th>Criado</th></tr></thead>
   <tbody>
@@ -22,4 +23,5 @@
   {% endfor %}
   </tbody>
 </table>
+</div>
 {% endblock %}

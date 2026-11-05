@@ -7,9 +7,11 @@ import signal
 import threading
 from zoneinfo import ZoneInfo
 
+from apscheduler.events import EVENT_JOB_ERROR, EVENT_JOB_EXECUTED
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from app.config import settings
+from app.db.session import session_scope
 from app.logging_setup import setup_logging
 from app.worker import jobs
 
@@ -83,7 +85,8 @@ def build_scheduler() -> BackgroundScheduler:
         timezone=ZoneInfo(settings.timezone),
         job_defaults={"coalesce": True, "max_instances": 1, "misfire_grace_time": 600},
     )
-    scheduler.add_job(jobs.heartbeat, "interval", minutes=10, id="heartbeat")
+    # Heartbeat is also the job-health evaluator, so it needs the scheduler to read `next_run_time`.
+    scheduler.add_job(jobs.heartbeat, "interval", minutes=10, id="heartbeat", args=[scheduler])
     scheduler.add_job(jobs.robots_recheck, "cron", day_of_week="sun", hour=4, minute=0, id="robots_recheck")
     scheduler.add_job(jobs.backup, "cron", hour=3, minute=30, id="backup")
     scheduler.add_job(jobs.run_queued, "interval", seconds=30, id="run_queued")
@@ -102,7 +105,31 @@ def build_scheduler() -> BackgroundScheduler:
         scheduler.add_job(func, "interval", args=args, id=job_id, **trigger)
     scheduler.add_job(reconcile_schedules, "interval", minutes=RELOAD_MINUTES, args=[scheduler],
                       id="reload_schedules")
+    scheduler.add_listener(_on_job_event, EVENT_JOB_ERROR | EVENT_JOB_EXECUTED)
     return scheduler
+
+
+def _on_job_event(event) -> None:
+    """Record every job outcome, so a failing job cannot be logged and forgotten.
+
+    Measured 2026-11-04: without this, a job that raises is logged once by APScheduler, rescheduled, and
+    nothing aggregates or surfaces it - it can fail every tick for weeks unnoticed. Ten of the seventeen
+    jobs create no `crawl_runs` row, so this listener is their only record.
+
+    A success for a job that was not already in trouble writes NOTHING (see `jobhealth.record_success`),
+    which matters because `run_queued` fires every 30 seconds. Must never raise: an exception in a listener
+    would come from the scheduler's own thread and is not something a failing job should be able to trigger.
+    """
+    from app.services import jobhealth
+
+    try:
+        with session_scope() as session:
+            if event.exception is not None:
+                jobhealth.record_failure(session, event.job_id, repr(event.exception))
+            else:
+                jobhealth.record_success(session, event.job_id)
+    except Exception:  # noqa: BLE001 - recording a problem must never become a second problem
+        log.exception("could not record job outcome", extra={"job": getattr(event, "job_id", "?")})
 
 
 def enabled_portal_schedules() -> list[tuple[str, int]]:

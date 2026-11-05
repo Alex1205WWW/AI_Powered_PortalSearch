@@ -7,7 +7,7 @@ from fastapi import APIRouter, Form, Request
 from fastapi.responses import RedirectResponse, StreamingResponse
 from sqlalchemy import func, or_, select
 
-from app.db.models import Buyer, Criteria, Geo, Listing, PropertyMatch, Source
+from app.db.models import Agency, Buyer, Criteria, Geo, Listing, PropertyMatch, Source
 from app.domain.criteria import ESTATE_TYPES, STATES
 from app.services import export
 from app.services import matches as match_svc
@@ -95,6 +95,11 @@ def list_properties(request: Request, db: DB, user: User, buyer: OptInt = None, 
     geo_names = {g.code: g.name for g in db.scalars(select(Geo).where(Geo.code.in_(geo_codes)))} if geo_codes else {}
     sources_by_id = {s.id: s for s in db.scalars(select(Source))}
     source_names = {sid: s.name for sid, s in sources_by_id.items()}
+    # Only the agencies actually on this page, so the fallback costs one bounded query rather than a read
+    # of all 3 576. See `properties.contact_for`: without the agency record she can call only 68.9 % of
+    # her shown properties, though the system holds a number for 90.4 %.
+    agency_ids = {l.agency_id for ls in listings_by_property.values() for l in ls if l.agency_id}
+    agencies_by_id = {a.id: a for a in db.scalars(select(Agency).where(Agency.id.in_(agency_ids)))} if agency_ids else {}
 
     items = []
     for match, label, criteria in rows:
@@ -108,8 +113,10 @@ def list_properties(request: Request, db: DB, user: User, buyer: OptInt = None, 
         # silence made 57 of Rosa's 144 confirmadas read "confirmada ... exterior: nao indicado", which is
         # exactly the contradiction that destroys trust in the grade. Found 2026-10-31 from a screenshot.
         view = prop_svc.build_view(match.property_id, listings, sources_by_id)
+        agency_name, agency_phone = prop_svc.contact_for(primary, listings, agencies_by_id)
         items.append({"match": match, "buyer_label": label, "criteria": criteria, "primary": primary,
                       "listings": listings, "features": (view.features if view is not None else primary.features),
+                      "agency_name": agency_name, "agency_phone": agency_phone,
                       "zone": geo_names.get(primary.geo_code, primary.geo_code)})
     buyers = list(db.scalars(select(Buyer).order_by(Buyer.label)))
     filters = {"buyer": buyer, "state": state, "grade": grade, "zone": zone, "price_min": price_min,

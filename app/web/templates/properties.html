@@ -63,6 +63,7 @@
 <p><a role="button" class="secondary outline" href="/properties/export.xlsx{{ export_query }}">Exportar para Excel</a></p>
 
 {% set back = '/properties' ~ (export_query or '') %}
+<div class="table-wrap">
 <table class="table-properties">
   <thead><tr><th>Comprador</th><th>Imóvel</th><th>Preço</th><th>Zona</th><th>Requisitos</th><th>Mediadora</th><th>Fontes</th><th>Estado</th></tr></thead>
   <tbody>
@@ -80,7 +81,7 @@
       {% for k in it.criteria.nice_to_have %}{% set g = it.features and it.features.get(k) %}<span class="muted">{{ FEATURES.get(k, k) }}: {{ 'sim' if g and g.value else 'n/d' }}</span><br>{% endfor %}
       {% if it.match.unknown %}<span class="muted">em falta: {{ it.match.unknown | join(', ') }}</span>{% endif %}
     </small></td>
-    <td data-label="Mediadora"><small>{{ p.agency_name_raw or '—' }}{% if p.agency_phone_raw %}<br>{{ p.agency_phone_raw }}{% endif %}</small></td>
+    <td data-label="Mediadora"><small>{{ it.agency_name or '—' }}{% if it.agency_phone %}<br><a href="tel:+351{{ it.agency_phone }}">{{ it.agency_phone }}</a>{% endif %}</small></td>
     <td data-label="Fontes"><small>{% for l in it.listings %}<a href="{{ l.url }}" target="_blank" rel="noopener">{{ source_names.get(l.source_id, 'fonte') }}</a>{% if l.missing_fields %} <span class="tag warn" title="em falta: {{ l.missing_fields | join(', ') }}">dados parciais</span>{% endif %}{% if it.listings | length > 1 %}<form class="inline" method="post" action="/listings/{{ l.id }}/split"><input type="hidden" name="back" value="{{ back }}"><button class="secondary outline" style="padding:0 .4em;font-size:.8em" title="Separar: este anúncio não é o mesmo imóvel">não é o mesmo</button></form>{% endif %}{{ ' · ' if not loop.last }}{% endfor %}<br><span class="muted">visto {{ p.first_seen_at.strftime('%d/%m') }}{% if p.floor is not none %} · {{ 'r/c' if p.floor == 0 else ('cave' if p.floor < 0 else (p.floor ~ '.º andar' if p.floor <= 10 else '>10.º andar')) }}{% endif %}</span></small></td>
     <td data-label="Estado">
       <form method="post" action="/matches/{{ it.match.id }}/state">
@@ -111,4 +112,5 @@
   {% endfor %}
   </tbody>
 </table>
+</div>
 {% endblock %}
