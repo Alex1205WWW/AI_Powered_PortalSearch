@@ -66,6 +66,16 @@
   --pico-primary: var(--accent);
   --pico-primary-hover: var(--accent-hover);
   --pico-primary-focus: var(--accent-faint);
+  /* Pico 2 renamed these: `--pico-primary` is only the TEXT/link colour, and what actually paints a
+     button is `--pico-primary-background`. Mapping the old name alone left every primary button pico's
+     own blue (#0172ad, measured on the live page) against a green panel - "Filtrar", "Guardar", "Entrar".
+     The border has to be named too, or the button keeps a blue outline. Declared in all three theme
+     blocks, like every other token here, so the toggle wins in both directions. */
+  --pico-primary-background: var(--accent);
+  --pico-primary-border: var(--accent);
+  --pico-primary-hover-background: var(--accent-hover);
+  --pico-primary-hover-border: var(--accent-hover);
+  --pico-primary-inverse: var(--accent-ink);
   --pico-background-color: var(--page);
   --pico-card-background-color: var(--surface);
   --pico-muted-color: var(--ink-soft);
@@ -102,6 +112,11 @@
     --pico-primary: var(--accent);
     --pico-primary-hover: var(--accent-hover);
     --pico-primary-focus: var(--accent-faint);
+    --pico-primary-background: var(--accent);
+    --pico-primary-border: var(--accent);
+    --pico-primary-hover-background: var(--accent-hover);
+    --pico-primary-hover-border: var(--accent-hover);
+    --pico-primary-inverse: var(--accent-ink);
     --pico-background-color: var(--page);
     --pico-card-background-color: var(--surface);
     --pico-muted-color: var(--ink-soft);
@@ -139,6 +154,11 @@
   --pico-primary: var(--accent);
   --pico-primary-hover: var(--accent-hover);
   --pico-primary-focus: var(--accent-faint);
+  --pico-primary-background: var(--accent);
+  --pico-primary-border: var(--accent);
+  --pico-primary-hover-background: var(--accent-hover);
+  --pico-primary-hover-border: var(--accent-hover);
+  --pico-primary-inverse: var(--accent-ink);
   --pico-background-color: var(--page);
   --pico-card-background-color: var(--surface);
   --pico-muted-color: var(--ink-soft);
@@ -394,6 +414,33 @@ tbody tr:last-child td { border-bottom: 0; }
    two controls, so they stack and take the full cell. */
 .table-properties td:nth-child(8) select,
 .table-properties td:nth-child(8) input { width: 100%; max-width: none; margin-bottom: var(--sp-1); font-size: .85rem; }
+
+/* --- Mediadoras: nine columns, so the same treatment as the properties table ------------------- *
+   Without a fixed layout the browser sized this one to its content and it ran 264px past its container
+   (measured live 2026-11-05 at 1440px): the Estado column was clipped at the right edge and the last one
+   was off-screen entirely. It scrolls inside `.table-wrap`, so nothing was unreachable, but a table that
+   is cut off reads as broken.
+
+   The last 26px of that overflow were NOT the columns: the "Desativar" button needed 133px in a 108px
+   cell and a button does not shrink. Letting it fill its cell at a smaller size is what closes the gap -
+   found by measuring `scrollWidth > clientWidth` per cell instead of adjusting percentages again. */
+table.table-agencies { table-layout: fixed; width: 100%; }
+.table-agencies th, .table-agencies td { padding-left: 10px; padding-right: 10px; }
+.table-agencies thead th { font-size: .68rem; }
+.table-agencies td a { overflow-wrap: anywhere; }   /* long URLs in the Site column */
+.table-agencies th:nth-child(1) { width: 14%; }   /* Mediadora        */
+.table-agencies th:nth-child(2) { width: 13%; }   /* Site             */
+.table-agencies th:nth-child(3) { width: 10%; }   /* Confiança        */
+.table-agencies th:nth-child(4) { width: 11%; }   /* Plataforma - breaks mid-word below 11% */
+.table-agencies th:nth-child(5) { width: 10%; }   /* Anúncios         */
+.table-agencies th:nth-child(6) { width: 13%; }   /* Fora dos portais */
+.table-agencies th:nth-child(7) { width: 9%; }    /* Última leitura   */
+.table-agencies th:nth-child(8) { width: 9%; }    /* Estado           */
+.table-agencies th:nth-child(9) { width: 11%; }   /* Ativar/Desativar */
+.table-agencies td:last-child button,
+.table-agencies td:last-child [role="button"] {
+  width: 100%; font-size: .78rem; padding-inline: .4rem; white-space: nowrap;
+}
 
 /* The phone number is a tel: link she taps between viewings. */
 td a[href^="tel:"] { color: var(--accent); text-decoration: none; font-variant-numeric: tabular-nums; }

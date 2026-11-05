@@ -126,11 +126,21 @@ class Browser:
             time.sleep(0.1)
         time.sleep(0.6)
 
-    def screenshot(self, path: pathlib.Path, *, full: bool) -> int:
+    def screenshot(self, path: pathlib.Path, *, full: bool, attempts: int = 3) -> int:
+        """Chrome occasionally answers "Cannot take screenshot with 0 width" right after a navigation,
+        when the layout has not settled. It is transient, and losing the whole run to it means the manual
+        ends up with a half-captured set of images."""
         params = {"format": "png"}
         if full:
             params["captureBeyondViewport"] = True
-        data = self.send("Page.captureScreenshot", **params)["data"]
+        for attempt in range(attempts):
+            try:
+                data = self.send("Page.captureScreenshot", **params)["data"]
+                break
+            except RuntimeError:
+                if attempt == attempts - 1:
+                    raise
+                time.sleep(1.0)
         path.write_bytes(base64.b64decode(data))
         return path.stat().st_size
 
